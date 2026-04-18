@@ -560,14 +560,14 @@
                         let logoData = null;
                         try { logoData = await this.getBase64FromUrl('logo.png'); } catch(_) {}
 
-                        // ═════════════════════════════════════════════════════════
+                                               // ═════════════════════════════════════════════════════════
                         //  HEADER  — white, clean
                         // ═════════════════════════════════════════════════════════
                         let y = 14;
 
-                        // Logo: max 28mm wide, 12mm tall — tight, professional
+                        // Logo: proper size for A4 invoice (40mm width, 15mm height)
                         if (logoData) {
-                            pdf.addImage(logoData, 'PNG', ML, y - 1.5, 40, 8);
+                            pdf.addImage(logoData, 'PNG', ML, y - 2, 40, 15);
                         } else {
                             font('bold', 17); color(C.purple);
                             t(S?.company?.name || 'HEXO CREATIVE', ML, y + 4);
@@ -578,13 +578,13 @@
                         font('bold', 26); color(C.purple);
                         t(docLabel, PW - MR, y + 5, { align: 'right' });
 
-                        y += 14;
+                        y += 16;
 
                         // Purple rule
                         draw(C.purple); lw(0.6);
                         ln(ML, y, PW - MR, y);
 
-                        y += 5;
+                        y += 6;
 
                         // Contact line
                         font('normal', 7.5); color(C.mid);
