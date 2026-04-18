@@ -567,7 +567,7 @@
 
                         // Logo: proper size for A4 invoice (40mm width, 15mm height)
                         if (logoData) {
-                            pdf.addImage(logoData, 'PNG', ML, y - 2, 40, 15);
+                            pdf.addImage(logoData, 'PNG', ML, y - 2, 40, 40);
                         } else {
                             font('bold', 17); color(C.purple);
                             t(S?.company?.name || 'HEXO CREATIVE', ML, y + 4);
