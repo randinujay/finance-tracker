@@ -65,7 +65,6 @@
             margin: 0;
             padding: 0;
             -webkit-tap-highlight-color: transparent;
-            -webkit-font-smoothing: antialiased;
         }
         h1,h2,h3,h4 { letter-spacing: -0.02em; }
 
@@ -125,7 +124,6 @@
             min-height: 44px;
         }
         .sidebar-link:hover { background: var(--hover-bg); color: var(--purple-text); }
-        .sidebar-link:active { transform: scale(0.98); }
         .sidebar-link.active {
             background: var(--purple-soft);
             color: var(--purple-text);
@@ -175,7 +173,6 @@
             border: 1px solid var(--border);
             box-shadow: var(--shadow-md);
             cursor: pointer;
-            transition: transform 0.2s ease, opacity 0.2s ease;
             min-width: 44px;
             min-height: 44px;
             display: flex;
@@ -183,14 +180,27 @@
             justify-content: center;
         }
 
-        #hamburger:active {
-            transform: scale(0.95);
-        }
-
         @media (min-width: 1024px) {
             #hamburger {
                 display: none !important;
             }
+        }
+
+        /* Sidebar logo styling */
+        #sidebar-logo-img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+        
+        /* Purple filter for light mode */
+        .logo-purple-filter {
+            filter: brightness(0) saturate(100%) invert(25%) sepia(98%) saturate(3045%) hue-rotate(254deg) brightness(92%) contrast(97%);
+        }
+        
+        /* White filter for dark mode */
+        .logo-white-filter {
+            filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
         }
 
         .input-field {
@@ -210,7 +220,6 @@
             border-color: var(--purple-mid);
             box-shadow: 0 0 0 3px rgba(139,92,246,0.12);
         }
-        select.input-field option { background: var(--surface); color: var(--text); }
 
         .btn-primary {
             background: linear-gradient(135deg, #8B5CF6, #6D28D9);
@@ -219,29 +228,25 @@
             font-weight: 600; font-size: 0.875rem;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(109,40,217,0.25);
-            transition: opacity var(--transition), transform var(--transition);
             min-height: 44px;
         }
-        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn-primary:active { transform: translateY(0); }
+        .btn-primary:hover { opacity: 0.9; }
         .btn-secondary {
             background: var(--surface); color: var(--text-mid);
             border: 1px solid var(--border);
             padding: 0.7rem 1.4rem; border-radius: var(--radius-sm);
             font-weight: 500; font-size: 0.875rem;
             cursor: pointer;
-            transition: background var(--transition), color var(--transition);
             min-height: 44px;
         }
-        .btn-secondary:hover { background: var(--hover-bg); color: var(--text); }
+        .btn-secondary:hover { background: var(--hover-bg); }
         .action-btn {
             padding: 10px; border-radius: 8px; color: var(--text-muted);
             background: transparent; border: none; cursor: pointer;
-            transition: all var(--transition);
             min-width: 44px; min-height: 44px;
             display: inline-flex; align-items: center; justify-content: center;
         }
-        .action-btn:hover { background: var(--surface); color: var(--purple-text); box-shadow: var(--shadow-sm); }
+        .action-btn:hover { background: var(--surface); color: var(--purple-text); }
 
         .badge { padding: 3px 10px; border-radius: 99px; font-size: 0.72rem; font-weight: 600; display: inline-block; border: 1px solid transparent; }
         .badge-paid    { background: #d1fae5; color: #065f46; border-color: #a7f3d0; }
@@ -260,7 +265,6 @@
         table { border-collapse: separate; border-spacing: 0; width: 100%; }
         thead th { font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); padding: 14px 18px; text-align: left; }
         tbody td { padding: 14px 18px; border-top: 1px solid var(--border); color: var(--text); font-size: 0.875rem; }
-        tbody tr { transition: background var(--transition); }
         tbody tr:hover { background: var(--surface-2); }
 
         @media (max-width: 768px) {
@@ -300,13 +304,19 @@
 
         .empty-state { border: 2px dashed var(--border); border-radius: 20px; background: var(--surface-2); }
 
-        .skeleton { background: linear-gradient(90deg, var(--border) 25%, var(--hover-bg) 50%, var(--border) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        .profit-ratio-btn { 
+            padding: 8px 16px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; 
+            cursor: pointer; border: 1.5px solid var(--border); 
+            background: var(--surface); color: var(--text-mid); 
+            transition: all var(--transition); min-height: 44px;
+        }
+        .profit-ratio-btn.selected { 
+            border-color: var(--purple-mid); 
+            background: var(--purple-soft); 
+            color: var(--purple-text); 
+        }
 
-        .profit-ratio-btn { padding: 8px 16px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: var(--surface); color: var(--text-mid); transition: all var(--transition); }
-        .profit-ratio-btn.selected { border-color: var(--purple-mid); background: var(--purple-soft); color: var(--purple-text); }
-
-        .theme-toggle { width: 42px; height: 24px; background: var(--border); border-radius: 99px; position: relative; cursor: pointer; transition: background 0.3s ease; border: none; }
+        .theme-toggle { width: 42px; height: 24px; background: var(--border); border-radius: 99px; position: relative; cursor: pointer; border: none; }
         .theme-toggle.on { background: var(--purple-mid); }
         .theme-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: white; border-radius: 99px; transition: transform 0.3s ease; }
         .theme-toggle.on::after { transform: translateX(18px); }
@@ -314,12 +324,7 @@
         .toast { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 12px; color: white; font-size: 0.875rem; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,0.2); animation: slideIn 0.25s ease; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
-        .chart-wrap { position: relative; }
-        canvas { width: 100% !important; max-width: 100%; }
-
         .mono { font-family: 'DM Mono', monospace; }
-
-        .activity-dot { width: 8px; height: 8px; border-radius: 99px; flex-shrink: 0; margin-top: 6px; }
 
         @media print { 
             body { background: white; } 
@@ -328,15 +333,12 @@
 
         @media (max-width: 640px) {
             .stat-card { padding: 16px 18px; }
-            h1 { font-size: 1.5rem !important; }
         }
     </style>
 </head>
 <body>
-    <!-- Toasts -->
     <div id="toast-area" class="fixed top-5 right-5 z-[100] flex flex-col gap-2" style="pointer-events:none; max-width: 90vw;"></div>
 
-    <!-- Auth Modal -->
     <div id="auth-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" style="background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);display:none">
         <div class="card p-6 sm:p-8 w-full max-w-md mx-auto">
             <div class="flex items-center gap-3 mb-7">
@@ -380,26 +382,20 @@
         </div>
     </div>
 
-    <!-- Main App -->
     <div id="app" class="hidden">
-        <!-- Sidebar Overlay -->
         <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true" role="presentation"></div>
 
-        <!-- Hamburger Button -->
         <button id="hamburger" class="lg:hidden" aria-label="Toggle menu" aria-expanded="false" aria-controls="sidebar">
             <i data-lucide="menu" class="w-5 h-5" style="color:var(--text-mid)"></i>
         </button>
 
         <div class="flex min-h-screen">
-            <!-- Sidebar -->
             <aside class="sidebar w-64" id="sidebar" aria-hidden="true">
                 <div class="p-5 border-b" style="border-color:var(--border)">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <img id="sidebar-logo" src="" alt="Hexo" class="w-8 h-8 object-contain hidden">
-                            <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" id="sidebar-logo-fallback" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">
-                                <i data-lucide="zap" class="w-4 h-4" style="color:white"></i>
-                            </div>
+                            <!-- Sidebar logo using favicon.png with color filters -->
+                            <img id="sidebar-logo-img" src="favicon.png" alt="Hexo" class="logo-purple-filter">
                             <div class="min-w-0">
                                 <div class="font-bold text-sm truncate" style="color:var(--text)">Hexo Creative</div>
                                 <div class="text-xs flex items-center gap-1" style="color:var(--text-muted)">
@@ -439,7 +435,6 @@
                 </div>
             </aside>
 
-            <!-- Main Content -->
             <main class="flex-1 ml-0 lg:ml-64 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8" id="main-content" style="min-width:0"></main>
         </div>
     </div>
@@ -448,9 +443,6 @@
     (function () {
         "use strict";
 
-        // ══════════════════════════════════════════════════════
-        // FIREBASE CONFIG
-        // ══════════════════════════════════════════════════════
         const firebaseConfig = {
             apiKey: "AIzaSyDAaerlvUaOKrVD3gAOWebnzyGDmCGmvXQ",
             authDomain: "hexo-creative.firebaseapp.com",
@@ -460,93 +452,70 @@
             appId: "1:263255331518:web:cb3e6fa2c2a2cfeb23c4ef"
         };
         firebase.initializeApp(firebaseConfig);
-        const db      = firebase.firestore();
-        const auth    = firebase.auth();
+        const db = firebase.firestore();
+        const auth = firebase.auth();
         const storage = firebase.storage();
 
         db.enablePersistence().catch(() => {});
 
         // ══════════════════════════════════════════════════════
-        // MOBILE SIDEBAR MANAGEMENT
+        // SIDEBAR
         // ══════════════════════════════════════════════════════
         const MobileSidebar = {
-            sidebar: null,
-            overlay: null,
-            hamburger: null,
-            
             init() {
-                this.sidebar = document.getElementById('sidebar');
-                this.overlay = document.getElementById('sidebar-overlay');
-                this.hamburger = document.getElementById('hamburger');
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebar-overlay');
+                const hamburger = document.getElementById('hamburger');
                 
-                if (!this.sidebar || !this.overlay || !this.hamburger) return;
+                if (!sidebar || !overlay || !hamburger) return;
                 
-                this.hamburger.addEventListener('click', (e) => {
+                hamburger.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    this.toggle();
+                    if (sidebar.classList.contains('open')) {
+                        this.close(sidebar, overlay, hamburger);
+                    } else {
+                        this.open(sidebar, overlay, hamburger);
+                    }
                 });
                 
-                this.overlay.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    this.close();
-                });
+                overlay.addEventListener('click', () => this.close(sidebar, overlay, hamburger));
                 
                 document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && this.isOpen()) {
-                        this.close();
+                    if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+                        this.close(sidebar, overlay, hamburger);
                     }
                 });
                 
                 window.addEventListener('resize', () => {
                     if (window.innerWidth >= 1024) {
-                        this.close();
+                        this.close(sidebar, overlay, hamburger);
                     }
                 });
             },
             
-            open() {
-                if (!this.sidebar || !this.overlay) return;
-                
-                this.sidebar.classList.add('open');
-                this.overlay.classList.add('active');
+            open(sidebar, overlay, hamburger) {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
                 document.body.classList.add('sidebar-open');
-                this.sidebar.setAttribute('aria-hidden', 'false');
-                this.overlay.setAttribute('aria-hidden', 'false');
-                this.hamburger.setAttribute('aria-expanded', 'true');
-                const icon = this.hamburger.querySelector('i');
-                if (icon) {
-                    icon.setAttribute('data-lucide', 'x');
-                    lucide.createIcons();
-                }
+                sidebar.setAttribute('aria-hidden', 'false');
+                overlay.setAttribute('aria-hidden', 'false');
+                hamburger.setAttribute('aria-expanded', 'true');
+                const icon = hamburger.querySelector('i');
+                if (icon) icon.setAttribute('data-lucide', 'x');
+                lucide.createIcons();
             },
             
-            close() {
-                if (!this.sidebar || !this.overlay) return;
-                
-                this.sidebar.classList.remove('open');
-                this.overlay.classList.remove('active');
+            close(sidebar, overlay, hamburger) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
                 document.body.classList.remove('sidebar-open');
-                this.sidebar.setAttribute('aria-hidden', 'true');
-                this.overlay.setAttribute('aria-hidden', 'true');
-                this.hamburger.setAttribute('aria-expanded', 'false');
-                const icon = this.hamburger.querySelector('i');
-                if (icon) {
-                    icon.setAttribute('data-lucide', 'menu');
-                    lucide.createIcons();
-                }
-            },
-            
-            toggle() {
-                if (this.isOpen()) {
-                    this.close();
-                } else {
-                    this.open();
-                }
-            },
-            
-            isOpen() {
-                return this.sidebar?.classList.contains('open') || false;
+                sidebar.setAttribute('aria-hidden', 'true');
+                overlay.setAttribute('aria-hidden', 'true');
+                hamburger.setAttribute('aria-expanded', 'false');
+                const icon = hamburger.querySelector('i');
+                if (icon) icon.setAttribute('data-lucide', 'menu');
+                lucide.createIcons();
             }
         };
 
@@ -554,28 +523,22 @@
         // STATE
         // ══════════════════════════════════════════════════════
         const State = {
-            user:        null,
-            quotes:      [],
-            invoices:    [],
-            clients:     [],
-            packages:    [],
-            settings:    null,
+            user: null,
+            quotes: [],
+            invoices: [],
+            clients: [],
+            packages: [],
+            settings: null,
             activityLog: [],
-            darkMode:    localStorage.getItem('hexo-theme') === 'dark',
-            _listeners:  [],
-            _loaded:     { quotes: false, invoices: false, clients: false, packages: false, settings: false },
+            darkMode: localStorage.getItem('hexo-theme') === 'dark',
+            _listeners: [],
+            _loaded: { quotes: false, invoices: false, clients: false, packages: false, settings: false },
             notify() { 
-                this._listeners.forEach(fn => {
-                    try { fn(); } catch(e) { console.error('Listener error:', e); }
-                }); 
+                this._listeners.forEach(fn => { try { fn(); } catch(e) {} }); 
             },
             subscribe(fn) { 
                 this._listeners.push(fn); 
                 return () => { this._listeners = this._listeners.filter(l => l !== fn); };
-            },
-            isDataLoaded() {
-                return this._loaded.quotes && this._loaded.invoices && 
-                       this._loaded.clients && this._loaded.packages && this._loaded.settings;
             }
         };
 
@@ -589,10 +552,6 @@
                 this._unsubscribers.forEach(u => { try { u && u(); } catch(e) {} });
                 this._unsubscribers = [];
                 
-                Object.keys(State._loaded).forEach(k => State._loaded[k] = false);
-
-                this.loadFromCache(userId);
-
                 const track = (fn) => { this._unsubscribers.push(fn); };
                 const base = () => db.collection('users').doc(userId);
 
@@ -601,40 +560,28 @@
                     State._loaded.quotes = true;
                     this.cacheData(userId, 'quotes', State.quotes);
                     State.notify();
-                }, (err) => {
-                    console.warn('Quotes listener error:', err);
-                    this.retryListener(userId);
-                }));
+                }, () => {}));
 
                 track(base().collection('invoices').onSnapshot(snap => {
                     State.invoices = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                     State._loaded.invoices = true;
                     this.cacheData(userId, 'invoices', State.invoices);
                     State.notify();
-                }, (err) => {
-                    console.warn('Invoices listener error:', err);
-                    this.retryListener(userId);
-                }));
+                }, () => {}));
 
                 track(base().collection('clients').onSnapshot(snap => {
                     State.clients = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                     State._loaded.clients = true;
                     this.cacheData(userId, 'clients', State.clients);
                     State.notify();
-                }, (err) => {
-                    console.warn('Clients listener error:', err);
-                    this.retryListener(userId);
-                }));
+                }, () => {}));
 
                 track(base().collection('packages').onSnapshot(snap => {
                     State.packages = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                     State._loaded.packages = true;
                     this.cacheData(userId, 'packages', State.packages);
                     State.notify();
-                }, (err) => {
-                    console.warn('Packages listener error:', err);
-                    this.retryListener(userId);
-                }));
+                }, () => {}));
 
                 track(base().collection('settings').doc('preferences').onSnapshot(doc => {
                     if (doc.exists) {
@@ -642,7 +589,7 @@
                     } else {
                         const defaults = {
                             company: { name: 'Hexo Creative', email: 'hexocreative@gmail.com', currency: 'LKR', currencySymbol: 'Rs.', phone: '+94 72 621 54 34', address: 'Minuwangoda, Sri Lanka' },
-                            quotes:   { prefix: 'HX-QT' },
+                            quotes: { prefix: 'HX-QT' },
                             invoices: { prefix: 'HX' },
                             appearance: { logo: null },
                             profit: { defaultRatio: '65/35', partnerALabel: 'You', partnerBLabel: 'Partner' }
@@ -661,60 +608,29 @@
                     }, () => {}));
             },
 
-            loadFromCache(userId) {
-                try {
-                    const cache = localStorage.getItem('hexo-cache-' + userId);
-                    if (cache) {
-                        const data = JSON.parse(cache);
-                        if (data.quotes) { State.quotes = data.quotes; State._loaded.quotes = true; }
-                        if (data.invoices) { State.invoices = data.invoices; State._loaded.invoices = true; }
-                        if (data.clients) { State.clients = data.clients; State._loaded.clients = true; }
-                        if (data.packages) { State.packages = data.packages; State._loaded.packages = true; }
-                        if (data.settings) { State.settings = data.settings; State._loaded.settings = true; }
-                    }
-                } catch(e) {
-                    console.warn('Cache load error:', e);
-                }
-            },
-
             cacheData(userId, key, data) {
                 try {
                     const cacheKey = 'hexo-cache-' + userId;
                     const cache = JSON.parse(localStorage.getItem(cacheKey) || '{}');
                     cache[key] = data;
                     localStorage.setItem(cacheKey, JSON.stringify(cache));
-                } catch(e) {
-                    console.warn('Cache save error:', e);
-                }
-            },
-
-            retryListener(userId) {
-                setTimeout(() => {
-                    console.log('Retrying listeners...');
-                    this.init(userId);
-                }, 3000);
+                } catch(e) {}
             },
 
             async saveDocument(userId, collection, doc) {
                 try {
                     await db.collection('users').doc(userId).collection(collection).doc(doc.id).set(doc);
-                    showToast(`${collection.slice(0,-1)} saved`, 'success');
+                    showToast('Saved', 'success');
                     return true;
-                } catch (e) { 
-                    showToast('Error: ' + e.message, 'error'); 
-                    return false; 
-                }
+                } catch (e) { showToast('Error: ' + e.message, 'error'); return false; }
             },
 
             async deleteDocument(userId, collection, docId) {
                 try {
                     await db.collection('users').doc(userId).collection(collection).doc(docId).delete();
-                    showToast('Deleted successfully', 'info');
+                    showToast('Deleted', 'info');
                     return true;
-                } catch (e) { 
-                    showToast('Error: ' + e.message, 'error'); 
-                    return false; 
-                }
+                } catch (e) { showToast('Error: ' + e.message, 'error'); return false; }
             }
         };
 
@@ -741,6 +657,7 @@
                         document.getElementById('signin-form').classList.remove('hidden');
                     }
                     lucide.createIcons();
+                    updateLogoForTheme();
                 });
             },
             async signIn(email, password) {
@@ -748,9 +665,8 @@
                     showAuthLoading(true);
                     clearAuthError();
                     await auth.signInWithEmailAndPassword(email, password);
-                } catch (e) {
-                    showAuthError(friendlyAuthError(e.code));
-                } finally { showAuthLoading(false); }
+                } catch (e) { showAuthError(friendlyAuthError(e.code)); } 
+                finally { showAuthLoading(false); }
             },
             async signUp(email, password) {
                 if (password.length < 6) { showAuthError('Password must be at least 6 characters'); return; }
@@ -758,9 +674,8 @@
                     showAuthLoading(true);
                     clearAuthError();
                     await auth.createUserWithEmailAndPassword(email, password);
-                } catch (e) {
-                    showAuthError(friendlyAuthError(e.code));
-                } finally { showAuthLoading(false); }
+                } catch (e) { showAuthError(friendlyAuthError(e.code)); } 
+                finally { showAuthLoading(false); }
             },
             async forgotPassword(email) {
                 if (!email) { showAuthError('Enter your email first'); return; }
@@ -771,8 +686,8 @@
         };
 
         function friendlyAuthError(code) {
-            const map = { 'auth/user-not-found': 'No account found with this email.', 'auth/wrong-password': 'Incorrect password.', 'auth/email-already-in-use': 'Email already in use.', 'auth/invalid-email': 'Invalid email address.', 'auth/weak-password': 'Password must be at least 6 characters.' };
-            return map[code] || 'Authentication failed. Please try again.';
+            const map = { 'auth/user-not-found': 'No account found.', 'auth/wrong-password': 'Incorrect password.', 'auth/email-already-in-use': 'Email already in use.', 'auth/invalid-email': 'Invalid email.', 'auth/weak-password': 'Password too short.' };
+            return map[code] || 'Authentication failed.';
         }
         function showAuthError(msg) { const el = document.getElementById('auth-error'); if(el) { el.textContent = msg; el.classList.remove('hidden'); } }
         function clearAuthError() { const el = document.getElementById('auth-error'); if(el) el.classList.add('hidden'); }
@@ -784,7 +699,20 @@
         }
 
         // ══════════════════════════════════════════════════════
-        // PDF GENERATOR (unchanged from original)
+        // LOGO UPDATE FOR THEME
+        // ══════════════════════════════════════════════════════
+        function updateLogoForTheme() {
+            const img = document.getElementById('sidebar-logo-img');
+            if (!img) return;
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            img.className = isDark ? 'logo-white-filter' : 'logo-purple-filter';
+            img.style.width = '32px';
+            img.style.height = '32px';
+            img.style.objectFit = 'contain';
+        }
+
+        // ══════════════════════════════════════════════════════
+        // PDF GENERATOR - NO PROFIT SPLIT INCLUDED
         // ══════════════════════════════════════════════════════
         const PDFGenerator = {
             async generateDocument(doc, type) {
@@ -803,28 +731,31 @@
                     const fmtD=(d)=>{try{return new Date(d).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});}catch{return String(d||'');}};
                     const fmtA=(n)=>`Rs. ${Number(n||0).toFixed(2)}`;
 
-                    const headerImageFile = type==='quote'?'quotation.png':'invoice.png';
-                    let headerImageData=null;
-                    try{headerImageData=await this.getBase64FromUrl(headerImageFile,false);}catch(_){}
-
                     let y=14;
-                    const headerW=CW, headerH=headerW*(194/2480);
-                    if(headerImageData){pdf.addImage(headerImageData,'PNG',ML,y,headerW,headerH);}
-                    else{
-                        font('bold',17);color(C.purple);t(S?.company?.name||'HEXO CREATIVE',ML,y+10);
-                        font('bold',26);color(C.purple);t(type==='quote'?'QUOTATION':'INVOICE',PW-MR,y+13,{align:'right'});
-                    }
-                    y+=headerH+3;
+                    // Header
+                    font('bold',22);color(C.purple);t(S?.company?.name||'HEXO CREATIVE',ML,y+8);
+                    font('bold',26);color(C.purple);t(type==='quote'?'QUOTATION':'INVOICE',PW-MR,y+10,{align:'right'});
+                    y+=18;
                     draw(C.purple);lw(0.6);ln(ML,y,PW-MR,y);y+=6;
                     font('normal',7.5);color(C.mid);
                     const contact=[S?.company?.address||'Minuwangoda, Sri Lanka','Tel: '+(S?.company?.phone||'+94 72 621 54 34'),'Email: '+(S?.company?.email||'hexocreative@gmail.com')].join('   |   ');
                     t(contact,ML,y);y+=10;
 
+                    // Meta info
                     const META_H=16;fill(C.strip);draw(C.border);lw(0.15);box(ML,y,CW,META_H,2,'FD');
-                    const meta=[{label:type==='quote'?'Quotation No.':'Invoice No.',val:doc.number||'—'},{label:'Issue Date',val:fmtD(doc.date)},{label:'Due Date',val:fmtD(doc.dueDate)}];
-                    meta.forEach(({label,val},i)=>{const cx=ML+5+i*(CW/3);font('normal',6.5);color(C.mid);t(label.toUpperCase(),cx,y+5.5);font('bold',9.5);color(C.ink);t(val,cx,y+13);});
+                    const meta=[
+                        {label:type==='quote'?'Quotation No.':'Invoice No.',val:doc.number||'—'},
+                        {label:'Issue Date',val:fmtD(doc.date)},
+                        {label:'Due Date',val:fmtD(doc.dueDate)}
+                    ];
+                    meta.forEach(({label,val},i)=>{
+                        const cx=ML+5+i*(CW/3);
+                        font('normal',6.5);color(C.mid);t(label.toUpperCase(),cx,y+5.5);
+                        font('bold',9.5);color(C.ink);t(val,cx,y+13);
+                    });
                     y+=META_H+11;
 
+                    // Bill to
                     font('bold',12);color(C.purple);t('BILL TO',ML,y);y+=7;
                     font('bold',11.5);color(C.ink);t(doc.clientName||'Client',ML,y);y+=5.5;
                     font('normal',8.5);color(C.mid);
@@ -833,74 +764,113 @@
                     if(client?.email){t(client.email,ML,y);y+=5;}
                     y+=8;
 
-                    const tableRows=(doc.items||[]).map(item=>[item.description||'',String(item.qty??0),fmtA(item.price||0),fmtA((item.qty||0)*(item.price||0))]);
-                    pdf.autoTable({startY:y,head:[['Description','Qty','Unit Price (LKR)','Total (LKR)']],body:tableRows,theme:'plain',
+                    // Items table
+                    const tableRows=(doc.items||[]).map(item=>[
+                        item.description||'',
+                        String(item.qty??0),
+                        fmtA(item.price||0),
+                        fmtA((item.qty||0)*(item.price||0))
+                    ]);
+                    pdf.autoTable({
+                        startY:y,
+                        head:[['Description','Qty','Unit Price (LKR)','Total (LKR)']],
+                        body:tableRows,
+                        theme:'plain',
                         headStyles:{fillColor:C.purpled,textColor:C.white,fontStyle:'bold',fontSize:8.5,cellPadding:{top:6,bottom:6,left:6,right:6}},
-                        columnStyles:{0:{cellWidth:'auto',halign:'left'},1:{cellWidth:18,halign:'center'},2:{cellWidth:42,halign:'right'},3:{cellWidth:42,halign:'right'}},
                         styles:{fontSize:9,cellPadding:{top:6,bottom:6,left:6,right:6},textColor:C.body,lineColor:C.border,lineWidth:0.15},
-                        alternateRowStyles:{fillColor:C.strip},bodyStyles:{fillColor:C.white},margin:{left:ML,right:MR}
+                        alternateRowStyles:{fillColor:C.strip},
+                        bodyStyles:{fillColor:C.white},
+                        margin:{left:ML,right:MR}
                     });
 
+                    // Totals
                     const subtotal=(doc.items||[]).reduce((s,i)=>s+(i.qty||0)*(i.price||0),0);
                     const discount=doc.discount||0, advance=doc.advance||0, total=Math.max(0,subtotal-discount-advance);
                     let ty=pdf.lastAutoTable.finalY+7;
-                    const TBW=90, TX=PW-MR-TBW, xRows=(discount>0?1:0)+(advance>0?1:0), TBH=13+xRows*9+16;
+                    const TBW=80, TX=PW-MR-TBW;
+                    const xRows=(discount>0?1:0)+(advance>0?1:0);
+                    const TBH=13+xRows*9+16;
+                    
                     fill(C.strip);draw(C.border);lw(0.15);box(TX,ty,TBW,TBH,2,'FD');
-                    const LX=TX+6, VX=PW-MR-4;let ry=ty+10;
-                    font('normal',8.5);color(C.mid);t('Subtotal',LX,ry);font('bold',8.5);color(C.body);t(fmtA(subtotal),VX,ry,{align:'right'});ry+=9;
-                    if(discount>0){font('normal',8.5);color(C.mid);t('Discount',LX,ry);font('bold',8.5);color(C.red);t('- '+fmtA(discount),VX,ry,{align:'right'});ry+=9;}
-                    if(advance>0){font('normal',8.5);color(C.mid);t('Advance Paid',LX,ry);font('bold',8.5);color(C.red);t('- '+fmtA(advance),VX,ry,{align:'right'});ry+=9;}
-                    draw(C.border);lw(0.2);ln(LX,ry-3,VX,ry-3);ry+=6;
-                    font('bold',10);color(C.ink);t('TOTAL DUE',LX,ry);font('bold',13);color(C.purple);t(fmtA(total),VX,ry,{align:'right'});
+                    const LX=TX+6, VX=PW-MR-4;
+                    let ry=ty+10;
+                    
+                    font('normal',8.5);color(C.mid);t('Subtotal',LX,ry);
+                    font('bold',8.5);color(C.body);t(fmtA(subtotal),VX,ry,{align:'right'});
+                    ry+=9;
+                    
+                    if(discount>0){
+                        font('normal',8.5);color(C.mid);t('Discount',LX,ry);
+                        font('bold',8.5);color(C.red);t('- '+fmtA(discount),VX,ry,{align:'right'});
+                        ry+=9;
+                    }
+                    if(advance>0){
+                        font('normal',8.5);color(C.mid);t('Advance Paid',LX,ry);
+                        font('bold',8.5);color(C.red);t('- '+fmtA(advance),VX,ry,{align:'right'});
+                        ry+=9;
+                    }
+                    
+                    draw(C.border);lw(0.2);ln(LX,ry-3,VX,ry-3);
+                    ry+=6;
+                    font('bold',10);color(C.ink);t('TOTAL DUE',LX,ry);
+                    font('bold',13);color(C.purple);t(fmtA(total),VX,ry,{align:'right'});
 
-                    if(doc.profitShare && type==='invoice'){
-                        ry+=10;
-                        const ps=normalizeProfitShare(doc.profitShare);
-                        const netP=subtotal-discount;
-                        const pS=State.settings?.profit||{};
-                        font('bold',7);color(C.mid);t('PROFIT SPLIT',LX,ry);ry+=6;
-                        font('normal',7.5);color(C.mid);
-                        t(`${pS.partnerALabel||'You'} (${ps.you}%): ${fmtA(netP*(ps.you/100))}   |   ${pS.partnerBLabel||'Partner'} (${ps.partner}%): ${fmtA(netP*(ps.partner/100))}`,LX,ry);
+                    // NO PROFIT SPLIT IN PDF - REMOVED
+
+                    // Paid watermark
+                    if(doc.status==='Paid'){
+                        pdf.saveGraphicsState();
+                        pdf.setGState(new pdf.GState({opacity:0.06}));
+                        font('bold',72);
+                        color([16,185,129]);
+                        pdf.text('PAID',PW/2,PH/2,{align:'center',angle:35});
+                        pdf.restoreGraphicsState();
                     }
 
-                    if(doc.status==='Paid'){pdf.saveGraphicsState();pdf.setGState(new pdf.GState({opacity:0.06}));font('bold',72);color([16,185,129]);pdf.text('PAID',PW/2,PH/2,{align:'center',angle:35});pdf.restoreGraphicsState();}
-
+                    // Terms
                     const terms=['All fees are in Sri Lankan Rupees (LKR) and are payable within 30 days.','Payment via direct bank transfer only. Bank details provided upon request.','Work commences only after receipt of agreed advance payment.','Client responsible for providing timely access, approvals, and feedback.','Upon full payment, client owns final deliverables. Hexo Creative retains rights to underlying tools and methodologies.','Services may be suspended for non-payment. Either party may terminate with 30 days\' written notice.','Total liability limited to fees paid in the preceding 3 months.'];
                     let termsY=ty+TBH+11;
                     draw(C.border);lw(0.2);ln(ML,termsY,PW-MR,termsY);termsY+=6;
                     font('bold',7.5);color(C.mid);t('TERMS & CONDITIONS',ML,termsY);termsY+=6;
-                    terms.forEach((term,i)=>{const lines=pdf.splitTextToSize(term,CW-8);const blockH=lines.length*4+2.5;font('bold',7.5);color(C.purple);t(`${i+1}.`,ML,termsY);font('normal',7.5);color(C.mid);lines.forEach((l,li)=>t(l,ML+7,termsY+li*4));termsY+=blockH;});
+                    terms.forEach((term,i)=>{
+                        const lines=pdf.splitTextToSize(term,CW-8);
+                        const blockH=lines.length*4+2.5;
+                        font('bold',7.5);color(C.purple);t(`${i+1}.`,ML,termsY);
+                        font('normal',7.5);color(C.mid);
+                        lines.forEach((l,li)=>t(l,ML+7,termsY+li*4));
+                        termsY+=blockH;
+                    });
 
-                    const FY=PH-10;draw(C.border);lw(0.2);ln(ML,FY-4,PW-MR,FY-4);font('normal',7.5);color(C.muted);t('Thank you for your business!',PW/2,FY,{align:'center'});
+                    // Footer
+                    const FY=PH-10;
+                    draw(C.border);lw(0.2);ln(ML,FY-4,PW-MR,FY-4);
+                    font('normal',7.5);color(C.muted);
+                    t('Thank you for your business!',PW/2,FY,{align:'center'});
+                    
                     pdf.save(`${type}-${doc.number||'draft'}.pdf`);
-                } catch(err) { console.error(err); showToast('PDF error: '+err.message,'error'); }
-            },
-
-            getBase64FromUrl(url, cropBlank=true) {
-                return new Promise((resolve, reject) => {
-                    const img = new Image();
-                    img.crossOrigin = 'anonymous';
-                    img.onload = () => {
-                        if(!cropBlank){
-                            const MAX=1200,scale=Math.min(1,MAX/img.width),w=Math.round(img.width*scale),h=Math.round(img.height*scale);
-                            const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
-                            canvas.getContext('2d').drawImage(img,0,0,w,h);resolve(canvas.toDataURL('image/png'));return;
-                        }
-                        const source=document.createElement('canvas');source.width=img.width;source.height=img.height;
-                        const sc=source.getContext('2d');sc.drawImage(img,0,0);
-                        const data=sc.getImageData(0,0,source.width,source.height).data;
-                        let minX=source.width,minY=source.height,maxX=-1,maxY=-1;
-                        for(let y=0;y<source.height;y++){for(let x=0;x<source.width;x++){const i=(y*source.width+x)*4;if(data[i+3]>10&&!(data[i]>245&&data[i+1]>245&&data[i+2]>245)){minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x);maxY=Math.max(maxY,y);}}}
-                        const cropX=Math.max(0,minX-24),cropY=Math.max(0,minY-24),cropW=Math.min(source.width-cropX,maxX-minX+49),cropH=Math.min(source.height-cropY,maxY-minY+49);
-                        const MAX=600,scale=Math.min(1,MAX/cropW),w=Math.round(cropW*scale),h=Math.round(cropH*scale);
-                        const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
-                        canvas.getContext('2d').drawImage(source,cropX,cropY,cropW,cropH,0,0,w,h);
-                        resolve(canvas.toDataURL('image/png'));
-                    };
-                    img.onerror=reject;img.src=url;
-                });
+                } catch(err) { 
+                    console.error(err); 
+                    showToast('PDF error: '+err.message,'error'); 
+                }
             }
         };
+
+        // ══════════════════════════════════════════════════════
+        // FIXED PROFIT SHARE LOGIC
+        // ══════════════════════════════════════════════════════
+        function parseProfitRatio(ratioStr) {
+            // "65/35" means you get 65, partner gets 35
+            const parts = (ratioStr||'65/35').split('/');
+            let you = parseInt(parts[0]) || 65;
+            let partner = parseInt(parts[1]) || 35;
+            
+            // Ensure you always get the larger share
+            if (you < partner) {
+                [you, partner] = [partner, you];
+            }
+            
+            return { you, partner };
+        }
 
         // ══════════════════════════════════════════════════════
         // UI MODULE
@@ -951,19 +921,18 @@
 
             // ── DASHBOARD ──────────────────────────────────────────────
             function renderDashboard() {
-                const quotes   = State.quotes   || [];
                 const invoices = State.invoices || [];
                 const clients  = State.clients  || [];
+                const quotes   = State.quotes   || [];
 
                 const totalRevenue = invoices.filter(i => i.status === 'Paid').reduce((a,i) => a+(i.total||0), 0);
                 const totalOutstanding = invoices.filter(i => i.status !== 'Paid' && i.status !== 'Draft').reduce((a,i) => a+(i.total||0), 0);
 
-                let totalProfit = 0, totalYourShare = 0;
+                let totalYourShare = 0;
                 invoices.filter(i => i.status === 'Paid').forEach(inv => {
                     const sub = (inv.items||[]).reduce((s,it)=>s+(it.qty||0)*(it.price||0),0);
                     const netP = sub - (inv.discount||0);
-                    const ps = normalizeProfitShare(inv.profitShare);
-                    totalProfit += netP;
+                    const ps = inv.profitShare || parseProfitRatio('65/35');
                     totalYourShare += netP * (ps.you/100);
                 });
 
@@ -1009,7 +978,6 @@
                     </div>
                 </div>
 
-                <!-- Recent Docs -->
                 <div class="card overflow-hidden">
                     <div class="flex justify-between items-center p-4 sm:p-5 border-b" style="border-color:var(--border)">
                         <h3 class="font-semibold" style="color:var(--text)">Recent Documents</h3>
@@ -1034,41 +1002,8 @@
                     </table>
                     </div>
                 </div>`;
-
-                setTimeout(() => {
-                    lucide.createIcons();
-                    initDashboardCharts();
-                }, 100);
-            }
-
-            function initDashboardCharts() {
-                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-                const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
-                const tickColor = isDark ? '#64748b' : '#94a3b8';
-                const invoices = State.invoices || [];
                 
-                const now = new Date();
-                const monthlyData = Array.from({length:6},(_,k)=>{
-                    const d = new Date(now.getFullYear(), now.getMonth()-5+k, 1);
-                    const label = d.toLocaleDateString('en-US',{month:'short'});
-                    const val = invoices.filter(i=>{
-                        const id = new Date(i.date);
-                        return id.getMonth()===d.getMonth() && id.getFullYear()===d.getFullYear() && i.status==='Paid';
-                    }).reduce((s,i)=>s+(i.total||0),0);
-                    return { label, val };
-                });
-
-                const rCtx = document.getElementById('revenue-chart')?.getContext('2d');
-                if (rCtx) {
-                    new Chart(rCtx, {
-                        type: 'bar',
-                        data: {
-                            labels: monthlyData.map(m => m.label),
-                            datasets: [{ label: 'Revenue', data: monthlyData.map(m => m.val), backgroundColor: 'rgba(139,92,246,0.8)', borderRadius: 6, borderSkipped: false }]
-                        },
-                        options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{grid:{color:gridColor},ticks:{color:tickColor,font:{size:11}}}, y:{grid:{color:gridColor},ticks:{color:tickColor,font:{size:11},callback:v=>'Rs.'+Intl.NumberFormat('en',{notation:'compact'}).format(v)}}} }
-                    });
-                }
+                setTimeout(() => lucide.createIcons(), 100);
             }
 
             // ── LIST VIEW ──────────────────────────────────────────────
@@ -1103,7 +1038,6 @@
                         <i data-lucide="file-plus" class="w-8 h-8" style="color:var(--text-muted)"></i>
                     </div>
                     <h3 class="text-lg font-semibold mb-2" style="color:var(--text)">No ${type} yet</h3>
-                    <p class="text-sm max-w-xs mb-6" style="color:var(--text-muted)">Create your first ${label.toLowerCase()} to get started.</p>
                     <button class="btn-primary py-2.5" onclick="UI.navigate('form',{type:'${type}'})">Create ${label}</button>
                 </div>` : `
                 <div class="card overflow-hidden">
@@ -1121,7 +1055,7 @@
                         </thead>
                         <tbody id="list-tbody">
                         ${items.map(d => `
-                            <tr data-status="${d.status}" data-number="${(d.number||'').toLowerCase()}" data-client="${(d.clientName||'').toLowerCase()}" data-total="${d.total||0}" data-date="${d.date||''}">
+                            <tr data-status="${d.status}" data-number="${(d.number||'').toLowerCase()}" data-client="${(d.clientName||'').toLowerCase()}">
                                 <td><span class="mono text-xs font-medium" style="color:var(--purple-text)">${d.number}</span></td>
                                 <td class="truncate max-w-[100px]" style="color:var(--text-mid)">${d.clientName||'—'}</td>
                                 <td class="mono text-xs hidden sm:table-cell" style="color:var(--text-muted)">${d.date||'—'}</td>
@@ -1143,36 +1077,27 @@
 
                 setTimeout(() => {
                     lucide.createIcons();
-                    attachListFilters();
+                    const searchInput = document.getElementById('list-search');
+                    const statusFilter = document.getElementById('list-status-filter');
+                    const applyFilters = () => {
+                        const search = (searchInput?.value || '').toLowerCase();
+                        const status = statusFilter?.value || '';
+                        document.querySelectorAll('#list-tbody tr').forEach(row => {
+                            row.style.display = (!search || row.dataset.number.includes(search) || row.dataset.client.includes(search)) && (!status || row.dataset.status === status) ? '' : 'none';
+                        });
+                    };
+                    searchInput?.addEventListener('input', applyFilters);
+                    statusFilter?.addEventListener('change', applyFilters);
                 }, 100);
             }
 
-            function attachListFilters() {
-                const searchInput = document.getElementById('list-search');
-                const statusFilter = document.getElementById('list-status-filter');
-                
-                const applyFilters = () => {
-                    const search = (searchInput?.value || '').toLowerCase();
-                    const status = statusFilter?.value || '';
-                    const rows = document.querySelectorAll('#list-tbody tr');
-
-                    rows.forEach(row => {
-                        const matchSearch = !search || row.dataset.number.includes(search) || row.dataset.client.includes(search);
-                        const matchStatus = !status || row.dataset.status === status;
-                        row.style.display = (matchSearch && matchStatus) ? '' : 'none';
-                    });
-                };
-
-                searchInput?.addEventListener('input', applyFilters);
-                statusFilter?.addEventListener('change', applyFilters);
-            }
-
-            // ── FORM (simplified) ──────────────────────────────────────
+            // ── FORM WITH PROPER PROFIT SPLIT ──────────────────────────
             function renderForm(type, id=null) {
                 const collection = type==='quotes' ? State.quotes : State.invoices;
-                const settings = State.settings || { company:{ currencySymbol:'Rs.' } };
+                const settings = State.settings || { company:{ currencySymbol:'Rs.' }, profit:{ defaultRatio:'65/35', partnerALabel:'You', partnerBLabel:'Partner' } };
                 const clients  = State.clients  || [];
                 const packages = State.packages || [];
+                const isInvoice = type === 'invoices';
                 const defaultProfit = settings.profit || { defaultRatio:'65/35', partnerALabel:'You', partnerBLabel:'Partner' };
 
                 let doc = id ? collection.find(d=>d.id===id) : {
@@ -1186,8 +1111,14 @@
                 if (!doc) { container.innerHTML = `<p style="color:var(--text-muted);text-align:center;padding:3rem;">Document not found.</p>`; return; }
 
                 const sym = settings.company?.currencySymbol || 'Rs.';
-                const isInvoice = type === 'invoices';
-                const currentProfitShare = normalizeProfitShare(doc.profitShare || parseProfitRatio(defaultProfit.defaultRatio || '65/35'));
+                
+                // Ensure profit share is properly set
+                let currentProfitShare = doc.profitShare || parseProfitRatio(defaultProfit.defaultRatio || '65/35');
+                // Make sure you always get the larger share
+                if (currentProfitShare.you < currentProfitShare.partner) {
+                    [currentProfitShare.you, currentProfitShare.partner] = [currentProfitShare.partner, currentProfitShare.you];
+                }
+                const currentRatio = `${currentProfitShare.you}/${currentProfitShare.partner}`;
 
                 container.innerHTML = `
                 <div class="flex items-center gap-3 mb-6">
@@ -1228,6 +1159,38 @@
                         </div>
 
                         <div class="card p-4 sm:p-5">
+                            <h4 class="font-semibold mb-3 text-sm" style="color:var(--text)">Adjustments</h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div><label class="form-label">Discount (${sym})</label><input type="number" id="form-discount" class="input-field" value="${doc.discount||0}" min="0" step="100"></div>
+                                <div><label class="form-label">Advance (${sym})</label><input type="number" id="form-advance" class="input-field" value="${doc.advance||0}" min="0" step="100"></div>
+                            </div>
+                        </div>
+
+                        ${isInvoice ? `
+                        <!-- PROFIT SPLIT - Internal only, NOT shown on PDF -->
+                        <div class="card p-4 sm:p-5">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-semibold text-sm" style="color:var(--text)">Profit Split (Internal Only)</h4>
+                                <span class="text-xs px-2 py-1 rounded-full" style="background:var(--purple-soft);color:var(--purple-text)">Not shown on invoice</span>
+                            </div>
+                            <p class="text-xs mb-4" style="color:var(--text-muted)">This is for your records only. The larger percentage is always your share.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <button class="profit-ratio-btn ${currentRatio==='65/35'?'selected':''}" data-ratio="65/35">65/35 (You/Partner)</button>
+                                <button class="profit-ratio-btn ${currentRatio==='60/40'?'selected':''}" data-ratio="60/40">60/40 (You/Partner)</button>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 p-4 rounded-xl" style="background:var(--surface-2)">
+                                <div>
+                                    <div class="text-xs font-medium mb-1" style="color:var(--text-muted)">${defaultProfit.partnerALabel||'You'} (${currentProfitShare.you}%)</div>
+                                    <div class="text-lg font-bold mono" style="color:#10b981" id="profit-you">—</div>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-medium mb-1" style="color:var(--text-muted)">${defaultProfit.partnerBLabel||'Partner'} (${currentProfitShare.partner}%)</div>
+                                    <div class="text-lg font-bold mono" style="color:var(--purple-text)" id="profit-partner">—</div>
+                                </div>
+                            </div>
+                        </div>` : ''}
+
+                        <div class="card p-4 sm:p-5">
                             <label class="form-label">Notes</label>
                             <textarea id="form-notes" class="input-field" rows="2" placeholder="Additional notes…">${doc.notes||''}</textarea>
                         </div>
@@ -1255,12 +1218,10 @@
                     </div>
                 </div>`;
 
-                // Apply form labels
                 document.querySelectorAll('.form-label').forEach(el => {
                     el.style.cssText = 'display:block;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:5px';
                 });
 
-                // Item management
                 let items = doc.items?.map(it=>({...it,id:it.id||crypto.randomUUID()})) || [];
                 
                 function renderItems() {
@@ -1274,17 +1235,12 @@
                         <button class="action-btn remove-item shrink-0"><i data-lucide="x" class="w-4 h-4"></i></button>
                     </div>`).join('');
                     lucide.createIcons();
-                    attachItemEvents();
-                    updatePreview();
-                }
-
-                function attachItemEvents() {
                     document.querySelectorAll('.item-desc,.item-qty,.item-price').forEach(el => el.addEventListener('input', updatePreview));
                     document.querySelectorAll('.remove-item').forEach(btn => btn.addEventListener('click', function() {
-                        const id = this.closest('[data-id]').dataset.id;
-                        items = items.filter(i => i.id !== id);
+                        items = items.filter(i => i.id !== this.closest('[data-id]').dataset.id);
                         renderItems();
                     }));
+                    updatePreview();
                 }
 
                 function updatePreview() {
@@ -1299,26 +1255,39 @@
                     });
 
                     const subtotal = items.reduce((s,i) => s+(i.qty*i.price), 0);
-                    const total    = Math.max(0, subtotal);
+                    const discount = Math.min(parseFloat(document.getElementById('form-discount')?.value)||0, subtotal);
+                    const advance = Math.min(parseFloat(document.getElementById('form-advance')?.value)||0, subtotal-discount);
+                    const total = Math.max(0, subtotal - discount - advance);
                     const fmt = n => sym + ' ' + new Intl.NumberFormat('en-US',{minimumFractionDigits:2}).format(n);
 
-                    const previewTotal = document.getElementById('preview-total-large');
-                    if (previewTotal) previewTotal.textContent = fmt(total);
+                    document.getElementById('preview-total-large').textContent = fmt(total);
+                    document.getElementById('preview-items').innerHTML = items.map(i => `
+                    <tr style="border-top:1px solid var(--border)">
+                        <td style="padding:10px 0;color:var(--text-mid);font-size:0.85rem">${i.description||'…'} ×${i.qty}</td>
+                        <td style="padding:10px 0;text-align:right;font-weight:600;font-family:'DM Mono',monospace;font-size:0.85rem;color:var(--text)">${fmt(i.qty*i.price)}</td>
+                    </tr>`).join('');
 
-                    const previewItems = document.getElementById('preview-items');
-                    if (previewItems) {
-                        previewItems.innerHTML = items.map(i => `
-                        <tr style="border-top:1px solid var(--border)">
-                            <td style="padding:10px 0;color:var(--text-mid);font-size:0.85rem">${i.description||'…'} ×${i.qty}</td>
-                            <td style="padding:10px 0;text-align:right;font-weight:600;font-family:'DM Mono',monospace;font-size:0.85rem;color:var(--text)">${fmt(i.qty*i.price)}</td>
-                        </tr>`).join('');
-                    }
+                    const sel = document.getElementById('form-client');
+                    document.getElementById('preview-client').textContent = sel?.selectedOptions[0]?.dataset?.name || '—';
 
-                    const clientSel = document.getElementById('form-client');
-                    const previewClient = document.getElementById('preview-client');
-                    if (clientSel && previewClient) {
-                        previewClient.textContent = clientSel.selectedOptions[0]?.dataset?.name || '—';
+                    // Update profit preview (internal only)
+                    if (isInvoice) {
+                        const netP = subtotal - discount;
+                        document.getElementById('profit-you').textContent = fmt(netP * (currentProfitShare.you/100));
+                        document.getElementById('profit-partner').textContent = fmt(netP * (currentProfitShare.partner/100));
                     }
+                }
+
+                // Profit ratio button handlers
+                if (isInvoice) {
+                    document.querySelectorAll('.profit-ratio-btn').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            document.querySelectorAll('.profit-ratio-btn').forEach(b => b.classList.remove('selected'));
+                            btn.classList.add('selected');
+                            currentProfitShare = parseProfitRatio(btn.dataset.ratio);
+                            updatePreview();
+                        });
+                    });
                 }
 
                 document.getElementById('add-item-btn')?.addEventListener('click', () => {
@@ -1335,6 +1304,8 @@
                     }
                 });
                 document.getElementById('form-client')?.addEventListener('change', updatePreview);
+                document.getElementById('form-discount')?.addEventListener('input', updatePreview);
+                document.getElementById('form-advance')?.addEventListener('input', updatePreview);
 
                 document.getElementById('save-doc-btn')?.addEventListener('click', async () => {
                     if (!State.user) { showToast('Not signed in','error'); return; }
@@ -1343,111 +1314,67 @@
                     if (!clientId) { showToast('Please select a client','error'); return; }
 
                     const subtotal = items.reduce((s,i) => s+(i.qty*i.price), 0);
+                    const discount = Math.min(parseFloat(document.getElementById('form-discount')?.value)||0, subtotal);
+                    const advance = Math.min(parseFloat(document.getElementById('form-advance')?.value)||0, subtotal-discount);
+                    const total = Math.max(0, subtotal - discount - advance);
+
+                    let status = document.getElementById('form-status')?.value || 'Draft';
+                    if (isInvoice && status !== 'Paid' && status !== 'Draft') {
+                        const due = new Date(document.getElementById('form-due-date')?.value);
+                        if (due < new Date()) status = 'Overdue';
+                    }
 
                     const docToSave = {
                         id: doc.id, number: doc.number, clientId,
                         clientName: clientSel.selectedOptions[0]?.dataset?.name || '',
                         items: items.map(i=>({description:i.description,qty:i.qty,price:i.price})),
-                        status: document.getElementById('form-status')?.value || 'Draft',
-                        date: document.getElementById('form-date')?.value || '',
+                        status, date: document.getElementById('form-date')?.value || '',
                         dueDate: document.getElementById('form-due-date')?.value || '',
-                        discount: 0, advance: 0, notes: document.getElementById('form-notes')?.value || '',
-                        total: subtotal, createdAt: doc.createdAt || new Date().toISOString(), updatedAt: new Date().toISOString(),
-                        ...(isInvoice ? { profitShare: currentProfitShare } : {})
+                        discount, advance, notes: document.getElementById('form-notes')?.value || '',
+                        total, createdAt: doc.createdAt || new Date().toISOString(), updatedAt: new Date().toISOString(),
+                        profitShare: isInvoice ? currentProfitShare : null
                     };
 
                     const ok = await FirebaseSync.saveDocument(State.user.uid, type, docToSave);
-                    if (ok) {
-                        await logActivity(`${type.slice(0,-1)} ${id?'updated':'created'}`, `#${doc.number}`);
-                        UI.navigate(type);
-                    }
+                    if (ok) UI.navigate(type);
                 });
 
                 renderItems();
                 setTimeout(() => lucide.createIcons(), 100);
             }
 
-            // ── CLIENTS ────────────────────────────────────────────────
+            // ── OTHER ROUTES ───────────────────────────────────────────
             function renderClients() {
                 const clients = State.clients || [];
                 container.innerHTML = `
-                <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-xl sm:text-2xl font-bold" style="color:var(--text)">Clients</h1>
-                    <button class="btn-primary flex items-center gap-2 py-2.5 text-sm" onclick="showClientModal()"><i data-lucide="plus" class="w-4 h-4"></i> New</button>
-                </div>
-                ${!clients.length ? `
-                <div class="empty-state flex flex-col items-center justify-center py-16 sm:py-24 text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4" style="background:var(--hover-bg)"><i data-lucide="users" class="w-8 h-8" style="color:var(--text-muted)"></i></div>
-                    <h3 class="text-lg font-semibold mb-2" style="color:var(--text)">No clients yet</h3>
-                    <button class="btn-primary py-2.5" onclick="showClientModal()">Add Client</button>
-                </div>` : `
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    ${clients.map(c => `
-                        <div class="card p-4 sm:p-5 card-lift">
-                            <div class="flex items-start gap-3 mb-4">
-                                <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">${c.contactName?.[0]||'?'}</div>
-                                <div class="flex-1 min-w-0">
-                                    <h3 class="font-bold truncate" style="color:var(--text)">${c.contactName}</h3>
-                                    <p class="text-sm truncate" style="color:var(--text-muted)">${c.companyName||'—'}</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-2">
-                                <button onclick="editClient('${c.id}')" class="btn-secondary flex-1 py-2 text-sm">Edit</button>
-                                <button onclick="deleteClient('${c.id}')" class="btn-secondary flex-1 py-2 text-sm" style="color:#dc2626;border-color:#fecaca">Delete</button>
-                            </div>
-                        </div>`).join('')}
-                </div>`}`;
+                <div class="flex justify-between items-center mb-6"><h1 class="text-xl sm:text-2xl font-bold" style="color:var(--text)">Clients</h1><button class="btn-primary flex items-center gap-2 py-2.5 text-sm" onclick="showClientModal()"><i data-lucide="plus" class="w-4 h-4"></i> New</button></div>
+                ${!clients.length ? `<div class="empty-state flex flex-col items-center justify-center py-16 sm:py-24 text-center"><div class="w-16 h-16 rounded-full flex items-center justify-center mb-4" style="background:var(--hover-bg)"><i data-lucide="users" class="w-8 h-8" style="color:var(--text-muted)"></i></div><h3 class="text-lg font-semibold mb-2" style="color:var(--text)">No clients yet</h3><button class="btn-primary py-2.5" onclick="showClientModal()">Add Client</button></div>` : `
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">${clients.map(c=>`<div class="card p-4 sm:p-5 card-lift"><div class="flex items-start gap-3 mb-4"><div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">${c.contactName?.[0]||'?'}</div><div class="flex-1 min-w-0"><h3 class="font-bold truncate" style="color:var(--text)">${c.contactName}</h3><p class="text-sm truncate" style="color:var(--text-muted)">${c.companyName||'—'}</p></div></div><div class="flex gap-2"><button onclick="editClient('${c.id}')" class="btn-secondary flex-1 py-2 text-sm">Edit</button><button onclick="deleteClient('${c.id}')" class="btn-secondary flex-1 py-2 text-sm" style="color:#dc2626;border-color:#fecaca">Delete</button></div></div>`).join('')}</div>`}`;
                 setTimeout(() => lucide.createIcons(), 100);
             }
 
-            // ── PACKAGES ───────────────────────────────────────────────
             function renderPackages() {
                 const packages = State.packages || [];
                 container.innerHTML = `
-                <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-xl sm:text-2xl font-bold" style="color:var(--text)">Packages</h1>
-                    <button class="btn-primary flex items-center gap-2 py-2.5 text-sm" onclick="showPackageModal()"><i data-lucide="plus" class="w-4 h-4"></i> New</button>
-                </div>
-                ${!packages.length ? `
-                <div class="empty-state flex flex-col items-center justify-center py-16 sm:py-24 text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4" style="background:var(--hover-bg)"><i data-lucide="package" class="w-8 h-8" style="color:var(--text-muted)"></i></div>
-                    <h3 class="text-lg font-semibold mb-2" style="color:var(--text)">No packages yet</h3>
-                    <button class="btn-primary py-2.5" onclick="showPackageModal()">Add Package</button>
-                </div>` : `
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    ${packages.map(p=>`
-                    <div class="card p-4 sm:p-5 card-lift" style="border-left:3px solid var(--purple-mid)">
-                        <h3 class="font-bold mb-2" style="color:var(--text)">${p.name}</h3>
-                        <div class="text-2xl font-bold mono mb-1" style="color:var(--purple-text)">Rs. ${(p.price||0).toFixed(2)}</div>
-                        <div class="flex gap-2 mt-4">
-                            <button onclick="editPackage('${p.id}')" class="btn-secondary flex-1 py-2 text-sm">Edit</button>
-                            <button onclick="deletePackage('${p.id}')" class="btn-secondary flex-1 py-2 text-sm" style="color:#dc2626;border-color:#fecaca">Delete</button>
-                        </div>
-                    </div>`).join('')}
-                </div>`}`;
+                <div class="flex justify-between items-center mb-6"><h1 class="text-xl sm:text-2xl font-bold" style="color:var(--text)">Packages</h1><button class="btn-primary flex items-center gap-2 py-2.5 text-sm" onclick="showPackageModal()"><i data-lucide="plus" class="w-4 h-4"></i> New</button></div>
+                ${!packages.length ? `<div class="empty-state flex flex-col items-center justify-center py-16 sm:py-24 text-center"><div class="w-16 h-16 rounded-full flex items-center justify-center mb-4" style="background:var(--hover-bg)"><i data-lucide="package" class="w-8 h-8" style="color:var(--text-muted)"></i></div><h3 class="text-lg font-semibold mb-2" style="color:var(--text)">No packages yet</h3><button class="btn-primary py-2.5" onclick="showPackageModal()">Add Package</button></div>` : `
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">${packages.map(p=>`<div class="card p-4 sm:p-5 card-lift" style="border-left:3px solid var(--purple-mid)"><h3 class="font-bold mb-2" style="color:var(--text)">${p.name}</h3><div class="text-2xl font-bold mono mb-1" style="color:var(--purple-text)">Rs. ${(p.price||0).toFixed(2)}</div><div class="flex gap-2 mt-4"><button onclick="editPackage('${p.id}')" class="btn-secondary flex-1 py-2 text-sm">Edit</button><button onclick="deletePackage('${p.id}')" class="btn-secondary flex-1 py-2 text-sm" style="color:#dc2626;border-color:#fecaca">Delete</button></div></div>`).join('')}</div>`}`;
                 setTimeout(() => lucide.createIcons(), 100);
             }
 
-            // ── SIMPLE ROUTES ──────────────────────────────────────────
             function renderSettings() {
                 const settings = State.settings || {};
-                container.innerHTML = `
-                <h1 class="text-xl sm:text-2xl font-bold mb-6" style="color:var(--text)">Settings</h1>
-                <div class="card p-4 sm:p-5"><p style="color:var(--text-muted)">Settings loaded. Use the full settings page for configuration.</p></div>`;
+                container.innerHTML = `<h1 class="text-xl sm:text-2xl font-bold mb-6" style="color:var(--text)">Settings</h1><div class="card p-4 sm:p-5"><p style="color:var(--text-muted)">Settings loaded.</p></div>`;
             }
 
             function renderProfit() {
                 const invoices = State.invoices || [];
-                container.innerHTML = `
-                <h1 class="text-xl sm:text-2xl font-bold mb-6" style="color:var(--text)">Profit Tracking</h1>
-                <div class="card p-4 sm:p-5"><p style="color:var(--text-muted)">${invoices.length} invoices loaded.</p></div>`;
+                container.innerHTML = `<h1 class="text-xl sm:text-2xl font-bold mb-6" style="color:var(--text)">Profit Tracking</h1><div class="card p-4 sm:p-5"><p style="color:var(--text-muted)">${invoices.length} invoices loaded.</p></div>`;
             }
 
             function renderActivity() {
                 const log = State.activityLog || [];
-                container.innerHTML = `
-                <h1 class="text-xl sm:text-2xl font-bold mb-6" style="color:var(--text)">Activity Log</h1>
-                <div class="card p-4 sm:p-5"><p style="color:var(--text-muted)">${log.length} activities recorded.</p></div>`;
+                container.innerHTML = `<h1 class="text-xl sm:text-2xl font-bold mb-6" style="color:var(--text)">Activity Log</h1><div class="card p-4 sm:p-5"><p style="color:var(--text-muted)">${log.length} activities recorded.</p></div>`;
             }
 
             return { navigate };
@@ -1457,24 +1384,6 @@
         // ══════════════════════════════════════════════════════
         // UTILITIES
         // ══════════════════════════════════════════════════════
-        function parseProfitRatio(ratioStr) {
-            const parts = (ratioStr||'65/35').split('/');
-            return normalizeProfitShare({ you: parseInt(parts[0])||65, partner: parseInt(parts[1])||35 });
-        }
-
-        function normalizeProfitShare(share) {
-            let you = Number(share?.you);
-            let partner = Number(share?.partner);
-            if (!Number.isFinite(you) || !Number.isFinite(partner) || you + partner <= 0) { you = 65; partner = 35; }
-            const total = you + partner;
-            you = Math.round((you / total) * 100);
-            partner = 100 - you;
-            if (you < partner) { [you, partner] = [partner, you]; }
-            if (you < 60) { you = 60; partner = 40; }
-            if (you > 65) { you = 65; partner = 35; }
-            return { you, partner };
-        }
-
         function generateNumber(type) {
             const settings = State.settings || { quotes:{prefix:'HX-QT'}, invoices:{prefix:'HX'} };
             const prefix = type==='quotes' ? (settings.quotes?.prefix||'HX-QT') : (settings.invoices?.prefix||'HX');
@@ -1496,15 +1405,6 @@
             setTimeout(() => { toast.style.opacity='0'; toast.style.transition='all 0.2s ease'; setTimeout(()=>toast.remove(),200); }, 3000);
         }
 
-        async function logActivity(action, details='', type='default') {
-            if (!State.user) return;
-            try {
-                await db.collection('users').doc(State.user.uid).collection('activityLog').add({
-                    action, details, type, timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            } catch(e) { /* silent */ }
-        }
-
         function toggleDarkMode() {
             const html = document.documentElement;
             const isDark = html.getAttribute('data-theme') === 'dark';
@@ -1512,9 +1412,12 @@
             localStorage.setItem('hexo-theme', isDark ? 'light' : 'dark');
             const btn = document.getElementById('theme-toggle');
             if (btn) btn.classList.toggle('on', !isDark);
+            updateLogoForTheme();
         }
 
-        // ── Global Functions ───────────────────────────────────────────
+        // ══════════════════════════════════════════════════════
+        // GLOBAL FUNCTIONS
+        // ══════════════════════════════════════════════════════
         window.generatePDF = async (type, id) => {
             const collection = type==='quotes' ? State.quotes : State.invoices;
             const doc = collection.find(d => d.id === id);
@@ -1547,32 +1450,14 @@
             const modal = document.createElement('div');
             modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4';
             modal.style.background = 'rgba(0,0,0,0.4)';
-            modal.innerHTML = `
-            <div class="card p-6 w-full max-w-md">
-                <h3 class="text-xl font-bold mb-4" style="color:var(--text)">${editId?'Edit':'New'} Client</h3>
-                <div class="space-y-4">
-                    <div><label class="text-xs font-semibold uppercase block mb-1" style="color:var(--text-muted)">Name</label><input type="text" id="cm-name" value="${client?.contactName||''}" class="input-field"></div>
-                    <div><label class="text-xs font-semibold uppercase block mb-1" style="color:var(--text-muted)">Email</label><input type="email" id="cm-email" value="${client?.email||''}" class="input-field"></div>
-                </div>
-                <div class="flex gap-2 mt-5">
-                    <button class="btn-secondary flex-1 py-2.5" onclick="this.closest('.fixed').remove()">Cancel</button>
-                    <button class="btn-primary flex-1 py-2.5" id="cm-save">Save</button>
-                </div>
-            </div>`;
+            modal.innerHTML = `<div class="card p-6 w-full max-w-md"><h3 class="text-xl font-bold mb-4" style="color:var(--text)">${editId?'Edit':'New'} Client</h3><div class="space-y-4"><div><label class="text-xs font-semibold uppercase block mb-1" style="color:var(--text-muted)">Name</label><input type="text" id="cm-name" value="${client?.contactName||''}" class="input-field"></div><div><label class="text-xs font-semibold uppercase block mb-1" style="color:var(--text-muted)">Email</label><input type="email" id="cm-email" value="${client?.email||''}" class="input-field"></div></div><div class="flex gap-2 mt-5"><button class="btn-secondary flex-1 py-2.5" onclick="this.closest('.fixed').remove()">Cancel</button><button class="btn-primary flex-1 py-2.5" id="cm-save">Save</button></div></div>`;
             document.body.appendChild(modal);
             modal.addEventListener('click', e=>{ if(e.target===modal)modal.remove(); });
             modal.querySelector('#cm-save').addEventListener('click', async ()=>{
                 if (!State.user) return;
                 const name = modal.querySelector('#cm-name').value.trim();
                 if (!name) { showToast('Name required','error'); return; }
-                await FirebaseSync.saveDocument(State.user.uid,'clients',{
-                    id:editId||crypto.randomUUID(),
-                    contactName:name,
-                    email:modal.querySelector('#cm-email').value.trim(),
-                    companyName:'',
-                    phone:'',
-                    notes:''
-                });
+                await FirebaseSync.saveDocument(State.user.uid,'clients',{id:editId||crypto.randomUUID(),contactName:name,email:modal.querySelector('#cm-email').value.trim(),companyName:'',phone:'',notes:''});
                 modal.remove();
             });
         };
@@ -1588,32 +1473,14 @@
             const modal = document.createElement('div');
             modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4';
             modal.style.background = 'rgba(0,0,0,0.4)';
-            modal.innerHTML = `
-            <div class="card p-6 w-full max-w-md">
-                <h3 class="text-xl font-bold mb-4" style="color:var(--text)">${editId?'Edit':'New'} Package</h3>
-                <div class="space-y-4">
-                    <div><label class="text-xs font-semibold uppercase block mb-1" style="color:var(--text-muted)">Name</label><input type="text" id="pm-name" value="${pkg?.name||''}" class="input-field"></div>
-                    <div><label class="text-xs font-semibold uppercase block mb-1" style="color:var(--text-muted)">Price (Rs.)</label><input type="number" id="pm-price" value="${pkg?.price||0}" class="input-field" min="0" step="100"></div>
-                </div>
-                <div class="flex gap-2 mt-5">
-                    <button class="btn-secondary flex-1 py-2.5" onclick="this.closest('.fixed').remove()">Cancel</button>
-                    <button class="btn-primary flex-1 py-2.5" id="pm-save">Save</button>
-                </div>
-            </div>`;
+            modal.innerHTML = `<div class="card p-6 w-full max-w-md"><h3 class="text-xl font-bold mb-4" style="color:var(--text)">${editId?'Edit':'New'} Package</h3><div class="space-y-4"><div><label class="text-xs font-semibold uppercase block mb-1" style="color:var(--text-muted)">Name</label><input type="text" id="pm-name" value="${pkg?.name||''}" class="input-field"></div><div><label class="text-xs font-semibold uppercase block mb-1" style="color:var(--text-muted)">Price (Rs.)</label><input type="number" id="pm-price" value="${pkg?.price||0}" class="input-field" min="0" step="100"></div></div><div class="flex gap-2 mt-5"><button class="btn-secondary flex-1 py-2.5" onclick="this.closest('.fixed').remove()">Cancel</button><button class="btn-primary flex-1 py-2.5" id="pm-save">Save</button></div></div>`;
             document.body.appendChild(modal);
             modal.addEventListener('click', e=>{ if(e.target===modal)modal.remove(); });
             modal.querySelector('#pm-save').addEventListener('click', async ()=>{
                 if (!State.user) return;
                 const name = modal.querySelector('#pm-name').value.trim();
                 if (!name) { showToast('Name required','error'); return; }
-                await FirebaseSync.saveDocument(State.user.uid,'packages',{
-                    id:editId||crypto.randomUUID(),
-                    name,
-                    price:parseFloat(modal.querySelector('#pm-price').value)||0,
-                    category:'',
-                    duration:'',
-                    description:''
-                });
+                await FirebaseSync.saveDocument(State.user.uid,'packages',{id:editId||crypto.randomUUID(),name,price:parseFloat(modal.querySelector('#pm-price').value)||0,category:'',duration:'',description:''});
                 modal.remove();
             });
         };
@@ -1634,10 +1501,10 @@
                 document.documentElement.setAttribute('data-theme','dark');
                 document.getElementById('theme-toggle')?.classList.add('on');
             }
+            updateLogoForTheme();
 
             Auth.init();
 
-            // Auth buttons
             document.getElementById('signin-btn')?.addEventListener('click',()=>{
                 const email=document.getElementById('auth-email')?.value;
                 const pw=document.getElementById('auth-password')?.value;
@@ -1655,29 +1522,15 @@
             document.getElementById('forgot-pw-btn')?.addEventListener('click',()=>Auth.forgotPassword(document.getElementById('auth-email')?.value));
             document.getElementById('show-auth')?.addEventListener('click',()=>{ document.getElementById('auth-modal').style.display='flex'; });
             document.getElementById('theme-toggle')?.addEventListener('click', toggleDarkMode);
-
             document.getElementById('auth-modal')?.addEventListener('click',e=>{ if(e.target===e.currentTarget)e.currentTarget.style.display='none'; });
 
-            // Navigation
             document.querySelectorAll('[data-route]').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    MobileSidebar.close();
                     UI.navigate(link.dataset.route);
                 });
             });
-
-            // State subscription for real-time updates
-            State.subscribe(() => {
-                // Auto-refresh current view when data changes
-                if (currentRoute) {
-                    UI.navigate(currentRoute, currentParams);
-                }
-            });
         });
-
-        let currentRoute = null;
-        let currentParams = {};
     })();
     </script>
 </body>
