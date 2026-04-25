@@ -71,7 +71,6 @@
 
         body.sidebar-open {
             overflow: hidden;
-            touch-action: none;
         }
 
         .card {
@@ -100,7 +99,6 @@
             box-shadow: none;
             display: flex;
             flex-direction: column;
-            will-change: transform;
         }
         
         .sidebar.open {
@@ -124,7 +122,6 @@
             transition: all var(--transition);
             position: relative;
             cursor: pointer; text-decoration: none;
-            -webkit-tap-highlight-color: transparent;
             min-height: 44px;
         }
         .sidebar-link:hover { background: var(--hover-bg); color: var(--purple-text); }
@@ -152,12 +149,13 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
-            pointer-events: auto;
+            pointer-events: none;
         }
 
         .sidebar-overlay.active {
             opacity: 1;
             visibility: visible;
+            pointer-events: auto;
         }
 
         @media (min-width: 1024px) {
@@ -168,17 +166,16 @@
 
         #hamburger {
             position: fixed;
-            top: 16px;
-            left: 16px;
+            top: 12px;
+            left: 12px;
             z-index: 70;
-            padding: 12px;
+            padding: 10px;
             border-radius: 12px;
             background: var(--surface);
             border: 1px solid var(--border);
             box-shadow: var(--shadow-md);
             cursor: pointer;
             transition: transform 0.2s ease, opacity 0.2s ease;
-            -webkit-tap-highlight-color: transparent;
             min-width: 44px;
             min-height: 44px;
             display: flex;
@@ -206,7 +203,6 @@
             font-size: 0.9rem;
             font-family: 'DM Sans', sans-serif;
             transition: border-color var(--transition), box-shadow var(--transition);
-            -webkit-appearance: none;
             min-height: 44px;
         }
         .input-field:focus {
@@ -216,11 +212,6 @@
         }
         select.input-field option { background: var(--surface); color: var(--text); }
 
-        .btn-primary, .btn-secondary {
-            min-height: 44px;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-        }
         .btn-primary {
             background: linear-gradient(135deg, #8B5CF6, #6D28D9);
             color: white; border: none;
@@ -229,9 +220,10 @@
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(109,40,217,0.25);
             transition: opacity var(--transition), transform var(--transition);
+            min-height: 44px;
         }
         .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn-primary:active { transform: translateY(0); opacity: 0.8; }
+        .btn-primary:active { transform: translateY(0); }
         .btn-secondary {
             background: var(--surface); color: var(--text-mid);
             border: 1px solid var(--border);
@@ -239,24 +231,19 @@
             font-weight: 500; font-size: 0.875rem;
             cursor: pointer;
             transition: background var(--transition), color var(--transition);
+            min-height: 44px;
         }
         .btn-secondary:hover { background: var(--hover-bg); color: var(--text); }
-        .btn-secondary:active { transform: scale(0.98); }
         .action-btn {
             padding: 10px; border-radius: 8px; color: var(--text-muted);
             background: transparent; border: none; cursor: pointer;
             transition: all var(--transition);
-            min-width: 44px;
-            min-height: 44px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            -webkit-tap-highlight-color: transparent;
+            min-width: 44px; min-height: 44px;
+            display: inline-flex; align-items: center; justify-content: center;
         }
         .action-btn:hover { background: var(--surface); color: var(--purple-text); box-shadow: var(--shadow-sm); }
-        .action-btn:active { transform: scale(0.95); }
 
-        .badge { padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 600; display: inline-block; border: 1px solid transparent; white-space: nowrap; }
+        .badge { padding: 3px 10px; border-radius: 99px; font-size: 0.72rem; font-weight: 600; display: inline-block; border: 1px solid transparent; }
         .badge-paid    { background: #d1fae5; color: #065f46; border-color: #a7f3d0; }
         .badge-sent    { background: #dbeafe; color: #1e40af; border-color: #bfdbfe; }
         .badge-draft   { background: var(--hover-bg); color: var(--text-mid); border-color: var(--border); }
@@ -273,7 +260,7 @@
         table { border-collapse: separate; border-spacing: 0; width: 100%; }
         thead th { font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); padding: 14px 18px; text-align: left; }
         tbody td { padding: 14px 18px; border-top: 1px solid var(--border); color: var(--text); font-size: 0.875rem; }
-        tbody tr { transition: background var(--transition); cursor: pointer; }
+        tbody tr { transition: background var(--transition); }
         tbody tr:hover { background: var(--surface-2); }
 
         @media (max-width: 768px) {
@@ -295,7 +282,6 @@
             border-radius: 18px;
             border: 1px solid var(--border);
             box-shadow: var(--shadow-lg);
-            -webkit-overflow-scrolling: touch;
         }
 
         @media (max-width: 1024px) {
@@ -317,19 +303,18 @@
         .skeleton { background: linear-gradient(90deg, var(--border) 25%, var(--hover-bg) 50%, var(--border) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-        .profit-ratio-btn { padding: 10px 20px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: var(--surface); color: var(--text-mid); transition: all var(--transition); min-height: 44px; }
+        .profit-ratio-btn { padding: 8px 16px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: var(--surface); color: var(--text-mid); transition: all var(--transition); }
         .profit-ratio-btn.selected { border-color: var(--purple-mid); background: var(--purple-soft); color: var(--purple-text); }
-        .profit-ratio-btn:active { transform: scale(0.98); }
 
-        .theme-toggle { width: 48px; height: 28px; background: var(--border); border-radius: 99px; position: relative; cursor: pointer; transition: background 0.3s ease; border: none; padding: 0; }
+        .theme-toggle { width: 42px; height: 24px; background: var(--border); border-radius: 99px; position: relative; cursor: pointer; transition: background 0.3s ease; border: none; }
         .theme-toggle.on { background: var(--purple-mid); }
-        .theme-toggle::after { content: ''; position: absolute; top: 4px; left: 4px; width: 20px; height: 20px; background: white; border-radius: 99px; transition: transform 0.3s ease; }
-        .theme-toggle.on::after { transform: translateX(20px); }
+        .theme-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: white; border-radius: 99px; transition: transform 0.3s ease; }
+        .theme-toggle.on::after { transform: translateX(18px); }
 
         .toast { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 12px; color: white; font-size: 0.875rem; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,0.2); animation: slideIn 0.25s ease; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
-        .chart-wrap { position: relative; width: 100%; }
+        .chart-wrap { position: relative; }
         canvas { width: 100% !important; max-width: 100%; }
 
         .mono { font-family: 'DM Mono', monospace; }
@@ -343,24 +328,13 @@
 
         @media (max-width: 640px) {
             .stat-card { padding: 16px 18px; }
-            .card { padding: 16px; }
-            .grid-cols-2 { gap: 10px; }
             h1 { font-size: 1.5rem !important; }
-            h2 { font-size: 1.25rem !important; }
         }
     </style>
 </head>
 <body>
     <!-- Toasts -->
     <div id="toast-area" class="fixed top-5 right-5 z-[100] flex flex-col gap-2" style="pointer-events:none; max-width: 90vw;"></div>
-
-    <!-- Loading Overlay -->
-    <div id="loading-overlay" class="fixed inset-0 z-50 flex items-center justify-center" style="background:var(--bg)">
-        <div class="text-center">
-            <div class="w-12 h-12 border-4 rounded-full mx-auto mb-4 animate-spin" style="border-color:var(--purple-mid);border-top-color:transparent"></div>
-            <p class="text-sm" style="color:var(--text-muted)">Loading Hexo Creative...</p>
-        </div>
-    </div>
 
     <!-- Auth Modal -->
     <div id="auth-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" style="background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);display:none">
@@ -406,27 +380,12 @@
         </div>
     </div>
 
-    <!-- Logo Modal -->
-    <div id="logo-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" style="background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);display:none">
-        <div class="card p-6 sm:p-8 w-full max-w-md mx-auto">
-            <h3 class="text-xl font-bold mb-4" style="color:var(--text)">Set Company Logo</h3>
-            <p class="text-sm mb-4" style="color:var(--text-mid)">Place your logo as <strong>logo.png</strong> in the same folder as this HTML file.</p>
-            <div class="rounded-xl p-4 mb-4" style="background:var(--purple-soft)">
-                <p class="text-sm font-mono mb-1" style="color:var(--purple-text)">📁 /your-folder/</p>
-                <p class="text-sm font-mono pl-4" style="color:var(--purple-text)">├── index.html</p>
-                <p class="text-sm font-mono pl-4" style="color:var(--purple-text)">└── logo.png</p>
-            </div>
-            <button id="check-logo-btn" class="btn-primary w-full py-3 rounded-xl mb-3">Check for logo.png</button>
-            <button id="close-logo-modal" class="btn-secondary w-full py-2 rounded-xl">Close</button>
-        </div>
-    </div>
-
     <!-- Main App -->
     <div id="app" class="hidden">
-        <!-- Sidebar Overlay (mobile) -->
-        
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true" role="presentation"></div>
 
-        <!-- Hamburger Button (mobile) -->
+        <!-- Hamburger Button -->
         <button id="hamburger" class="lg:hidden" aria-label="Toggle menu" aria-expanded="false" aria-controls="sidebar">
             <i data-lucide="menu" class="w-5 h-5" style="color:var(--text-mid)"></i>
         </button>
@@ -437,7 +396,7 @@
                 <div class="p-5 border-b" style="border-color:var(--border)">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <img id="sidebar-logo" src="favicon.png" alt="Hexo" class="w-8 h-8 object-contain hidden">
+                            <img id="sidebar-logo" src="" alt="Hexo" class="w-8 h-8 object-contain hidden">
                             <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" id="sidebar-logo-fallback" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">
                                 <i data-lucide="zap" class="w-4 h-4" style="color:white"></i>
                             </div>
@@ -471,7 +430,7 @@
 
                 <div class="p-4 border-t" style="border-color:var(--border)">
                     <div class="flex items-center justify-between mb-3">
-                        <button id="show-auth" class="flex items-center gap-2 text-xs hover:underline" style="color:var(--text-muted);background:none;border:none;cursor:pointer;padding:8px;">
+                        <button id="show-auth" class="flex items-center gap-2 text-xs" style="color:var(--text-muted);background:none;border:none;cursor:pointer;padding:8px;">
                             <i data-lucide="user" class="w-3 h-3 flex-shrink-0"></i>
                             <span id="user-email-mini" class="truncate">Account</span>
                         </button>
@@ -520,19 +479,8 @@
                 this.overlay = document.getElementById('sidebar-overlay');
                 this.hamburger = document.getElementById('hamburger');
                 
-                if (!this.sidebar || !this.hamburger) return;
+                if (!this.sidebar || !this.overlay || !this.hamburger) return;
                 
-                // Create overlay if it doesn't exist
-                if (!this.overlay) {
-                    this.overlay = document.createElement('div');
-                    this.overlay.className = 'sidebar-overlay';
-                    this.overlay.id = 'sidebar-overlay';
-                    this.overlay.setAttribute('aria-hidden', 'true');
-                    this.overlay.setAttribute('role', 'presentation');
-                    document.body.appendChild(this.overlay);
-                }
-                
-                // Set up event listeners
                 this.hamburger.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -544,26 +492,17 @@
                     this.close();
                 });
                 
-                // Close on escape key
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape' && this.isOpen()) {
                         this.close();
                     }
                 });
                 
-                // Handle window resize
                 window.addEventListener('resize', () => {
                     if (window.innerWidth >= 1024) {
                         this.close();
                     }
                 });
-                
-                // Prevent body scroll when sidebar is open
-                document.addEventListener('touchmove', (e) => {
-                    if (this.isOpen() && !this.sidebar.contains(e.target)) {
-                        e.preventDefault();
-                    }
-                }, { passive: false });
             },
             
             open() {
@@ -572,13 +511,14 @@
                 this.sidebar.classList.add('open');
                 this.overlay.classList.add('active');
                 document.body.classList.add('sidebar-open');
-                
-                // Announce to screen readers
                 this.sidebar.setAttribute('aria-hidden', 'false');
                 this.overlay.setAttribute('aria-hidden', 'false');
                 this.hamburger.setAttribute('aria-expanded', 'true');
-                this.hamburger.querySelector('i').setAttribute('data-lucide', 'x');
-                lucide.createIcons();
+                const icon = this.hamburger.querySelector('i');
+                if (icon) {
+                    icon.setAttribute('data-lucide', 'x');
+                    lucide.createIcons();
+                }
             },
             
             close() {
@@ -587,13 +527,14 @@
                 this.sidebar.classList.remove('open');
                 this.overlay.classList.remove('active');
                 document.body.classList.remove('sidebar-open');
-                
-                // Announce to screen readers
                 this.sidebar.setAttribute('aria-hidden', 'true');
                 this.overlay.setAttribute('aria-hidden', 'true');
                 this.hamburger.setAttribute('aria-expanded', 'false');
-                this.hamburger.querySelector('i').setAttribute('data-lucide', 'menu');
-                lucide.createIcons();
+                const icon = this.hamburger.querySelector('i');
+                if (icon) {
+                    icon.setAttribute('data-lucide', 'menu');
+                    lucide.createIcons();
+                }
             },
             
             toggle() {
@@ -610,7 +551,7 @@
         };
 
         // ══════════════════════════════════════════════════════
-        // STATE WITH PERSISTENT CACHE
+        // STATE
         // ══════════════════════════════════════════════════════
         const State = {
             user:        null,
@@ -622,7 +563,7 @@
             activityLog: [],
             darkMode:    localStorage.getItem('hexo-theme') === 'dark',
             _listeners:  [],
-            _loaded:     {},
+            _loaded:     { quotes: false, invoices: false, clients: false, packages: false, settings: false },
             notify() { 
                 this._listeners.forEach(fn => {
                     try { fn(); } catch(e) { console.error('Listener error:', e); }
@@ -639,27 +580,22 @@
         };
 
         // ══════════════════════════════════════════════════════
-        // FIREBASE SYNC WITH CACHING AND RETRY
+        // FIREBASE SYNC
         // ══════════════════════════════════════════════════════
         const FirebaseSync = {
             _unsubscribers: [],
-            _retryTimeout: null,
 
             init(userId) {
-                // Clean up old listeners first
                 this._unsubscribers.forEach(u => { try { u && u(); } catch(e) {} });
                 this._unsubscribers = [];
                 
-                // Reset loaded state
                 Object.keys(State._loaded).forEach(k => State._loaded[k] = false);
+
+                this.loadFromCache(userId);
 
                 const track = (fn) => { this._unsubscribers.push(fn); };
                 const base = () => db.collection('users').doc(userId);
 
-                // Load cached data from localStorage first for instant display
-                this.loadFromCache(userId);
-
-                // Set up real-time listeners with error handling and retry
                 track(base().collection('quotes').onSnapshot(snap => {
                     State.quotes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                     State._loaded.quotes = true;
@@ -667,7 +603,7 @@
                     State.notify();
                 }, (err) => {
                     console.warn('Quotes listener error:', err);
-                    this.retryListener(userId, 'quotes');
+                    this.retryListener(userId);
                 }));
 
                 track(base().collection('invoices').onSnapshot(snap => {
@@ -677,7 +613,7 @@
                     State.notify();
                 }, (err) => {
                     console.warn('Invoices listener error:', err);
-                    this.retryListener(userId, 'invoices');
+                    this.retryListener(userId);
                 }));
 
                 track(base().collection('clients').onSnapshot(snap => {
@@ -687,7 +623,7 @@
                     State.notify();
                 }, (err) => {
                     console.warn('Clients listener error:', err);
-                    this.retryListener(userId, 'clients');
+                    this.retryListener(userId);
                 }));
 
                 track(base().collection('packages').onSnapshot(snap => {
@@ -697,7 +633,7 @@
                     State.notify();
                 }, (err) => {
                     console.warn('Packages listener error:', err);
-                    this.retryListener(userId, 'packages');
+                    this.retryListener(userId);
                 }));
 
                 track(base().collection('settings').doc('preferences').onSnapshot(doc => {
@@ -727,7 +663,7 @@
 
             loadFromCache(userId) {
                 try {
-                    const cache = localStorage.getItem(`hexo-cache-${userId}`);
+                    const cache = localStorage.getItem('hexo-cache-' + userId);
                     if (cache) {
                         const data = JSON.parse(cache);
                         if (data.quotes) { State.quotes = data.quotes; State._loaded.quotes = true; }
@@ -743,19 +679,18 @@
 
             cacheData(userId, key, data) {
                 try {
-                    const cache = JSON.parse(localStorage.getItem(`hexo-cache-${userId}`) || '{}');
+                    const cacheKey = 'hexo-cache-' + userId;
+                    const cache = JSON.parse(localStorage.getItem(cacheKey) || '{}');
                     cache[key] = data;
-                    localStorage.setItem(`hexo-cache-${userId}`, JSON.stringify(cache));
+                    localStorage.setItem(cacheKey, JSON.stringify(cache));
                 } catch(e) {
                     console.warn('Cache save error:', e);
                 }
             },
 
-            retryListener(userId, collection) {
-                // Simple retry after 3 seconds
-                clearTimeout(this._retryTimeout);
-                this._retryTimeout = setTimeout(() => {
-                    console.log(`Retrying ${collection} listener...`);
+            retryListener(userId) {
+                setTimeout(() => {
+                    console.log('Retrying listeners...');
                     this.init(userId);
                 }, 3000);
             },
@@ -783,21 +718,12 @@
             }
         };
 
-        function handleFirebaseError(err) { 
-            console.error('Firebase error:', err);
-            showToast('Sync error: ' + err.message, 'error'); 
-        }
-
         // ══════════════════════════════════════════════════════
         // AUTH
         // ══════════════════════════════════════════════════════
         const Auth = {
             init() {
                 auth.onAuthStateChanged(user => {
-                    // Hide loading overlay
-                    const loadingOverlay = document.getElementById('loading-overlay');
-                    if (loadingOverlay) loadingOverlay.style.display = 'none';
-                    
                     if (user) {
                         State.user = user;
                         document.getElementById('app').classList.remove('hidden');
@@ -858,14 +784,12 @@
         }
 
         // ══════════════════════════════════════════════════════
-        // PDF GENERATOR (unchanged from original but improved error handling)
+        // PDF GENERATOR (unchanged from original)
         // ══════════════════════════════════════════════════════
         const PDFGenerator = {
             async generateDocument(doc, type) {
                 try {
                     const { jsPDF } = window.jspdf;
-                    if (!jsPDF) throw new Error('jsPDF not loaded');
-                    
                     const pdf = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4', compress:true });
                     const S = State.settings || {};
                     const PW=pdf.internal.pageSize.getWidth(), PH=pdf.internal.pageSize.getHeight();
@@ -948,13 +872,8 @@
                     terms.forEach((term,i)=>{const lines=pdf.splitTextToSize(term,CW-8);const blockH=lines.length*4+2.5;font('bold',7.5);color(C.purple);t(`${i+1}.`,ML,termsY);font('normal',7.5);color(C.mid);lines.forEach((l,li)=>t(l,ML+7,termsY+li*4));termsY+=blockH;});
 
                     const FY=PH-10;draw(C.border);lw(0.2);ln(ML,FY-4,PW-MR,FY-4);font('normal',7.5);color(C.muted);t('Thank you for your business!',PW/2,FY,{align:'center'});
-                    
-                    const filename = `${type}-${doc.number||'draft'}.pdf`.replace(/[/\\?%*:|"<>]/g, '-');
-                    pdf.save(filename);
-                } catch(err) { 
-                    console.error('PDF generation error:', err); 
-                    showToast('PDF error: '+err.message,'error'); 
-                }
+                    pdf.save(`${type}-${doc.number||'draft'}.pdf`);
+                } catch(err) { console.error(err); showToast('PDF error: '+err.message,'error'); }
             },
 
             getBase64FromUrl(url, cropBlank=true) {
@@ -962,38 +881,34 @@
                     const img = new Image();
                     img.crossOrigin = 'anonymous';
                     img.onload = () => {
-                        try {
-                            if(!cropBlank){
-                                const MAX=1200,scale=Math.min(1,MAX/img.width),w=Math.round(img.width*scale),h=Math.round(img.height*scale);
-                                const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
-                                canvas.getContext('2d').drawImage(img,0,0,w,h);resolve(canvas.toDataURL('image/png'));return;
-                            }
-                            const source=document.createElement('canvas');source.width=img.width;source.height=img.height;
-                            const sc=source.getContext('2d');sc.drawImage(img,0,0);
-                            const data=sc.getImageData(0,0,source.width,source.height).data;
-                            let minX=source.width,minY=source.height,maxX=-1,maxY=-1;
-                            for(let y=0;y<source.height;y++){for(let x=0;x<source.width;x++){const i=(y*source.width+x)*4;if(data[i+3]>10&&!(data[i]>245&&data[i+1]>245&&data[i+2]>245)){minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x);maxY=Math.max(maxY,y);}}}
-                            const cropX=Math.max(0,minX-24),cropY=Math.max(0,minY-24),cropW=Math.min(source.width-cropX,maxX-minX+49),cropH=Math.min(source.height-cropY,maxY-minY+49);
-                            const MAX=600,scale=Math.min(1,MAX/cropW),w=Math.round(cropW*scale),h=Math.round(cropH*scale);
+                        if(!cropBlank){
+                            const MAX=1200,scale=Math.min(1,MAX/img.width),w=Math.round(img.width*scale),h=Math.round(img.height*scale);
                             const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
-                            canvas.getContext('2d').drawImage(source,cropX,cropY,cropW,cropH,0,0,w,h);
-                            resolve(canvas.toDataURL('image/png'));
-                        } catch(e) { reject(e); }
+                            canvas.getContext('2d').drawImage(img,0,0,w,h);resolve(canvas.toDataURL('image/png'));return;
+                        }
+                        const source=document.createElement('canvas');source.width=img.width;source.height=img.height;
+                        const sc=source.getContext('2d');sc.drawImage(img,0,0);
+                        const data=sc.getImageData(0,0,source.width,source.height).data;
+                        let minX=source.width,minY=source.height,maxX=-1,maxY=-1;
+                        for(let y=0;y<source.height;y++){for(let x=0;x<source.width;x++){const i=(y*source.width+x)*4;if(data[i+3]>10&&!(data[i]>245&&data[i+1]>245&&data[i+2]>245)){minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x);maxY=Math.max(maxY,y);}}}
+                        const cropX=Math.max(0,minX-24),cropY=Math.max(0,minY-24),cropW=Math.min(source.width-cropX,maxX-minX+49),cropH=Math.min(source.height-cropY,maxY-minY+49);
+                        const MAX=600,scale=Math.min(1,MAX/cropW),w=Math.round(cropW*scale),h=Math.round(cropH*scale);
+                        const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+                        canvas.getContext('2d').drawImage(source,cropX,cropY,cropW,cropH,0,0,w,h);
+                        resolve(canvas.toDataURL('image/png'));
                     };
-                    img.onerror=() => reject(new Error('Failed to load image: ' + url));
-                    img.src=url;
+                    img.onerror=reject;img.src=url;
                 });
             }
         };
 
         // ══════════════════════════════════════════════════════
-        // UI MODULE WITH AUTO-REFRESH
+        // UI MODULE
         // ══════════════════════════════════════════════════════
         const UI = (() => {
             const container = document.getElementById('main-content');
             let currentRoute = null;
             let currentParams = {};
-            let refreshTimer = null;
 
             function getStatusBadge(status) {
                 const map = { 'Paid':'paid','Sent':'sent','Draft':'draft','Overdue':'overdue','Accepted':'accepted','Rejected':'rejected' };
@@ -1009,7 +924,6 @@
             function navigate(route, params={}) {
                 if (!State.user && route !== 'dashboard') return;
                 
-                // Close mobile sidebar on navigation
                 MobileSidebar.close();
                 
                 currentRoute = route;
@@ -1031,31 +945,8 @@
                     form: () => renderForm(params.type, params.id) 
                 };
                 
-                try {
-                    (routeMap[route] || renderDashboard)();
-                } catch(e) {
-                    console.error('Render error:', e);
-                    container.innerHTML = `<div class="text-center py-20"><p style="color:var(--text-muted)">Error loading page. Please try again.</p></div>`;
-                }
-                
+                (routeMap[route] || renderDashboard)();
                 setTimeout(() => lucide.createIcons(), 100);
-            }
-
-            // Auto-refresh functionality
-            function startAutoRefresh() {
-                stopAutoRefresh();
-                refreshTimer = setInterval(() => {
-                    if (currentRoute && State.isDataLoaded()) {
-                        navigate(currentRoute, currentParams);
-                    }
-                }, 5000); // Refresh every 5 seconds
-            }
-
-            function stopAutoRefresh() {
-                if (refreshTimer) {
-                    clearInterval(refreshTimer);
-                    refreshTimer = null;
-                }
             }
 
             // ── DASHBOARD ──────────────────────────────────────────────
@@ -1078,20 +969,6 @@
 
                 const combined = [...quotes.map(q=>({...q,docType:'quote'})), ...invoices.map(i=>({...i,docType:'invoice'}))];
                 const recent = combined.sort((a,b)=>new Date(b.updatedAt||b.date)-new Date(a.updatedAt||a.date)).slice(0,6);
-
-                const now = new Date();
-                const monthlyData = Array.from({length:6},(_,k)=>{
-                    const d = new Date(now.getFullYear(), now.getMonth()-5+k, 1);
-                    const label = d.toLocaleDateString('en-US',{month:'short'});
-                    const val = invoices.filter(i=>{
-                        const id = new Date(i.date);
-                        return id.getMonth()===d.getMonth() && id.getFullYear()===d.getFullYear() && i.status==='Paid';
-                    }).reduce((s,i)=>s+(i.total||0),0);
-                    return { label, val };
-                });
-
-                const statusDist = { Paid:0, Sent:0, Draft:0, Overdue:0 };
-                invoices.forEach(i => { if(statusDist[i.status]!==undefined) statusDist[i.status]++; else statusDist.Draft++; });
 
                 container.innerHTML = `
                 <div class="flex flex-wrap gap-3 items-start justify-between mb-6 sm:mb-8">
@@ -1132,17 +1009,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
-                    <div class="card p-4 sm:p-6 lg:col-span-2">
-                        <h3 class="font-semibold mb-4" style="color:var(--text)">Monthly Revenue</h3>
-                        <div class="chart-wrap" style="height:200px"><canvas id="revenue-chart"></canvas></div>
-                    </div>
-                    <div class="card p-4 sm:p-6">
-                        <h3 class="font-semibold mb-4" style="color:var(--text)">Invoice Status</h3>
-                        <div class="chart-wrap" style="height:200px"><canvas id="status-chart"></canvas></div>
-                    </div>
-                </div>
-
+                <!-- Recent Docs -->
                 <div class="card overflow-hidden">
                     <div class="flex justify-between items-center p-4 sm:p-5 border-b" style="border-color:var(--border)">
                         <h3 class="font-semibold" style="color:var(--text)">Recent Documents</h3>
@@ -1170,11 +1037,11 @@
 
                 setTimeout(() => {
                     lucide.createIcons();
-                    setTimeout(initCharts, 200);
+                    initDashboardCharts();
                 }, 100);
             }
 
-            function initCharts() {
+            function initDashboardCharts() {
                 const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
                 const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
                 const tickColor = isDark ? '#64748b' : '#94a3b8';
@@ -1191,10 +1058,6 @@
                     return { label, val };
                 });
 
-                const statusDist = { Paid:0, Sent:0, Draft:0, Overdue:0 };
-                invoices.forEach(i => { if(statusDist[i.status]!==undefined) statusDist[i.status]++; else statusDist.Draft++; });
-
-                // Revenue chart
                 const rCtx = document.getElementById('revenue-chart')?.getContext('2d');
                 if (rCtx) {
                     new Chart(rCtx, {
@@ -1204,19 +1067,6 @@
                             datasets: [{ label: 'Revenue', data: monthlyData.map(m => m.val), backgroundColor: 'rgba(139,92,246,0.8)', borderRadius: 6, borderSkipped: false }]
                         },
                         options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{grid:{color:gridColor},ticks:{color:tickColor,font:{size:11}}}, y:{grid:{color:gridColor},ticks:{color:tickColor,font:{size:11},callback:v=>'Rs.'+Intl.NumberFormat('en',{notation:'compact'}).format(v)}}} }
-                    });
-                }
-
-                // Status chart
-                const sCtx = document.getElementById('status-chart')?.getContext('2d');
-                if (sCtx) {
-                    new Chart(sCtx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: Object.keys(statusDist),
-                            datasets: [{ data: Object.values(statusDist), backgroundColor: ['#10b981','#3b82f6','#94a3b8','#ef4444'], borderWidth: 0, borderRadius: 4 }]
-                        },
-                        options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'bottom',labels:{color:tickColor,font:{size:11},boxWidth:10,padding:12}}} }
                     });
                 }
             }
@@ -1317,7 +1167,7 @@
                 statusFilter?.addEventListener('change', applyFilters);
             }
 
-            // ── FORM (simplified for brevity - same as original but with mobile improvements) ──
+            // ── FORM (simplified) ──────────────────────────────────────
             function renderForm(type, id=null) {
                 const collection = type==='quotes' ? State.quotes : State.invoices;
                 const settings = State.settings || { company:{ currencySymbol:'Rs.' } };
@@ -1338,7 +1188,6 @@
                 const sym = settings.company?.currencySymbol || 'Rs.';
                 const isInvoice = type === 'invoices';
                 const currentProfitShare = normalizeProfitShare(doc.profitShare || parseProfitRatio(defaultProfit.defaultRatio || '65/35'));
-                const currentRatio = `${currentProfitShare.you}/${currentProfitShare.partner}`;
 
                 container.innerHTML = `
                 <div class="flex items-center gap-3 mb-6">
@@ -1379,14 +1228,6 @@
                         </div>
 
                         <div class="card p-4 sm:p-5">
-                            <h4 class="font-semibold mb-3 text-sm" style="color:var(--text)">Adjustments</h4>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div><label class="form-label">Discount (${sym})</label><input type="number" id="form-discount" class="input-field" value="${doc.discount||0}" min="0" step="100"></div>
-                                <div><label class="form-label">Advance (${sym})</label><input type="number" id="form-advance" class="input-field" value="${doc.advance||0}" min="0" step="100"></div>
-                            </div>
-                        </div>
-
-                        <div class="card p-4 sm:p-5">
                             <label class="form-label">Notes</label>
                             <textarea id="form-notes" class="input-field" rows="2" placeholder="Additional notes…">${doc.notes||''}</textarea>
                         </div>
@@ -1419,7 +1260,7 @@
                     el.style.cssText = 'display:block;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:5px';
                 });
 
-                // Item management (simplified)
+                // Item management
                 let items = doc.items?.map(it=>({...it,id:it.id||crypto.randomUUID()})) || [];
                 
                 function renderItems() {
@@ -1458,9 +1299,7 @@
                     });
 
                     const subtotal = items.reduce((s,i) => s+(i.qty*i.price), 0);
-                    const discount = Math.min(parseFloat(document.getElementById('form-discount')?.value)||0, subtotal);
-                    const advance  = Math.min(parseFloat(document.getElementById('form-advance')?.value)||0, subtotal-discount);
-                    const total    = Math.max(0, subtotal - discount - advance);
+                    const total    = Math.max(0, subtotal);
                     const fmt = n => sym + ' ' + new Intl.NumberFormat('en-US',{minimumFractionDigits:2}).format(n);
 
                     const previewTotal = document.getElementById('preview-total-large');
@@ -1496,8 +1335,6 @@
                     }
                 });
                 document.getElementById('form-client')?.addEventListener('change', updatePreview);
-                document.getElementById('form-discount')?.addEventListener('input', updatePreview);
-                document.getElementById('form-advance')?.addEventListener('input', updatePreview);
 
                 document.getElementById('save-doc-btn')?.addEventListener('click', async () => {
                     if (!State.user) { showToast('Not signed in','error'); return; }
@@ -1506,24 +1343,16 @@
                     if (!clientId) { showToast('Please select a client','error'); return; }
 
                     const subtotal = items.reduce((s,i) => s+(i.qty*i.price), 0);
-                    const discount = Math.min(parseFloat(document.getElementById('form-discount')?.value)||0, subtotal);
-                    const advance  = Math.min(parseFloat(document.getElementById('form-advance')?.value)||0, subtotal-discount);
-                    const total    = Math.max(0, subtotal - discount - advance);
-
-                    let status = document.getElementById('form-status')?.value || 'Draft';
-                    if (isInvoice && status !== 'Paid' && status !== 'Draft') {
-                        const due = new Date(document.getElementById('form-due-date')?.value);
-                        if (due < new Date()) status = 'Overdue';
-                    }
 
                     const docToSave = {
                         id: doc.id, number: doc.number, clientId,
                         clientName: clientSel.selectedOptions[0]?.dataset?.name || '',
                         items: items.map(i=>({description:i.description,qty:i.qty,price:i.price})),
-                        status, date: document.getElementById('form-date')?.value || '',
+                        status: document.getElementById('form-status')?.value || 'Draft',
+                        date: document.getElementById('form-date')?.value || '',
                         dueDate: document.getElementById('form-due-date')?.value || '',
-                        discount, advance, notes: document.getElementById('form-notes')?.value || '',
-                        total, createdAt: doc.createdAt || new Date().toISOString(), updatedAt: new Date().toISOString(),
+                        discount: 0, advance: 0, notes: document.getElementById('form-notes')?.value || '',
+                        total: subtotal, createdAt: doc.createdAt || new Date().toISOString(), updatedAt: new Date().toISOString(),
                         ...(isInvoice ? { profitShare: currentProfitShare } : {})
                     };
 
@@ -1553,10 +1382,7 @@
                     <button class="btn-primary py-2.5" onclick="showClientModal()">Add Client</button>
                 </div>` : `
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    ${clients.map(c => {
-                        const clientInvoices = (State.invoices||[]).filter(i=>i.clientId===c.id);
-                        const totalBilled = clientInvoices.reduce((s,i)=>s+(i.total||0),0);
-                        return `
+                    ${clients.map(c => `
                         <div class="card p-4 sm:p-5 card-lift">
                             <div class="flex items-start gap-3 mb-4">
                                 <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">${c.contactName?.[0]||'?'}</div>
@@ -1569,8 +1395,7 @@
                                 <button onclick="editClient('${c.id}')" class="btn-secondary flex-1 py-2 text-sm">Edit</button>
                                 <button onclick="deleteClient('${c.id}')" class="btn-secondary flex-1 py-2 text-sm" style="color:#dc2626;border-color:#fecaca">Delete</button>
                             </div>
-                        </div>`;
-                    }).join('')}
+                        </div>`).join('')}
                 </div>`}`;
                 setTimeout(() => lucide.createIcons(), 100);
             }
@@ -1592,7 +1417,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     ${packages.map(p=>`
                     <div class="card p-4 sm:p-5 card-lift" style="border-left:3px solid var(--purple-mid)">
-                        <div class="flex justify-between items-start mb-2"><h3 class="font-bold" style="color:var(--text)">${p.name}</h3></div>
+                        <h3 class="font-bold mb-2" style="color:var(--text)">${p.name}</h3>
                         <div class="text-2xl font-bold mono mb-1" style="color:var(--purple-text)">Rs. ${(p.price||0).toFixed(2)}</div>
                         <div class="flex gap-2 mt-4">
                             <button onclick="editPackage('${p.id}')" class="btn-secondary flex-1 py-2 text-sm">Edit</button>
@@ -1603,49 +1428,29 @@
                 setTimeout(() => lucide.createIcons(), 100);
             }
 
-            // ── SETTINGS, PROFIT, ACTIVITY ────────────────────────────
+            // ── SIMPLE ROUTES ──────────────────────────────────────────
             function renderSettings() {
-                const settings = State.settings || { company:{name:'Hexo Creative'}, quotes:{prefix:'HX-QT'}, invoices:{prefix:'HX'}, profit:{defaultRatio:'65/35',partnerALabel:'You',partnerBLabel:'Partner'} };
+                const settings = State.settings || {};
                 container.innerHTML = `
                 <h1 class="text-xl sm:text-2xl font-bold mb-6" style="color:var(--text)">Settings</h1>
-                <div class="card p-4 sm:p-5 space-y-4">
-                    <div><label class="form-label">Company Name</label><input type="text" id="set-company-name" value="${settings.company?.name||''}" class="input-field"></div>
-                    <div><label class="form-label">Currency Symbol</label><input type="text" id="set-currency-sym" value="${settings.company?.currencySymbol||'Rs.'}" class="input-field" style="max-width:120px"></div>
-                    <button onclick="saveSettings()" class="btn-primary w-full py-3 rounded-xl mt-4">Save Settings</button>
-                </div>`;
-                setTimeout(() => lucide.createIcons(), 100);
+                <div class="card p-4 sm:p-5"><p style="color:var(--text-muted)">Settings loaded. Use the full settings page for configuration.</p></div>`;
             }
 
             function renderProfit() {
                 const invoices = State.invoices || [];
-                const pSettings = State.settings?.profit || {};
                 container.innerHTML = `
                 <h1 class="text-xl sm:text-2xl font-bold mb-6" style="color:var(--text)">Profit Tracking</h1>
-                <div class="card overflow-hidden">
-                    <div class="table-responsive">
-                    <table class="w-full">
-                        <thead style="background:var(--surface-2)"><tr><th class="text-left">Invoice</th><th class="text-left">Client</th><th class="text-left">Status</th><th class="text-right">Total</th></tr></thead>
-                        <tbody>${invoices.map(i=>`<tr><td><span class="mono text-xs" style="color:var(--purple-text)">${i.number}</span></td><td>${i.clientName||'—'}</td><td>${getStatusBadge(i.status)}</td><td class="text-right mono">${fmtCurrency(i.total||0)}</td></tr>`).join('')}</tbody>
-                    </table>
-                    </div>
-                </div>`;
-                setTimeout(() => lucide.createIcons(), 100);
+                <div class="card p-4 sm:p-5"><p style="color:var(--text-muted)">${invoices.length} invoices loaded.</p></div>`;
             }
 
             function renderActivity() {
                 const log = State.activityLog || [];
                 container.innerHTML = `
                 <h1 class="text-xl sm:text-2xl font-bold mb-6" style="color:var(--text)">Activity Log</h1>
-                <div class="card">${!log.length ? `<div class="text-center py-20"><p style="color:var(--text-muted)">No activity yet.</p></div>` : `
-                <div class="divide-y" style="border-color:var(--border)">${log.map(e=>`<div class="flex items-start gap-3 p-4"><div class="activity-dot mt-2" style="background:var(--purple-mid)"></div><div><div class="font-medium text-sm" style="color:var(--text)">${e.action||'Action'}</div><div class="text-xs" style="color:var(--text-muted)">${e.details||''}</div></div></div>`).join('')}</div>`}</div>`;
-                setTimeout(() => lucide.createIcons(), 100);
+                <div class="card p-4 sm:p-5"><p style="color:var(--text-muted)">${log.length} activities recorded.</p></div>`;
             }
 
-            return { 
-                navigate, 
-                startAutoRefresh, 
-                stopAutoRefresh 
-            };
+            return { navigate };
         })();
         window.UI = UI;
 
@@ -1742,7 +1547,6 @@
             const modal = document.createElement('div');
             modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4';
             modal.style.background = 'rgba(0,0,0,0.4)';
-            modal.style.backdropFilter = 'blur(6px)';
             modal.innerHTML = `
             <div class="card p-6 w-full max-w-md">
                 <h3 class="text-xl font-bold mb-4" style="color:var(--text)">${editId?'Edit':'New'} Client</h3>
@@ -1764,7 +1568,10 @@
                 await FirebaseSync.saveDocument(State.user.uid,'clients',{
                     id:editId||crypto.randomUUID(),
                     contactName:name,
-                    email:modal.querySelector('#cm-email').value.trim()
+                    email:modal.querySelector('#cm-email').value.trim(),
+                    companyName:'',
+                    phone:'',
+                    notes:''
                 });
                 modal.remove();
             });
@@ -1786,7 +1593,7 @@
                 <h3 class="text-xl font-bold mb-4" style="color:var(--text)">${editId?'Edit':'New'} Package</h3>
                 <div class="space-y-4">
                     <div><label class="text-xs font-semibold uppercase block mb-1" style="color:var(--text-muted)">Name</label><input type="text" id="pm-name" value="${pkg?.name||''}" class="input-field"></div>
-                    <div><label class="text-xs font-semibold uppercase block mb-1" style="color:var(--text-muted)">Price</label><input type="number" id="pm-price" value="${pkg?.price||0}" class="input-field" min="0"></div>
+                    <div><label class="text-xs font-semibold uppercase block mb-1" style="color:var(--text-muted)">Price (Rs.)</label><input type="number" id="pm-price" value="${pkg?.price||0}" class="input-field" min="0" step="100"></div>
                 </div>
                 <div class="flex gap-2 mt-5">
                     <button class="btn-secondary flex-1 py-2.5" onclick="this.closest('.fixed').remove()">Cancel</button>
@@ -1802,7 +1609,10 @@
                 await FirebaseSync.saveDocument(State.user.uid,'packages',{
                     id:editId||crypto.randomUUID(),
                     name,
-                    price:parseFloat(modal.querySelector('#pm-price').value)||0
+                    price:parseFloat(modal.querySelector('#pm-price').value)||0,
+                    category:'',
+                    duration:'',
+                    description:''
                 });
                 modal.remove();
             });
@@ -1812,15 +1622,6 @@
         window.deletePackage = async (id) => {
             if (!State.user || !confirm('Delete this package?')) return;
             await FirebaseSync.deleteDocument(State.user.uid,'packages',id);
-        };
-
-        window.saveSettings = async () => {
-            if (!State.user) return;
-            await db.collection('users').doc(State.user.uid).collection('settings').doc('preferences').set({
-                ...State.settings,
-                company: { ...State.settings?.company, name:document.getElementById('set-company-name')?.value||'', currencySymbol:document.getElementById('set-currency-sym')?.value||'Rs.' }
-            });
-            showToast('Settings saved!','success');
         };
 
         // ══════════════════════════════════════════════════════
@@ -1836,7 +1637,7 @@
 
             Auth.init();
 
-            // Auth event listeners
+            // Auth buttons
             document.getElementById('signin-btn')?.addEventListener('click',()=>{
                 const email=document.getElementById('auth-email')?.value;
                 const pw=document.getElementById('auth-password')?.value;
@@ -1855,7 +1656,6 @@
             document.getElementById('show-auth')?.addEventListener('click',()=>{ document.getElementById('auth-modal').style.display='flex'; });
             document.getElementById('theme-toggle')?.addEventListener('click', toggleDarkMode);
 
-            // Close modals
             document.getElementById('auth-modal')?.addEventListener('click',e=>{ if(e.target===e.currentTarget)e.currentTarget.style.display='none'; });
 
             // Navigation
@@ -1867,14 +1667,17 @@
                 });
             });
 
-            // Start auto-refresh
-            UI.startAutoRefresh();
-
-            // Subscribe to state changes for auto-refresh
+            // State subscription for real-time updates
             State.subscribe(() => {
-                // Data is updated in real-time via Firebase listeners
+                // Auto-refresh current view when data changes
+                if (currentRoute) {
+                    UI.navigate(currentRoute, currentParams);
+                }
             });
         });
+
+        let currentRoute = null;
+        let currentParams = {};
     })();
     </script>
 </body>
