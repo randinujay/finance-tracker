@@ -2,11 +2,12 @@
 <html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hexo Creative · Professional Billing</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Favicon - PNG format -->
     <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -17,61 +18,57 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
     <style>
+        /* ── Design Tokens ───────────────────────────────────────────── */
         :root {
-            --bg: #f4f6fb;
-            --surface: #ffffff;
-            --surface-2: #f8fafc;
-            --border: #e2e8f0;
-            --text: #0f172a;
-            --text-mid: #475569;
-            --text-muted: #94a3b8;
-            --sidebar-bg: rgba(255,255,255,0.97);
-            --hover-bg: #f1f5f9;
-            --purple: #6D28D9;
+            --bg:          #f4f6fb;
+            --surface:     #ffffff;
+            --surface-2:   #f8fafc;
+            --border:      #e2e8f0;
+            --text:        #0f172a;
+            --text-mid:    #475569;
+            --text-muted:  #94a3b8;
+            --sidebar-bg:  rgba(255,255,255,0.97);
+            --hover-bg:    #f1f5f9;
+            --purple:      #6D28D9;
             --purple-soft: #EDE9FE;
-            --purple-mid: #8B5CF6;
+            --purple-mid:  #8B5CF6;
             --purple-text: #6D28D9;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.07);
-            --shadow-lg: 0 20px 40px rgba(0,0,0,0.10);
-            --radius: 14px;
-            --radius-sm: 10px;
-            --transition: 0.18s ease;
+            --shadow-sm:   0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md:   0 4px 16px rgba(0,0,0,0.07);
+            --shadow-lg:   0 20px 40px rgba(0,0,0,0.10);
+            --radius:      14px;
+            --radius-sm:   10px;
+            --transition:  0.18s ease;
         }
         html[data-theme="dark"] {
-            --bg: #0d1117;
-            --surface: #161b22;
-            --surface-2: #1c232d;
-            --border: #30363d;
-            --text: #e6edf3;
-            --text-mid: #8b949e;
-            --text-muted: #484f58;
-            --sidebar-bg: rgba(13,17,23,0.98);
-            --hover-bg: #21262d;
-            --purple: #9b6bff;
+            --bg:          #0d1117;
+            --surface:     #161b22;
+            --surface-2:   #1c232d;
+            --border:      #30363d;
+            --text:        #e6edf3;
+            --text-mid:    #8b949e;
+            --text-muted:  #484f58;
+            --sidebar-bg:  rgba(13,17,23,0.98);
+            --hover-bg:    #21262d;
+            --purple:      #9b6bff;
             --purple-soft: rgba(139,92,246,0.18);
-            --purple-mid: #8B5CF6;
+            --purple-mid:  #8B5CF6;
             --purple-text: #a78bfa;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
-            --shadow-lg: 0 20px 40px rgba(0,0,0,0.5);
+            --shadow-sm:   0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md:   0 4px 16px rgba(0,0,0,0.4);
+            --shadow-lg:   0 20px 40px rgba(0,0,0,0.5);
         }
 
         * { font-family: 'DM Sans', sans-serif; box-sizing: border-box; }
-        body { 
-            background: var(--bg); 
-            color: var(--text); 
-            transition: background var(--transition), color var(--transition);
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
+        body { background: var(--bg); color: var(--text); transition: background var(--transition), color var(--transition); }
         h1,h2,h3,h4 { letter-spacing: -0.02em; }
 
+        /* Prevent body scroll when sidebar is open */
         body.sidebar-open {
             overflow: hidden;
         }
 
+        /* ── Cards ───────────────────────────────────────────────────── */
         .card {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -82,6 +79,7 @@
         .card:hover { box-shadow: var(--shadow-md); }
         .card-lift:hover { transform: translateY(-2px); }
 
+        /* ── Sidebar ─────────────────────────────────────────────────── */
         .sidebar {
             position: fixed;
             top: 0;
@@ -98,6 +96,7 @@
             box-shadow: none;
             display: flex;
             flex-direction: column;
+            overscroll-behavior: contain;
         }
         
         .sidebar.open {
@@ -105,6 +104,7 @@
             box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
         }
 
+        /* Desktop behavior */
         @media (min-width: 1024px) {
             .sidebar {
                 transform: translateX(0) !important;
@@ -117,11 +117,12 @@
             margin: 2px 10px; padding: 12px 14px;
             border-radius: var(--radius-sm);
             color: var(--text-mid);
-            font-weight: 500; font-size: 0.875rem;
+            font-weight: 500; font-size: 0.9rem;
             transition: all var(--transition);
             position: relative;
             cursor: pointer; text-decoration: none;
             min-height: 44px;
+            touch-action: manipulation;
         }
         .sidebar-link:hover { background: var(--hover-bg); color: var(--purple-text); }
         .sidebar-link.active {
@@ -137,6 +138,7 @@
             margin-left: -10px;
         }
 
+        /* ── Sidebar Overlay ─────────────────────────────────────────── */
         .sidebar-overlay {
             position: fixed;
             inset: 0;
@@ -147,13 +149,12 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
-            pointer-events: none;
+            pointer-events: auto;
         }
 
         .sidebar-overlay.active {
             opacity: 1;
             visibility: visible;
-            pointer-events: auto;
         }
 
         @media (min-width: 1024px) {
@@ -162,22 +163,18 @@
             }
         }
 
+        /* ── Hamburger Button ────────────────────────────────────────── */
         #hamburger {
-            position: fixed;
-            top: 12px;
-            left: 12px;
-            z-index: 70;
-            padding: 10px;
-            border-radius: 12px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-md);
-            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.2s ease;
             min-width: 44px;
             min-height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        #hamburger:active {
+            transform: scale(0.95);
         }
 
         @media (min-width: 1024px) {
@@ -186,27 +183,11 @@
             }
         }
 
-        /* Sidebar logo styling */
-        #sidebar-logo-img {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
-        }
-        
-        /* Purple filter for light mode */
-        .logo-purple-filter {
-            filter: brightness(0) saturate(100%) invert(25%) sepia(98%) saturate(3045%) hue-rotate(254deg) brightness(92%) contrast(97%);
-        }
-        
-        /* White filter for dark mode */
-        .logo-white-filter {
-            filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
-        }
-
+        /* ── Inputs ──────────────────────────────────────────────────── */
         .input-field {
             border: 1px solid var(--border);
             border-radius: var(--radius-sm);
-            padding: 0.7rem 0.9rem;
+            padding: 0.65rem 0.9rem;
             width: 100%;
             background: var(--surface);
             color: var(--text);
@@ -214,40 +195,54 @@
             font-family: 'DM Sans', sans-serif;
             transition: border-color var(--transition), box-shadow var(--transition);
             min-height: 44px;
+            touch-action: manipulation;
         }
         .input-field:focus {
             outline: none;
             border-color: var(--purple-mid);
             box-shadow: 0 0 0 3px rgba(139,92,246,0.12);
         }
+        select.input-field option { background: var(--surface); color: var(--text); }
 
+        /* ── Buttons ─────────────────────────────────────────────────── */
         .btn-primary {
             background: linear-gradient(135deg, #8B5CF6, #6D28D9);
             color: white; border: none;
-            padding: 0.7rem 1.4rem; border-radius: var(--radius-sm);
-            font-weight: 600; font-size: 0.875rem;
+            padding: 0.65rem 1.4rem; border-radius: var(--radius-sm);
+            font-weight: 600; font-size: 0.9rem;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(109,40,217,0.25);
+            transition: opacity var(--transition), transform var(--transition);
             min-height: 44px;
+            touch-action: manipulation;
         }
-        .btn-primary:hover { opacity: 0.9; }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-primary:active { transform: translateY(0); }
         .btn-secondary {
             background: var(--surface); color: var(--text-mid);
             border: 1px solid var(--border);
-            padding: 0.7rem 1.4rem; border-radius: var(--radius-sm);
-            font-weight: 500; font-size: 0.875rem;
+            padding: 0.65rem 1.4rem; border-radius: var(--radius-sm);
+            font-weight: 500; font-size: 0.9rem;
             cursor: pointer;
+            transition: background var(--transition), color var(--transition);
             min-height: 44px;
+            touch-action: manipulation;
         }
-        .btn-secondary:hover { background: var(--hover-bg); }
+        .btn-secondary:hover { background: var(--hover-bg); color: var(--text); }
         .action-btn {
-            padding: 10px; border-radius: 8px; color: var(--text-muted);
+            padding: 12px; border-radius: 8px; color: var(--text-muted);
             background: transparent; border: none; cursor: pointer;
-            min-width: 44px; min-height: 44px;
-            display: inline-flex; align-items: center; justify-content: center;
+            transition: all var(--transition);
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
         }
-        .action-btn:hover { background: var(--surface); color: var(--purple-text); }
+        .action-btn:hover { background: var(--surface); color: var(--purple-text); box-shadow: var(--shadow-sm); }
 
+        /* ── Status Badges ───────────────────────────────────────────── */
         .badge { padding: 3px 10px; border-radius: 99px; font-size: 0.72rem; font-weight: 600; display: inline-block; border: 1px solid transparent; }
         .badge-paid    { background: #d1fae5; color: #065f46; border-color: #a7f3d0; }
         .badge-sent    { background: #dbeafe; color: #1e40af; border-color: #bfdbfe; }
@@ -262,22 +257,23 @@
         html[data-theme="dark"] .badge-accepted { background: rgba(6,95,70,0.3);   color: #6ee7b7; border-color: rgba(110,231,183,0.3); }
         html[data-theme="dark"] .badge-rejected { background: rgba(153,27,27,0.3); color: #fca5a5; border-color: rgba(252,165,165,0.3); }
 
-        table { border-collapse: separate; border-spacing: 0; width: 100%; }
-        thead th { font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); padding: 14px 18px; text-align: left; }
+        /* ── Tables ──────────────────────────────────────────────────── */
+        table { border-collapse: separate; border-spacing: 0; }
+        thead th { font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); padding: 14px 18px; }
         tbody td { padding: 14px 18px; border-top: 1px solid var(--border); color: var(--text); font-size: 0.875rem; }
+        tbody tr { transition: background var(--transition); }
         tbody tr:hover { background: var(--surface-2); }
 
-        @media (max-width: 768px) {
-            .table-responsive {
-                display: block;
-                width: 100%;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-            tbody td { padding: 12px 10px; font-size: 0.8rem; }
-            thead th { padding: 12px 10px; font-size: 0.7rem; }
+        /* Mobile table overflow */
+        .overflow-x-auto {
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+        .overflow-x-auto table {
+            min-width: 600px;
         }
 
+        /* ── Preview Pane ────────────────────────────────────────────── */
         .preview-pane {
             position: sticky; top: 1.5rem;
             max-height: calc(100vh - 3rem);
@@ -288,61 +284,57 @@
             box-shadow: var(--shadow-lg);
         }
 
-        @media (max-width: 1024px) {
-            .preview-pane {
-                position: relative;
-                top: 0;
-                max-height: none;
-            }
-        }
-
+        /* ── Scrollbar ───────────────────────────────────────────────── */
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
+        /* ── Stats Cards ─────────────────────────────────────────────── */
         .stat-card { padding: 22px 24px; }
         .stat-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
 
+        /* ── Empty State ─────────────────────────────────────────────── */
         .empty-state { border: 2px dashed var(--border); border-radius: 20px; background: var(--surface-2); }
 
-        .profit-ratio-btn { 
-            padding: 8px 16px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; 
-            cursor: pointer; border: 1.5px solid var(--border); 
-            background: var(--surface); color: var(--text-mid); 
-            transition: all var(--transition); min-height: 44px;
-        }
-        .profit-ratio-btn.selected { 
-            border-color: var(--purple-mid); 
-            background: var(--purple-soft); 
-            color: var(--purple-text); 
-        }
+        /* ── Skeleton ────────────────────────────────────────────────── */
+        .skeleton { background: linear-gradient(90deg, var(--border) 25%, var(--hover-bg) 50%, var(--border) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-        .theme-toggle { width: 42px; height: 24px; background: var(--border); border-radius: 99px; position: relative; cursor: pointer; border: none; }
+        /* ── Profit Cards ────────────────────────────────────────────── */
+        .profit-ratio-btn { padding: 8px 16px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: var(--surface); color: var(--text-mid); transition: all var(--transition); }
+        .profit-ratio-btn.selected { border-color: var(--purple-mid); background: var(--purple-soft); color: var(--purple-text); }
+
+        /* ── Dark Mode Toggle ────────────────────────────────────────── */
+        .theme-toggle { width: 42px; height: 24px; background: var(--border); border-radius: 99px; position: relative; cursor: pointer; transition: background 0.3s ease; border: none; }
         .theme-toggle.on { background: var(--purple-mid); }
         .theme-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: white; border-radius: 99px; transition: transform 0.3s ease; }
         .theme-toggle.on::after { transform: translateX(18px); }
 
+        /* ── Toasts ──────────────────────────────────────────────────── */
         .toast { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 12px; color: white; font-size: 0.875rem; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,0.2); animation: slideIn 0.25s ease; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
+        /* ── Chart container ─────────────────────────────────────────── */
+        .chart-wrap { position: relative; }
+
+        /* ── Monospace numbers ───────────────────────────────────────── */
         .mono { font-family: 'DM Mono', monospace; }
 
-        @media print { 
-            body { background: white; } 
-            .sidebar, #toast-area, .no-print, #hamburger, #sidebar-overlay { display: none !important; } 
-        }
+        /* ── Activity Log ────────────────────────────────────────────── */
+        .activity-dot { width: 8px; height: 8px; border-radius: 99px; flex-shrink: 0; margin-top: 6px; }
 
-        @media (max-width: 640px) {
-            .stat-card { padding: 16px 18px; }
-        }
+        /* ── Print / PDF ─────────────────────────────────────────────── */
+        @media print { body { background: white; } .sidebar, #toast-area, .no-print { display: none !important; } }
     </style>
 </head>
 <body>
-    <div id="toast-area" class="fixed top-5 right-5 z-[100] flex flex-col gap-2" style="pointer-events:none; max-width: 90vw;"></div>
+    <!-- Toasts -->
+    <div id="toast-area" class="fixed top-5 right-5 z-[100] flex flex-col gap-2" style="pointer-events:none"></div>
 
-    <div id="auth-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" style="background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);display:none">
-        <div class="card p-6 sm:p-8 w-full max-w-md mx-auto">
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="fixed inset-0 z-50 hidden items-center justify-center" style="background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);display:none">
+        <div class="card p-8 w-full max-w-md mx-4">
             <div class="flex items-center gap-3 mb-7">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">
                     <i data-lucide="zap" class="w-5 h-5" style="color:white"></i>
                 </div>
                 <div>
@@ -354,26 +346,26 @@
                 <p class="text-sm mb-5" style="color:var(--text-mid)">Sign in to your creative workspace</p>
                 <div>
                     <label class="text-xs font-semibold uppercase tracking-wider block mb-1" style="color:var(--text-muted)">Email</label>
-                    <input type="email" id="auth-email" placeholder="you@example.com" class="input-field" inputmode="email" autocomplete="email">
+                    <input type="email" id="auth-email" placeholder="you@example.com" class="input-field">
                 </div>
                 <div>
                     <label class="text-xs font-semibold uppercase tracking-wider block mb-1" style="color:var(--text-muted)">Password</label>
-                    <input type="password" id="auth-password" placeholder="••••••••" class="input-field" autocomplete="current-password">
-                    <button id="forgot-pw-btn" class="text-xs mt-1 hover:underline" style="color:var(--purple-text);background:none;border:none;cursor:pointer;padding:8px 0;">Forgot password?</button>
+                    <input type="password" id="auth-password" placeholder="••••••••" class="input-field">
+                    <button id="forgot-pw-btn" class="text-xs mt-1 hover:underline" style="color:var(--purple-text);background:none;border:none;cursor:pointer">Forgot password?</button>
                 </div>
                 <button id="signin-btn" class="btn-primary w-full py-3 rounded-xl">Sign In</button>
                 <button id="signup-btn" class="btn-secondary w-full py-3 rounded-xl">Create Account</button>
                 <div id="auth-error" class="hidden text-xs p-3 rounded-lg" style="background:#fee2e2;color:#991b1b"></div>
             </div>
             <div id="auth-loading" class="hidden text-center py-10">
-                <div class="w-10 h-10 border-4 rounded-full mx-auto mb-3 animate-spin" style="border-color:var(--purple-mid);border-top-color:transparent"></div>
+                <div class="w-10 h-10 border-3 rounded-full mx-auto mb-3 animate-spin" style="border:3px solid var(--purple-mid);border-top-color:transparent"></div>
                 <p class="text-sm" style="color:var(--text-muted)">Authenticating…</p>
             </div>
             <div id="user-info" class="hidden">
                 <div class="flex items-center gap-3 p-4 rounded-xl mb-4" style="background:var(--purple-soft)">
-                    <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" id="user-avatar" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">H</div>
-                    <div class="min-w-0">
-                        <div id="user-email" class="font-semibold truncate" style="color:var(--text)"></div>
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white" id="user-avatar" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">H</div>
+                    <div>
+                        <div id="user-email" class="font-semibold" style="color:var(--text)"></div>
                         <div class="text-xs" style="color:var(--text-muted)">Signed in to Hexo</div>
                     </div>
                 </div>
@@ -382,31 +374,53 @@
         </div>
     </div>
 
+    <!-- Logo Modal -->
+    <div id="logo-modal" class="fixed inset-0 z-50 hidden items-center justify-center" style="background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);display:none">
+        <div class="card p-8 w-full max-w-md mx-4">
+            <h3 class="text-xl font-bold mb-4" style="color:var(--text)">Set Company Logo</h3>
+            <p class="text-sm mb-4" style="color:var(--text-mid)">Place your logo as <strong>logo.png</strong> in the same folder as this HTML file.</p>
+            <div class="rounded-xl p-4 mb-4" style="background:var(--purple-soft)">
+                <p class="text-sm font-mono mb-1" style="color:var(--purple-text)">📁 /your-folder/</p>
+                <p class="text-sm font-mono pl-4" style="color:var(--purple-text)">├── index.html</p>
+                <p class="text-sm font-mono pl-4" style="color:var(--purple-text)">└── logo.png</p>
+            </div>
+            <button id="check-logo-btn" class="btn-primary w-full py-3 rounded-xl mb-3">Check for logo.png</button>
+            <button id="close-logo-modal" class="btn-secondary w-full py-2 rounded-xl">Close</button>
+        </div>
+    </div>
+
+    <!-- Main App -->
     <div id="app" class="hidden">
+        <!-- Sidebar Overlay (mobile) -->
         <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true" role="presentation"></div>
 
-        <button id="hamburger" class="lg:hidden" aria-label="Toggle menu" aria-expanded="false" aria-controls="sidebar">
+        <!-- Hamburger Button (mobile) -->
+        <button id="hamburger" class="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-xl" 
+                style="background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-sm)"
+                aria-label="Toggle menu" aria-expanded="false" aria-controls="sidebar">
             <i data-lucide="menu" class="w-5 h-5" style="color:var(--text-mid)"></i>
         </button>
 
         <div class="flex min-h-screen">
+            <!-- Sidebar -->
             <aside class="sidebar w-64" id="sidebar" aria-hidden="true">
                 <div class="p-5 border-b" style="border-color:var(--border)">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <!-- Sidebar logo using favicon.png with color filters -->
-                            <img id="sidebar-logo-img" src="favicon.png" alt="Hexo" class="logo-purple-filter">
-                            <div class="min-w-0">
-                                <div class="font-bold text-sm truncate" style="color:var(--text)">Hexo Creative</div>
+                            <img id="sidebar-logo" src="favicon.png" alt="Hexo" class="w-8 h-8 object-contain">                            <div class="w-8 h-8 rounded-lg flex items-center justify-center hidden" id="sidebar-logo-fallback" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">
+                                <i data-lucide="zap" class="w-4 h-4" style="color:white"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-sm" style="color:var(--text)">Hexo Creative</div>
                                 <div class="text-xs flex items-center gap-1" style="color:var(--text-muted)">
-                                    <i data-lucide="cloud" class="w-3 h-3 flex-shrink-0"></i> Live Sync
+                                    <i data-lucide="cloud" class="w-3 h-3"></i> Live Sync
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <nav class="flex-1 py-3 overflow-y-auto" id="sidebar-nav" style="-webkit-overflow-scrolling: touch;">
+                <nav class="flex-1 py-3 overflow-y-auto" id="sidebar-nav">
                     <div class="px-3 mb-1">
                         <p class="text-xs font-semibold uppercase tracking-wider px-3 mb-2" style="color:var(--text-muted)">Main</p>
                     </div>
@@ -426,16 +440,17 @@
 
                 <div class="p-4 border-t" style="border-color:var(--border)">
                     <div class="flex items-center justify-between mb-3">
-                        <button id="show-auth" class="flex items-center gap-2 text-xs" style="color:var(--text-muted);background:none;border:none;cursor:pointer;padding:8px;">
-                            <i data-lucide="user" class="w-3 h-3 flex-shrink-0"></i>
-                            <span id="user-email-mini" class="truncate">Account</span>
+                        <button id="show-auth" class="flex items-center gap-2 text-xs" style="color:var(--text-muted);background:none;border:none;cursor:pointer">
+                            <i data-lucide="user" class="w-3 h-3"></i>
+                            <span id="user-email-mini">Account</span>
                         </button>
                         <button class="theme-toggle" id="theme-toggle" title="Toggle dark mode"></button>
                     </div>
                 </div>
             </aside>
 
-            <main class="flex-1 ml-0 lg:ml-64 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8" id="main-content" style="min-width:0"></main>
+            <!-- Main Content -->
+            <main class="flex-1 ml-0 lg:ml-64 p-4 lg:p-8" id="main-content" style="min-width:0"></main>
         </div>
     </div>
 
@@ -443,6 +458,9 @@
     (function () {
         "use strict";
 
+        // ══════════════════════════════════════════════════════
+        // FIREBASE CONFIG
+        // ══════════════════════════════════════════════════════
         const firebaseConfig = {
             apiKey: "AIzaSyDAaerlvUaOKrVD3gAOWebnzyGDmCGmvXQ",
             authDomain: "hexo-creative.firebaseapp.com",
@@ -452,94 +470,119 @@
             appId: "1:263255331518:web:cb3e6fa2c2a2cfeb23c4ef"
         };
         firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
+        const db      = firebase.firestore();
+        const auth    = firebase.auth();
         const storage = firebase.storage();
 
         db.enablePersistence().catch(() => {});
 
         // ══════════════════════════════════════════════════════
-        // SIDEBAR
+        // MOBILE SIDEBAR MANAGEMENT
         // ══════════════════════════════════════════════════════
         const MobileSidebar = {
+            sidebar: null,
+            overlay: null,
+            hamburger: null,
+            
             init() {
-                const sidebar = document.getElementById('sidebar');
-                const overlay = document.getElementById('sidebar-overlay');
-                const hamburger = document.getElementById('hamburger');
+                this.sidebar = document.getElementById('sidebar');
+                this.overlay = document.getElementById('sidebar-overlay');
+                this.hamburger = document.getElementById('hamburger');
                 
-                if (!sidebar || !overlay || !hamburger) return;
+                if (!this.sidebar || !this.overlay || !this.hamburger) return;
                 
-                hamburger.addEventListener('click', (e) => {
-                    e.preventDefault();
+                // Set up event listeners
+                this.hamburger.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    if (sidebar.classList.contains('open')) {
-                        this.close(sidebar, overlay, hamburger);
-                    } else {
-                        this.open(sidebar, overlay, hamburger);
-                    }
+                    this.toggle();
                 });
                 
-                overlay.addEventListener('click', () => this.close(sidebar, overlay, hamburger));
+                this.overlay.addEventListener('click', () => this.close());
                 
+                // Close on escape key
                 document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && sidebar.classList.contains('open')) {
-                        this.close(sidebar, overlay, hamburger);
+                    if (e.key === 'Escape' && this.isOpen()) {
+                        this.close();
                     }
                 });
                 
+                // Handle window resize
                 window.addEventListener('resize', () => {
                     if (window.innerWidth >= 1024) {
-                        this.close(sidebar, overlay, hamburger);
+                        this.close();
                     }
                 });
+                
+                // Prevent touch events on overlay from reaching background
+                this.overlay.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                }, { passive: false });
+                
+                // Allow sidebar to be scrollable while preventing body scroll
+                this.sidebar.addEventListener('touchmove', (e) => {
+                    e.stopPropagation();
+                }, { passive: true });
             },
             
-            open(sidebar, overlay, hamburger) {
-                sidebar.classList.add('open');
-                overlay.classList.add('active');
+            open() {
+                if (!this.sidebar || !this.overlay) return;
+                
+                this.sidebar.classList.add('open');
+                this.overlay.classList.add('active');
                 document.body.classList.add('sidebar-open');
-                sidebar.setAttribute('aria-hidden', 'false');
-                overlay.setAttribute('aria-hidden', 'false');
-                hamburger.setAttribute('aria-expanded', 'true');
-                const icon = hamburger.querySelector('i');
-                if (icon) icon.setAttribute('data-lucide', 'x');
-                lucide.createIcons();
+                document.documentElement.style.overflow = 'hidden';
+                
+                // Announce to screen readers
+                this.sidebar.setAttribute('aria-hidden', 'false');
+                this.overlay.setAttribute('aria-hidden', 'false');
             },
             
-            close(sidebar, overlay, hamburger) {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('active');
+            close() {
+                if (!this.sidebar || !this.overlay) return;
+                
+                this.sidebar.classList.remove('open');
+                this.overlay.classList.remove('active');
                 document.body.classList.remove('sidebar-open');
-                sidebar.setAttribute('aria-hidden', 'true');
-                overlay.setAttribute('aria-hidden', 'true');
-                hamburger.setAttribute('aria-expanded', 'false');
-                const icon = hamburger.querySelector('i');
-                if (icon) icon.setAttribute('data-lucide', 'menu');
-                lucide.createIcons();
+                document.documentElement.style.overflow = '';
+                
+                // Announce to screen readers
+                this.sidebar.setAttribute('aria-hidden', 'true');
+                this.overlay.setAttribute('aria-hidden', 'true');
+            },
+            
+            toggle() {
+                if (this.isOpen()) {
+                    this.close();
+                } else {
+                    this.open();
+                }
+            },
+            
+            isOpen() {
+                return this.sidebar?.classList.contains('open') || false;
             }
         };
+
+        // Helper functions for global access
+        function closeSidebar() {
+            MobileSidebar.close();
+        }
 
         // ══════════════════════════════════════════════════════
         // STATE
         // ══════════════════════════════════════════════════════
         const State = {
-            user: null,
-            quotes: [],
-            invoices: [],
-            clients: [],
-            packages: [],
-            settings: null,
+            user:        null,
+            quotes:      [],
+            invoices:    [],
+            clients:     [],
+            packages:    [],
+            settings:    null,
             activityLog: [],
-            darkMode: localStorage.getItem('hexo-theme') === 'dark',
-            _listeners: [],
-            _loaded: { quotes: false, invoices: false, clients: false, packages: false, settings: false },
-            notify() { 
-                this._listeners.forEach(fn => { try { fn(); } catch(e) {} }); 
-            },
-            subscribe(fn) { 
-                this._listeners.push(fn); 
-                return () => { this._listeners = this._listeners.filter(l => l !== fn); };
-            }
+            darkMode:    localStorage.getItem('hexo-theme') === 'dark',
+            _listeners:  [],
+            notify() { this._listeners.forEach(fn => fn()); },
+            subscribe(fn) { this._listeners.push(fn); return () => { this._listeners = this._listeners.filter(l => l !== fn); }; }
         };
 
         // ══════════════════════════════════════════════════════
@@ -549,39 +592,32 @@
             _unsubscribers: [],
 
             init(userId) {
-                this._unsubscribers.forEach(u => { try { u && u(); } catch(e) {} });
+                // Clean up old listeners first
+                this._unsubscribers.forEach(u => u && u());
                 this._unsubscribers = [];
-                
+
                 const track = (fn) => { this._unsubscribers.push(fn); };
                 const base = () => db.collection('users').doc(userId);
 
                 track(base().collection('quotes').onSnapshot(snap => {
                     State.quotes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                    State._loaded.quotes = true;
-                    this.cacheData(userId, 'quotes', State.quotes);
                     State.notify();
-                }, () => {}));
+                }, handleFirebaseError));
 
                 track(base().collection('invoices').onSnapshot(snap => {
                     State.invoices = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                    State._loaded.invoices = true;
-                    this.cacheData(userId, 'invoices', State.invoices);
                     State.notify();
-                }, () => {}));
+                }, handleFirebaseError));
 
                 track(base().collection('clients').onSnapshot(snap => {
                     State.clients = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                    State._loaded.clients = true;
-                    this.cacheData(userId, 'clients', State.clients);
                     State.notify();
-                }, () => {}));
+                }, handleFirebaseError));
 
                 track(base().collection('packages').onSnapshot(snap => {
                     State.packages = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                    State._loaded.packages = true;
-                    this.cacheData(userId, 'packages', State.packages);
                     State.notify();
-                }, () => {}));
+                }, handleFirebaseError));
 
                 track(base().collection('settings').doc('preferences').onSnapshot(doc => {
                     if (doc.exists) {
@@ -589,7 +625,7 @@
                     } else {
                         const defaults = {
                             company: { name: 'Hexo Creative', email: 'hexocreative@gmail.com', currency: 'LKR', currencySymbol: 'Rs.', phone: '+94 72 621 54 34', address: 'Minuwangoda, Sri Lanka' },
-                            quotes: { prefix: 'HX-QT' },
+                            quotes:   { prefix: 'HX-QT' },
                             invoices: { prefix: 'HX' },
                             appearance: { logo: null },
                             profit: { defaultRatio: '65/35', partnerALabel: 'You', partnerBLabel: 'Partner' }
@@ -597,8 +633,6 @@
                         base().collection('settings').doc('preferences').set(defaults);
                         State.settings = defaults;
                     }
-                    State._loaded.settings = true;
-                    this.cacheData(userId, 'settings', State.settings);
                     State.notify();
                 }));
 
@@ -608,19 +642,10 @@
                     }, () => {}));
             },
 
-            cacheData(userId, key, data) {
-                try {
-                    const cacheKey = 'hexo-cache-' + userId;
-                    const cache = JSON.parse(localStorage.getItem(cacheKey) || '{}');
-                    cache[key] = data;
-                    localStorage.setItem(cacheKey, JSON.stringify(cache));
-                } catch(e) {}
-            },
-
             async saveDocument(userId, collection, doc) {
                 try {
                     await db.collection('users').doc(userId).collection(collection).doc(doc.id).set(doc);
-                    showToast('Saved', 'success');
+                    showToast(`${collection.slice(0,-1)} saved`, 'success');
                     return true;
                 } catch (e) { showToast('Error: ' + e.message, 'error'); return false; }
             },
@@ -628,11 +653,13 @@
             async deleteDocument(userId, collection, docId) {
                 try {
                     await db.collection('users').doc(userId).collection(collection).doc(docId).delete();
-                    showToast('Deleted', 'info');
+                    showToast('Deleted successfully', 'info');
                     return true;
                 } catch (e) { showToast('Error: ' + e.message, 'error'); return false; }
             }
         };
+
+        function handleFirebaseError(err) { showToast('Firebase error: ' + err.message, 'error'); }
 
         // ══════════════════════════════════════════════════════
         // AUTH
@@ -657,7 +684,6 @@
                         document.getElementById('signin-form').classList.remove('hidden');
                     }
                     lucide.createIcons();
-                    updateLogoForTheme();
                 });
             },
             async signIn(email, password) {
@@ -665,8 +691,9 @@
                     showAuthLoading(true);
                     clearAuthError();
                     await auth.signInWithEmailAndPassword(email, password);
-                } catch (e) { showAuthError(friendlyAuthError(e.code)); } 
-                finally { showAuthLoading(false); }
+                } catch (e) {
+                    showAuthError(friendlyAuthError(e.code));
+                } finally { showAuthLoading(false); }
             },
             async signUp(email, password) {
                 if (password.length < 6) { showAuthError('Password must be at least 6 characters'); return; }
@@ -674,8 +701,9 @@
                     showAuthLoading(true);
                     clearAuthError();
                     await auth.createUserWithEmailAndPassword(email, password);
-                } catch (e) { showAuthError(friendlyAuthError(e.code)); } 
-                finally { showAuthLoading(false); }
+                } catch (e) {
+                    showAuthError(friendlyAuthError(e.code));
+                } finally { showAuthLoading(false); }
             },
             async forgotPassword(email) {
                 if (!email) { showAuthError('Enter your email first'); return; }
@@ -686,33 +714,14 @@
         };
 
         function friendlyAuthError(code) {
-            const map = { 'auth/user-not-found': 'No account found.', 'auth/wrong-password': 'Incorrect password.', 'auth/email-already-in-use': 'Email already in use.', 'auth/invalid-email': 'Invalid email.', 'auth/weak-password': 'Password too short.' };
-            return map[code] || 'Authentication failed.';
+            const map = { 'auth/user-not-found': 'No account found with this email.', 'auth/wrong-password': 'Incorrect password.', 'auth/email-already-in-use': 'Email already in use.', 'auth/invalid-email': 'Invalid email address.', 'auth/weak-password': 'Password must be at least 6 characters.' };
+            return map[code] || 'Authentication failed. Please try again.';
         }
-        function showAuthError(msg) { const el = document.getElementById('auth-error'); if(el) { el.textContent = msg; el.classList.remove('hidden'); } }
+        function showAuthError(msg) { const el = document.getElementById('auth-error'); el.textContent = msg; el.classList.remove('hidden'); }
         function clearAuthError() { const el = document.getElementById('auth-error'); if(el) el.classList.add('hidden'); }
-        function showAuthLoading(show) {
-            const form = document.getElementById('signin-form');
-            const loading = document.getElementById('auth-loading');
-            if (form) form.classList.toggle('hidden', show);
-            if (loading) loading.classList.toggle('hidden', !show);
-        }
 
         // ══════════════════════════════════════════════════════
-        // LOGO UPDATE FOR THEME
-        // ══════════════════════════════════════════════════════
-        function updateLogoForTheme() {
-            const img = document.getElementById('sidebar-logo-img');
-            if (!img) return;
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            img.className = isDark ? 'logo-white-filter' : 'logo-purple-filter';
-            img.style.width = '32px';
-            img.style.height = '32px';
-            img.style.objectFit = 'contain';
-        }
-
-        // ══════════════════════════════════════════════════════
-        // PDF GENERATOR - NO PROFIT SPLIT INCLUDED
+        // PDF GENERATOR
         // ══════════════════════════════════════════════════════
         const PDFGenerator = {
             async generateDocument(doc, type) {
@@ -731,154 +740,101 @@
                     const fmtD=(d)=>{try{return new Date(d).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});}catch{return String(d||'');}};
                     const fmtA=(n)=>`Rs. ${Number(n||0).toFixed(2)}`;
 
+                    const headerImageFile = type==='quote'?'quotation.png':'invoice.png';
+                    let headerImageData=null;
+                    try{headerImageData=await this.getBase64FromUrl(headerImageFile,false);}catch(_){}
+
                     let y=14;
-                    // Header
-                    font('bold',22);color(C.purple);t(S?.company?.name||'HEXO CREATIVE',ML,y+8);
-                    font('bold',26);color(C.purple);t(type==='quote'?'QUOTATION':'INVOICE',PW-MR,y+10,{align:'right'});
-                    y+=18;
+                    const headerW=CW, headerH=headerW*(194/2480);
+                    if(headerImageData){pdf.addImage(headerImageData,'PNG',ML,y,headerW,headerH);}
+                    else{
+                        font('bold',17);color(C.purple);t(S?.company?.name||'HEXO CREATIVE',ML,y+10);
+                        font('bold',26);color(C.purple);t(type==='quote'?'QUOTATION':'INVOICE',PW-MR,y+13,{align:'right'});
+                    }
+                    y+=headerH+3;
                     draw(C.purple);lw(0.6);ln(ML,y,PW-MR,y);y+=6;
                     font('normal',7.5);color(C.mid);
                     const contact=[S?.company?.address||'Minuwangoda, Sri Lanka','Tel: '+(S?.company?.phone||'+94 72 621 54 34'),'Email: '+(S?.company?.email||'hexocreative@gmail.com')].join('   |   ');
                     t(contact,ML,y);y+=10;
 
-                    // Meta info
                     const META_H=16;fill(C.strip);draw(C.border);lw(0.15);box(ML,y,CW,META_H,2,'FD');
-                    const meta=[
-                        {label:type==='quote'?'Quotation No.':'Invoice No.',val:doc.number||'—'},
-                        {label:'Issue Date',val:fmtD(doc.date)},
-                        {label:'Due Date',val:fmtD(doc.dueDate)}
-                    ];
-                    meta.forEach(({label,val},i)=>{
-                        const cx=ML+5+i*(CW/3);
-                        font('normal',6.5);color(C.mid);t(label.toUpperCase(),cx,y+5.5);
-                        font('bold',9.5);color(C.ink);t(val,cx,y+13);
-                    });
+                    const meta=[{label:type==='quote'?'Quotation No.':'Invoice No.',val:doc.number||'—'},{label:'Issue Date',val:fmtD(doc.date)},{label:'Due Date',val:fmtD(doc.dueDate)}];
+                    meta.forEach(({label,val},i)=>{const cx=ML+5+i*(CW/3);font('normal',6.5);color(C.mid);t(label.toUpperCase(),cx,y+5.5);font('bold',9.5);color(C.ink);t(val,cx,y+13);});
                     y+=META_H+11;
 
-                    // Bill to
                     font('bold',12);color(C.purple);t('BILL TO',ML,y);y+=7;
                     font('bold',11.5);color(C.ink);t(doc.clientName||'Client',ML,y);y+=5.5;
                     font('normal',8.5);color(C.mid);
                     const client=State.clients?.find(c=>c.id===doc.clientId);
                     if(client?.companyName){t(client.companyName,ML,y);y+=5;}
-                    if(client?.email){t(client.email,ML,y);y+=5;}
+                    if(client?.phone){t(client.phone,ML,y);y+=5;}
+                    else if(client?.email){t(client.email,ML,y);y+=5;}
                     y+=8;
 
-                    // Items table
-                    const tableRows=(doc.items||[]).map(item=>[
-                        item.description||'',
-                        String(item.qty??0),
-                        fmtA(item.price||0),
-                        fmtA((item.qty||0)*(item.price||0))
-                    ]);
-                    pdf.autoTable({
-                        startY:y,
-                        head:[['Description','Qty','Unit Price (LKR)','Total (LKR)']],
-                        body:tableRows,
-                        theme:'plain',
+                    const tableRows=(doc.items||[]).map(item=>[item.description||'',String(item.qty??0),fmtA(item.price||0),fmtA((item.qty||0)*(item.price||0))]);
+                    pdf.autoTable({startY:y,head:[['Description','Qty','Unit Price (LKR)','Total (LKR)']],body:tableRows,theme:'plain',
                         headStyles:{fillColor:C.purpled,textColor:C.white,fontStyle:'bold',fontSize:8.5,cellPadding:{top:6,bottom:6,left:6,right:6}},
+                        columnStyles:{0:{cellWidth:'auto',halign:'left'},1:{cellWidth:18,halign:'center'},2:{cellWidth:42,halign:'right'},3:{cellWidth:42,halign:'right'}},
                         styles:{fontSize:9,cellPadding:{top:6,bottom:6,left:6,right:6},textColor:C.body,lineColor:C.border,lineWidth:0.15},
-                        alternateRowStyles:{fillColor:C.strip},
-                        bodyStyles:{fillColor:C.white},
-                        margin:{left:ML,right:MR}
+                        alternateRowStyles:{fillColor:C.strip},bodyStyles:{fillColor:C.white},margin:{left:ML,right:MR}
                     });
 
-                    // Totals
                     const subtotal=(doc.items||[]).reduce((s,i)=>s+(i.qty||0)*(i.price||0),0);
                     const discount=doc.discount||0, advance=doc.advance||0, total=Math.max(0,subtotal-discount-advance);
                     let ty=pdf.lastAutoTable.finalY+7;
-                    const TBW=80, TX=PW-MR-TBW;
-                    const xRows=(discount>0?1:0)+(advance>0?1:0);
-                    const TBH=13+xRows*9+16;
-                    
+                    const TBW=90, TX=PW-MR-TBW, xRows=(discount>0?1:0)+(advance>0?1:0), TBH=13+xRows*9+16;
                     fill(C.strip);draw(C.border);lw(0.15);box(TX,ty,TBW,TBH,2,'FD');
-                    const LX=TX+6, VX=PW-MR-4;
-                    let ry=ty+10;
-                    
-                    font('normal',8.5);color(C.mid);t('Subtotal',LX,ry);
-                    font('bold',8.5);color(C.body);t(fmtA(subtotal),VX,ry,{align:'right'});
-                    ry+=9;
-                    
-                    if(discount>0){
-                        font('normal',8.5);color(C.mid);t('Discount',LX,ry);
-                        font('bold',8.5);color(C.red);t('- '+fmtA(discount),VX,ry,{align:'right'});
-                        ry+=9;
-                    }
-                    if(advance>0){
-                        font('normal',8.5);color(C.mid);t('Advance Paid',LX,ry);
-                        font('bold',8.5);color(C.red);t('- '+fmtA(advance),VX,ry,{align:'right'});
-                        ry+=9;
-                    }
-                    
-                    draw(C.border);lw(0.2);ln(LX,ry-3,VX,ry-3);
-                    ry+=6;
-                    font('bold',10);color(C.ink);t('TOTAL DUE',LX,ry);
-                    font('bold',13);color(C.purple);t(fmtA(total),VX,ry,{align:'right'});
+                    const LX=TX+6, VX=PW-MR-4;let ry=ty+10;
+                    font('normal',8.5);color(C.mid);t('Subtotal',LX,ry);font('bold',8.5);color(C.body);t(fmtA(subtotal),VX,ry,{align:'right'});ry+=9;
+                    if(discount>0){font('normal',8.5);color(C.mid);t('Discount',LX,ry);font('bold',8.5);color(C.red);t('- '+fmtA(discount),VX,ry,{align:'right'});ry+=9;}
+                    if(advance>0){font('normal',8.5);color(C.mid);t('Advance Paid',LX,ry);font('bold',8.5);color(C.red);t('- '+fmtA(advance),VX,ry,{align:'right'});ry+=9;}
+                    draw(C.border);lw(0.2);ln(LX,ry-3,VX,ry-3);ry+=6;
+                    font('bold',10);color(C.ink);t('TOTAL DUE',LX,ry);font('bold',13);color(C.purple);t(fmtA(total),VX,ry,{align:'right'});
 
-                    // NO PROFIT SPLIT IN PDF - REMOVED
+                    if(doc.status==='Paid'){pdf.saveGraphicsState();pdf.setGState(new pdf.GState({opacity:0.06}));font('bold',72);color([16,185,129]);pdf.text('PAID',PW/2,PH/2,{align:'center',angle:35});pdf.restoreGraphicsState();}
 
-                    // Paid watermark
-                    if(doc.status==='Paid'){
-                        pdf.saveGraphicsState();
-                        pdf.setGState(new pdf.GState({opacity:0.06}));
-                        font('bold',72);
-                        color([16,185,129]);
-                        pdf.text('PAID',PW/2,PH/2,{align:'center',angle:35});
-                        pdf.restoreGraphicsState();
-                    }
-
-                    // Terms
                     const terms=['All fees are in Sri Lankan Rupees (LKR) and are payable within 30 days.','Payment via direct bank transfer only. Bank details provided upon request.','Work commences only after receipt of agreed advance payment.','Client responsible for providing timely access, approvals, and feedback.','Upon full payment, client owns final deliverables. Hexo Creative retains rights to underlying tools and methodologies.','Services may be suspended for non-payment. Either party may terminate with 30 days\' written notice.','Total liability limited to fees paid in the preceding 3 months.'];
                     let termsY=ty+TBH+11;
                     draw(C.border);lw(0.2);ln(ML,termsY,PW-MR,termsY);termsY+=6;
                     font('bold',7.5);color(C.mid);t('TERMS & CONDITIONS',ML,termsY);termsY+=6;
-                    terms.forEach((term,i)=>{
-                        const lines=pdf.splitTextToSize(term,CW-8);
-                        const blockH=lines.length*4+2.5;
-                        font('bold',7.5);color(C.purple);t(`${i+1}.`,ML,termsY);
-                        font('normal',7.5);color(C.mid);
-                        lines.forEach((l,li)=>t(l,ML+7,termsY+li*4));
-                        termsY+=blockH;
-                    });
+                    terms.forEach((term,i)=>{const lines=pdf.splitTextToSize(term,CW-8);const blockH=lines.length*4+2.5;font('bold',7.5);color(C.purple);t(`${i+1}.`,ML,termsY);font('normal',7.5);color(C.mid);lines.forEach((l,li)=>t(l,ML+7,termsY+li*4));termsY+=blockH;});
 
-                    // Footer
-                    const FY=PH-10;
-                    draw(C.border);lw(0.2);ln(ML,FY-4,PW-MR,FY-4);
-                    font('normal',7.5);color(C.muted);
-                    t('Thank you for your business!',PW/2,FY,{align:'center'});
-                    
+                    const FY=PH-10;draw(C.border);lw(0.2);ln(ML,FY-4,PW-MR,FY-4);font('normal',7.5);color(C.muted);t('Thank you for your business!',PW/2,FY,{align:'center'});
                     pdf.save(`${type}-${doc.number||'draft'}.pdf`);
-                } catch(err) { 
-                    console.error(err); 
-                    showToast('PDF error: '+err.message,'error'); 
-                }
+                } catch(err) { console.error(err); showToast('PDF error: '+err.message,'error'); }
+            },
+
+            getBase64FromUrl(url, cropBlank=true) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.crossOrigin = 'anonymous';
+                    img.onload = () => {
+                        if(!cropBlank){
+                            const MAX=1200,scale=Math.min(1,MAX/img.width),w=Math.round(img.width*scale),h=Math.round(img.height*scale);
+                            const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+                            canvas.getContext('2d').drawImage(img,0,0,w,h);resolve(canvas.toDataURL('image/png'));return;
+                        }
+                        const source=document.createElement('canvas');source.width=img.width;source.height=img.height;
+                        const sc=source.getContext('2d');sc.drawImage(img,0,0);
+                        const data=sc.getImageData(0,0,source.width,source.height).data;
+                        let minX=source.width,minY=source.height,maxX=-1,maxY=-1;
+                        for(let y=0;y<source.height;y++){for(let x=0;x<source.width;x++){const i=(y*source.width+x)*4;if(data[i+3]>10&&!(data[i]>245&&data[i+1]>245&&data[i+2]>245)){minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x);maxY=Math.max(maxY,y);}}}
+                        const cropX=Math.max(0,minX-24),cropY=Math.max(0,minY-24),cropW=Math.min(source.width-cropX,maxX-minX+49),cropH=Math.min(source.height-cropY,maxY-minY+49);
+                        const MAX=600,scale=Math.min(1,MAX/cropW),w=Math.round(cropW*scale),h=Math.round(cropH*scale);
+                        const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+                        canvas.getContext('2d').drawImage(source,cropX,cropY,cropW,cropH,0,0,w,h);
+                        resolve(canvas.toDataURL('image/png'));
+                    };
+                    img.onerror=reject;img.src=url;
+                });
             }
         };
-
-        // ══════════════════════════════════════════════════════
-        // FIXED PROFIT SHARE LOGIC
-        // ══════════════════════════════════════════════════════
-        function parseProfitRatio(ratioStr) {
-            // "65/35" means you get 65, partner gets 35
-            const parts = (ratioStr||'65/35').split('/');
-            let you = parseInt(parts[0]) || 65;
-            let partner = parseInt(parts[1]) || 35;
-            
-            // Ensure you always get the larger share
-            if (you < partner) {
-                [you, partner] = [partner, you];
-            }
-            
-            return { you, partner };
-        }
 
         // ══════════════════════════════════════════════════════
         // UI MODULE
         // ══════════════════════════════════════════════════════
         const UI = (() => {
             const container = document.getElementById('main-content');
-            let currentRoute = null;
-            let currentParams = {};
 
             function getStatusBadge(status) {
                 const map = { 'Paid':'paid','Sent':'sent','Draft':'draft','Overdue':'overdue','Accepted':'accepted','Rejected':'rejected' };
@@ -894,107 +850,133 @@
             function navigate(route, params={}) {
                 if (!State.user && route !== 'dashboard') return;
                 
+                // Close mobile sidebar on navigation
                 MobileSidebar.close();
-                
-                currentRoute = route;
-                currentParams = params;
                 
                 document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
                 const link = document.querySelector(`[data-route="${route}"]`);
                 if (link) link.classList.add('active');
 
-                const routeMap = { 
-                    dashboard: renderDashboard, 
-                    quotes: () => renderList('quotes'), 
-                    invoices: () => renderList('invoices'), 
-                    clients: renderClients, 
-                    packages: renderPackages, 
-                    settings: renderSettings, 
-                    profit: renderProfit, 
-                    activity: renderActivity, 
-                    form: () => renderForm(params.type, params.id) 
-                };
-                
+                const routeMap = { dashboard:renderDashboard, quotes:()=>renderList('quotes'), invoices:()=>renderList('invoices'), clients:renderClients, packages:renderPackages, settings:renderSettings, profit:renderProfit, activity:renderActivity, form:()=>renderForm(params.type, params.id) };
                 (routeMap[route] || renderDashboard)();
-                setTimeout(() => lucide.createIcons(), 100);
+                setTimeout(() => lucide.createIcons(), 50);
+                
+                // Save current route for auto-refresh
+                window.__currentRoute = route;
             }
 
             // ── DASHBOARD ──────────────────────────────────────────────
             function renderDashboard() {
+                const quotes   = State.quotes   || [];
                 const invoices = State.invoices || [];
                 const clients  = State.clients  || [];
-                const quotes   = State.quotes   || [];
 
                 const totalRevenue = invoices.filter(i => i.status === 'Paid').reduce((a,i) => a+(i.total||0), 0);
                 const totalOutstanding = invoices.filter(i => i.status !== 'Paid' && i.status !== 'Draft').reduce((a,i) => a+(i.total||0), 0);
 
-                let totalYourShare = 0;
+                // Profit calculation
+                let totalProfit = 0, totalYourShare = 0;
                 invoices.filter(i => i.status === 'Paid').forEach(inv => {
                     const sub = (inv.items||[]).reduce((s,it)=>s+(it.qty||0)*(it.price||0),0);
                     const netP = sub - (inv.discount||0);
-                    const ps = inv.profitShare || parseProfitRatio('65/35');
+                    const ps = normalizeProfitShare(inv.profitShare);
+                    totalProfit += netP;
                     totalYourShare += netP * (ps.you/100);
                 });
 
                 const combined = [...quotes.map(q=>({...q,docType:'quote'})), ...invoices.map(i=>({...i,docType:'invoice'}))];
                 const recent = combined.sort((a,b)=>new Date(b.updatedAt||b.date)-new Date(a.updatedAt||a.date)).slice(0,6);
 
+                // Monthly revenue for chart (last 6 months)
+                const now = new Date();
+                const monthlyData = Array.from({length:6},(_,k)=>{
+                    const d = new Date(now.getFullYear(), now.getMonth()-5+k, 1);
+                    const label = d.toLocaleDateString('en-US',{month:'short'});
+                    const val = invoices.filter(i=>{
+                        const id = new Date(i.date);
+                        return id.getMonth()===d.getMonth() && id.getFullYear()===d.getFullYear() && i.status==='Paid';
+                    }).reduce((s,i)=>s+(i.total||0),0);
+                    return { label, val };
+                });
+
+                // Status distribution
+                const statusDist = { Paid:0, Sent:0, Draft:0, Overdue:0 };
+                invoices.forEach(i => { if(statusDist[i.status]!==undefined) statusDist[i.status]++; else statusDist.Draft++; });
+
                 container.innerHTML = `
-                <div class="flex flex-wrap gap-3 items-start justify-between mb-6 sm:mb-8">
+                <div class="flex flex-wrap gap-3 items-start justify-between mb-8">
                     <div>
-                        <h1 class="text-2xl sm:text-3xl font-bold mb-1" style="color:var(--text)">Welcome back 👋</h1>
-                        <p class="text-sm truncate" style="color:var(--text-muted)">${State.user?.email}</p>
+                        <h1 class="text-2xl lg:text-3xl font-bold mb-1" style="color:var(--text)">Welcome back 👋</h1>
+                        <p class="text-sm" style="color:var(--text-muted)">${State.user?.email}</p>
                     </div>
-                    <div class="flex gap-2 flex-shrink-0">
-                        <button class="btn-secondary flex items-center gap-2 py-2.5 text-sm" onclick="UI.navigate('form',{type:'quotes'})">
-                            <i data-lucide="file-text" class="w-4 h-4"></i> <span class="hidden sm:inline">New Quote</span>
+                    <div class="flex flex-wrap gap-2 w-full lg:w-auto">
+                        <button class="btn-secondary flex items-center gap-2 py-2.5 w-full lg:w-auto justify-center" onclick="UI.navigate('form',{type:'quotes'})">
+                            <i data-lucide="file-text" class="w-4 h-4"></i> New Quote
                         </button>
-                        <button class="btn-primary flex items-center gap-2 py-2.5 text-sm" onclick="UI.navigate('form',{type:'invoices'})">
-                            <i data-lucide="plus" class="w-4 h-4"></i> <span class="hidden sm:inline">New Invoice</span>
+                        <button class="btn-primary flex items-center gap-2 py-2.5 w-full lg:w-auto justify-center" onclick="UI.navigate('form',{type:'invoices'})">
+                            <i data-lucide="plus" class="w-4 h-4"></i> New Invoice
                         </button>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
-                    <div class="card stat-card card-lift">
-                        <div class="stat-icon" style="background:rgba(16,185,129,0.12)"><i data-lucide="dollar-sign" class="w-5 h-5" style="color:#10b981"></i></div>
-                        <div class="text-xs font-semibold uppercase tracking-wider mb-1" style="color:var(--text-muted)">Revenue</div>
-                        <div class="text-xl sm:text-2xl font-bold mono truncate" style="color:var(--text)">${fmtCurrency(totalRevenue)}</div>
+                <!-- Stat Cards -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-6">
+                    <div class="card stat-card card-lift p-4 lg:p-6">
+                        <div class="stat-icon w-10 h-10 lg:w-12 lg:h-12" style="background:rgba(16,185,129,0.12)"><i data-lucide="dollar-sign" class="w-5 h-5" style="color:#10b981"></i></div>
+                        <div class="text-xs font-semibold uppercase tracking-wider mb-1" style="color:var(--text-muted)">Total Revenue</div>
+                        <div class="text-xl lg:text-2xl font-bold mono" style="color:var(--text)">${fmtCurrency(totalRevenue)}</div>
+                        <div class="text-xs mt-1" style="color:#10b981">From paid invoices</div>
                     </div>
-                    <div class="card stat-card card-lift">
-                        <div class="stat-icon" style="background:rgba(139,92,246,0.12)"><i data-lucide="trending-up" class="w-5 h-5" style="color:var(--purple-text)"></i></div>
+                    <div class="card stat-card card-lift p-4 lg:p-6">
+                        <div class="stat-icon w-10 h-10 lg:w-12 lg:h-12" style="background:rgba(139,92,246,0.12)"><i data-lucide="trending-up" class="w-5 h-5" style="color:var(--purple-text)"></i></div>
                         <div class="text-xs font-semibold uppercase tracking-wider mb-1" style="color:var(--text-muted)">Your Profit</div>
-                        <div class="text-xl sm:text-2xl font-bold mono truncate" style="color:var(--text)">${fmtCurrency(totalYourShare)}</div>
+                        <div class="text-xl lg:text-2xl font-bold mono" style="color:var(--text)">${fmtCurrency(totalYourShare)}</div>
+                        <div class="text-xs mt-1" style="color:var(--purple-text)">After profit split</div>
                     </div>
-                    <div class="card stat-card card-lift">
-                        <div class="stat-icon" style="background:rgba(245,158,11,0.12)"><i data-lucide="clock" class="w-5 h-5" style="color:#f59e0b"></i></div>
+                    <div class="card stat-card card-lift p-4 lg:p-6">
+                        <div class="stat-icon w-10 h-10 lg:w-12 lg:h-12" style="background:rgba(245,158,11,0.12)"><i data-lucide="clock" class="w-5 h-5" style="color:#f59e0b"></i></div>
                         <div class="text-xs font-semibold uppercase tracking-wider mb-1" style="color:var(--text-muted)">Outstanding</div>
-                        <div class="text-xl sm:text-2xl font-bold mono truncate" style="color:var(--text)">${fmtCurrency(totalOutstanding)}</div>
+                        <div class="text-xl lg:text-2xl font-bold mono" style="color:var(--text)">${fmtCurrency(totalOutstanding)}</div>
+                        <div class="text-xs mt-1" style="color:#f59e0b">${invoices.filter(i=>i.status!=='Paid'&&i.status!=='Draft').length} invoices pending</div>
                     </div>
-                    <div class="card stat-card card-lift">
-                        <div class="stat-icon" style="background:rgba(59,130,246,0.12)"><i data-lucide="users" class="w-5 h-5" style="color:#3b82f6"></i></div>
-                        <div class="text-xs font-semibold uppercase tracking-wider mb-1" style="color:var(--text-muted)">Clients</div>
-                        <div class="text-xl sm:text-2xl font-bold mono" style="color:var(--text)">${clients.length}</div>
+                    <div class="card stat-card card-lift p-4 lg:p-6">
+                        <div class="stat-icon w-10 h-10 lg:w-12 lg:h-12" style="background:rgba(59,130,246,0.12)"><i data-lucide="users" class="w-5 h-5" style="color:#3b82f6"></i></div>
+                        <div class="text-xs font-semibold uppercase tracking-wider mb-1" style="color:var(--text-muted)">Active Clients</div>
+                        <div class="text-xl lg:text-2xl font-bold mono" style="color:var(--text)">${clients.length}</div>
+                        <div class="text-xs mt-1" style="color:#3b82f6">${quotes.length} quotes · ${invoices.length} invoices</div>
                     </div>
                 </div>
 
+                <!-- Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+                    <div class="card p-6 lg:col-span-2">
+                        <h3 class="font-semibold mb-4" style="color:var(--text)">Monthly Revenue</h3>
+                        <div class="chart-wrap" style="height:200px"><canvas id="revenue-chart"></canvas></div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="font-semibold mb-4" style="color:var(--text)">Invoice Status</h3>
+                        <div class="chart-wrap" style="height:200px"><canvas id="status-chart"></canvas></div>
+                    </div>
+                </div>
+
+                <!-- Recent Docs -->
                 <div class="card overflow-hidden">
-                    <div class="flex justify-between items-center p-4 sm:p-5 border-b" style="border-color:var(--border)">
+                    <div class="flex justify-between items-center p-5 border-b" style="border-color:var(--border)">
                         <h3 class="font-semibold" style="color:var(--text)">Recent Documents</h3>
                         <button class="text-sm font-semibold hover:underline" style="color:var(--purple-text);background:none;border:none;cursor:pointer" onclick="UI.navigate('invoices')">View All</button>
                     </div>
-                    <div class="table-responsive">
+                    <div class="overflow-x-auto">
                     <table class="w-full">
                         <thead style="background:var(--surface-2)">
-                            <tr><th class="text-left">Document</th><th class="text-left">Client</th><th class="text-left hidden sm:table-cell">Date</th><th class="text-left">Amount</th><th class="text-left">Status</th></tr>
+                            <tr><th class="text-left">Document</th><th class="text-left">Client</th><th class="text-left">Date</th><th class="text-left">Amount</th><th class="text-left">Status</th></tr>
                         </thead>
                         <tbody>
                         ${recent.map(d => `
                             <tr class="cursor-pointer" onclick="UI.navigate('form',{type:'${d.docType}s',id:'${d.id}'})">
                                 <td><span class="mono text-xs font-medium" style="color:var(--purple-text)">${d.number}</span></td>
-                                <td class="truncate max-w-[120px]" style="color:var(--text-mid)">${d.clientName||'—'}</td>
-                                <td class="mono text-xs hidden sm:table-cell" style="color:var(--text-muted)">${d.date||'—'}</td>
-                                <td class="font-semibold mono text-sm">${fmtCurrency(d.total||0)}</td>
+                                <td style="color:var(--text-mid)">${d.clientName||'—'}</td>
+                                <td style="color:var(--text-muted)">${d.date||'—'}</td>
+                                <td class="font-semibold mono">${fmtCurrency(d.total||0)}</td>
                                 <td>${getStatusBadge(d.status)}</td>
                             </tr>`).join('')}
                         ${!recent.length ? `<tr><td colspan="5" style="text-align:center;padding:3rem;color:var(--text-muted)">No documents yet. Create your first invoice!</td></tr>` : ''}
@@ -1002,8 +984,39 @@
                     </table>
                     </div>
                 </div>`;
-                
-                setTimeout(() => lucide.createIcons(), 100);
+
+                setTimeout(() => {
+                    lucide.createIcons();
+                    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                    const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+                    const tickColor = isDark ? '#64748b' : '#94a3b8';
+
+                    // Revenue chart
+                    const rCtx = document.getElementById('revenue-chart')?.getContext('2d');
+                    if (rCtx) {
+                        new Chart(rCtx, {
+                            type: 'bar',
+                            data: {
+                                labels: monthlyData.map(m => m.label),
+                                datasets: [{ label: 'Revenue', data: monthlyData.map(m => m.val), backgroundColor: 'rgba(139,92,246,0.8)', borderRadius: 6, borderSkipped: false }]
+                            },
+                            options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{grid:{color:gridColor},ticks:{color:tickColor,font:{size:11}}}, y:{grid:{color:gridColor},ticks:{color:tickColor,font:{size:11},callback:v=>'Rs.'+Intl.NumberFormat('en',{notation:'compact'}).format(v)}}} }
+                        });
+                    }
+
+                    // Status chart
+                    const sCtx = document.getElementById('status-chart')?.getContext('2d');
+                    if (sCtx) {
+                        new Chart(sCtx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: Object.keys(statusDist),
+                                datasets: [{ data: Object.values(statusDist), backgroundColor: ['#10b981','#3b82f6','#94a3b8','#ef4444'], borderWidth: 0, borderRadius: 4 }]
+                            },
+                            options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'bottom',labels:{color:tickColor,font:{size:11},boxWidth:10,padding:12}}} }
+                        });
+                    }
+                }, 100);
             }
 
             // ── LIST VIEW ──────────────────────────────────────────────
@@ -1013,60 +1026,60 @@
 
                 container.innerHTML = `
                 <div class="flex flex-wrap gap-3 items-center justify-between mb-6">
-                    <h1 class="text-xl sm:text-2xl font-bold" style="color:var(--text)">${type==='quotes'?'Quotations':'Invoices'}</h1>
-                    <button class="btn-primary flex items-center gap-2 py-2.5 text-sm" onclick="UI.navigate('form',{type:'${type}'})">
+                    <h1 class="text-xl lg:text-2xl font-bold" style="color:var(--text)">${type==='quotes'?'Quotations':'Invoices'}</h1>
+                    <button class="btn-primary flex items-center gap-2 py-2.5 w-full lg:w-auto justify-center" onclick="UI.navigate('form',{type:'${type}'})">
                         <i data-lucide="plus" class="w-4 h-4"></i> New ${label}
                     </button>
                 </div>
 
-                <div class="card p-3 sm:p-4 mb-4">
-                    <div class="flex flex-wrap gap-2 sm:gap-3 items-center">
-                        <div class="relative flex-1 min-w-[160px]">
-                            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2" style="color:var(--text-muted)"></i>
-                            <input type="text" id="list-search" placeholder="Search..." class="input-field pl-9 py-2 text-sm">
-                        </div>
-                        <select id="list-status-filter" class="input-field w-auto py-2 text-sm" style="max-width:140px">
-                            <option value="">All Status</option>
-                            ${type==='invoices' ? `<option>Draft</option><option>Sent</option><option>Paid</option><option>Overdue</option>` : `<option>Draft</option><option>Sent</option><option>Accepted</option><option>Rejected</option>`}
-                        </select>
+                <!-- Filters -->
+                <div class="card p-4 mb-4 flex flex-wrap gap-3 items-center">
+                    <div class="relative flex-1 min-w-[180px]">
+                        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2" style="color:var(--text-muted)"></i>
+                        <input type="text" id="list-search" placeholder="Search number or client…" class="input-field pl-9 py-2">
                     </div>
+                    <select id="list-status-filter" class="input-field w-auto py-2 min-w-[120px]">
+                        <option value="">All Status</option>
+                        ${type==='invoices' ? `<option>Draft</option><option>Sent</option><option>Paid</option><option>Overdue</option>` : `<option>Draft</option><option>Sent</option><option>Accepted</option><option>Rejected</option>`}
+                    </select>
+                    <select id="list-sort" class="input-field w-auto py-2 min-w-[140px]">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="highest">Highest Value</option>
+                        <option value="lowest">Lowest Value</option>
+                    </select>
                 </div>
 
                 ${!items.length ? `
-                <div class="empty-state flex flex-col items-center justify-center py-16 sm:py-24 text-center px-4">
+                <div class="empty-state flex flex-col items-center justify-center py-16 lg:py-24 text-center px-4">
                     <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4" style="background:var(--hover-bg)">
                         <i data-lucide="file-plus" class="w-8 h-8" style="color:var(--text-muted)"></i>
                     </div>
                     <h3 class="text-lg font-semibold mb-2" style="color:var(--text)">No ${type} yet</h3>
-                    <button class="btn-primary py-2.5" onclick="UI.navigate('form',{type:'${type}'})">Create ${label}</button>
+                    <p class="text-sm max-w-xs mb-6" style="color:var(--text-muted)">Create your first ${label.toLowerCase()} to get started.</p>
+                    <button class="btn-primary py-2.5 w-full lg:w-auto" onclick="UI.navigate('form',{type:'${type}'})">Create ${label}</button>
                 </div>` : `
                 <div class="card overflow-hidden">
-                    <div class="table-responsive">
+                    <div class="overflow-x-auto">
                     <table class="w-full">
                         <thead style="background:var(--surface-2)">
-                            <tr>
-                                <th class="text-left">Number</th>
-                                <th class="text-left">Client</th>
-                                <th class="text-left hidden sm:table-cell">Date</th>
-                                <th class="text-left">Total</th>
-                                <th class="text-left">Status</th>
-                                <th class="text-right">Actions</th>
-                            </tr>
+                            <tr><th class="text-left">Number</th><th class="text-left">Client</th><th class="text-left">Date</th><th class="text-left">Total</th><th class="text-left">Status</th><th class="text-right">Actions</th></tr>
                         </thead>
                         <tbody id="list-tbody">
                         ${items.map(d => `
-                            <tr data-status="${d.status}" data-number="${(d.number||'').toLowerCase()}" data-client="${(d.clientName||'').toLowerCase()}">
+                            <tr data-status="${d.status}" data-number="${(d.number||'').toLowerCase()}" data-client="${(d.clientName||'').toLowerCase()}" data-total="${d.total||0}" data-date="${d.date||''}">
                                 <td><span class="mono text-xs font-medium" style="color:var(--purple-text)">${d.number}</span></td>
-                                <td class="truncate max-w-[100px]" style="color:var(--text-mid)">${d.clientName||'—'}</td>
-                                <td class="mono text-xs hidden sm:table-cell" style="color:var(--text-muted)">${d.date||'—'}</td>
+                                <td style="color:var(--text-mid)">${d.clientName||'—'}</td>
+                                <td class="mono text-xs" style="color:var(--text-muted)">${d.date||'—'}</td>
                                 <td class="font-semibold mono text-sm">${fmtCurrency(d.total||0)}</td>
                                 <td>${getStatusBadge(d.status)}</td>
                                 <td class="text-right">
                                     <div class="flex items-center justify-end gap-1">
-                                        <button onclick="event.stopPropagation();UI.navigate('form',{type:'${type}',id:'${d.id}'})" class="action-btn" title="Edit"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-                                        <button onclick="event.stopPropagation();generatePDF('${type}','${d.id}')" class="action-btn" title="PDF"><i data-lucide="file-down" class="w-4 h-4"></i></button>
-                                        <button onclick="event.stopPropagation();duplicateDocument('${type}','${d.id}')" class="action-btn" title="Duplicate"><i data-lucide="copy" class="w-4 h-4"></i></button>
-                                        <button onclick="event.stopPropagation();deleteDocument('${type}','${d.id}')" class="action-btn" title="Delete"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                        <button onclick="UI.navigate('form',{type:'${type}',id:'${d.id}'})" class="action-btn" title="Edit"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+                                        <button onclick="generatePDF('${type}','${d.id}')" class="action-btn" title="PDF"><i data-lucide="file-down" class="w-4 h-4"></i></button>
+                                        <button onclick="duplicateDocument('${type}','${d.id}')" class="action-btn" title="Duplicate"><i data-lucide="copy" class="w-4 h-4"></i></button>
+                                        ${type==='invoices' ? `<button onclick="sendDocument('${d.id}')" class="action-btn" title="Send"><i data-lucide="send" class="w-4 h-4"></i></button>` : ''}
+                                        <button onclick="deleteDocument('${type}','${d.id}')" class="action-btn" title="Delete" style="--hover-color:#ef4444"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                                     </div>
                                 </td>
                             </tr>`).join('')}
@@ -1075,29 +1088,42 @@
                     </div>
                 </div>`}`;
 
-                setTimeout(() => {
-                    lucide.createIcons();
-                    const searchInput = document.getElementById('list-search');
-                    const statusFilter = document.getElementById('list-status-filter');
-                    const applyFilters = () => {
-                        const search = (searchInput?.value || '').toLowerCase();
-                        const status = statusFilter?.value || '';
-                        document.querySelectorAll('#list-tbody tr').forEach(row => {
-                            row.style.display = (!search || row.dataset.number.includes(search) || row.dataset.client.includes(search)) && (!status || row.dataset.status === status) ? '' : 'none';
-                        });
+                // Filter / sort logic
+                function applyFilters() {
+                    const search = (document.getElementById('list-search')?.value || '').toLowerCase();
+                    const status = document.getElementById('list-status-filter')?.value || '';
+                    const sort   = document.getElementById('list-sort')?.value || 'newest';
+                    const rows   = Array.from(document.querySelectorAll('#list-tbody tr'));
+
+                    rows.forEach(row => {
+                        const matchSearch = !search || row.dataset.number.includes(search) || row.dataset.client.includes(search);
+                        const matchStatus = !status || row.dataset.status === status;
+                        row.style.display = (matchSearch && matchStatus) ? '' : 'none';
+                    });
+
+                    const visible = rows.filter(r => r.style.display !== 'none');
+                    const tbody = document.getElementById('list-tbody');
+                    if (!tbody) return;
+                    const sortFns = {
+                        newest: (a,b) => new Date(b.dataset.date) - new Date(a.dataset.date),
+                        oldest: (a,b) => new Date(a.dataset.date) - new Date(b.dataset.date),
+                        highest: (a,b) => b.dataset.total - a.dataset.total,
+                        lowest:  (a,b) => a.dataset.total - b.dataset.total
                     };
-                    searchInput?.addEventListener('input', applyFilters);
-                    statusFilter?.addEventListener('change', applyFilters);
-                }, 100);
+                    visible.sort(sortFns[sort] || sortFns.newest).forEach(r => tbody.appendChild(r));
+                }
+
+                document.getElementById('list-search')?.addEventListener('input', applyFilters);
+                document.getElementById('list-status-filter')?.addEventListener('change', applyFilters);
+                document.getElementById('list-sort')?.addEventListener('change', applyFilters);
             }
 
-            // ── FORM WITH PROPER PROFIT SPLIT ──────────────────────────
+            // ── FORM (Invoice / Quote) ─────────────────────────────────
             function renderForm(type, id=null) {
                 const collection = type==='quotes' ? State.quotes : State.invoices;
-                const settings = State.settings || { company:{ currencySymbol:'Rs.' }, profit:{ defaultRatio:'65/35', partnerALabel:'You', partnerBLabel:'Partner' } };
+                const settings = State.settings || { company:{ currencySymbol:'Rs.' } };
                 const clients  = State.clients  || [];
                 const packages = State.packages || [];
-                const isInvoice = type === 'invoices';
                 const defaultProfit = settings.profit || { defaultRatio:'65/35', partnerALabel:'You', partnerBLabel:'Partner' };
 
                 let doc = id ? collection.find(d=>d.id===id) : {
@@ -1108,30 +1134,27 @@
                     discount:0, advance:0, notes:'', total:0,
                     profitShare: parseProfitRatio(defaultProfit.defaultRatio||'65/35')
                 };
-                if (!doc) { container.innerHTML = `<p style="color:var(--text-muted);text-align:center;padding:3rem;">Document not found.</p>`; return; }
+                if (!doc) { container.innerHTML = `<p style="color:var(--text-muted)">Document not found.</p>`; return; }
 
                 const sym = settings.company?.currencySymbol || 'Rs.';
-                
-                // Ensure profit share is properly set
-                let currentProfitShare = doc.profitShare || parseProfitRatio(defaultProfit.defaultRatio || '65/35');
-                // Make sure you always get the larger share
-                if (currentProfitShare.you < currentProfitShare.partner) {
-                    [currentProfitShare.you, currentProfitShare.partner] = [currentProfitShare.partner, currentProfitShare.you];
-                }
+                const isInvoice = type === 'invoices';
+                const currentProfitShare = normalizeProfitShare(doc.profitShare || parseProfitRatio(defaultProfit.defaultRatio || '65/35'));
                 const currentRatio = `${currentProfitShare.you}/${currentProfitShare.partner}`;
 
                 container.innerHTML = `
                 <div class="flex items-center gap-3 mb-6">
                     <button onclick="UI.navigate('${type}')" class="action-btn p-2 rounded-xl" style="border:1px solid var(--border)"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
                     <div>
-                        <h1 class="text-xl sm:text-2xl font-bold" style="color:var(--text)">${id?'Edit':'New'} ${type==='quotes'?'Quotation':'Invoice'}</h1>
+                        <h1 class="text-2xl font-bold" style="color:var(--text)">${id?'Edit':'New'} ${type==='quotes'?'Quotation':'Invoice'}</h1>
                         <span class="mono text-sm" style="color:var(--text-muted)">#${doc.number}</span>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
-                    <div class="lg:col-span-7 space-y-4">
-                        <div class="card p-4 sm:p-5 space-y-4">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
+                    <!-- Left Form -->
+                    <div class="lg:col-span-7 space-y-3 lg:space-y-4">
+                        <!-- Client & Dates -->
+                        <div class="card p-4 lg:p-5 space-y-3 lg:space-y-4">
                             <div>
                                 <label class="form-label">Client</label>
                                 <select id="form-client" class="input-field">
@@ -1139,108 +1162,174 @@
                                     ${clients.map(c=>`<option value="${c.id}" data-name="${c.contactName}" data-email="${c.email||''}" ${doc.clientId===c.id?'selected':''}>${c.contactName}${c.companyName?` (${c.companyName})`:''}</option>`).join('')}
                                 </select>
                             </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div><label class="form-label">Issue Date</label><input type="date" id="form-date" class="input-field" value="${doc.date}"></div>
-                                <div><label class="form-label">Due Date</label><input type="date" id="form-due-date" class="input-field" value="${doc.dueDate}"></div>
+                            <div class="grid grid-cols-2 gap-3 lg:gap-4">
+                                <div>
+                                    <label class="form-label">Issue Date</label>
+                                    <input type="date" id="form-date" class="input-field" value="${doc.date}">
+                                </div>
+                                <div>
+                                    <label class="form-label">Due Date</label>
+                                    <input type="date" id="form-due-date" class="input-field" value="${doc.dueDate}">
+                                </div>
                             </div>
-                            <div><label class="form-label">Status</label><select id="form-status" class="input-field">${isInvoice?['Draft','Sent','Paid','Overdue'].map(s=>`<option ${doc.status===s?'selected':''}>${s}</option>`).join(''):['Draft','Sent','Accepted','Rejected'].map(s=>`<option ${doc.status===s?'selected':''}>${s}</option>`).join('')}</select></div>
+                            <div>
+                                <label class="form-label">Status</label>
+                                <select id="form-status" class="input-field">
+                                    ${isInvoice ?
+                                        ['Draft','Sent','Paid','Overdue'].map(s=>`<option ${doc.status===s?'selected':''}>${s}</option>`).join('') :
+                                        ['Draft','Sent','Accepted','Rejected'].map(s=>`<option ${doc.status===s?'selected':''}>${s}</option>`).join('')}
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="card p-4 sm:p-5">
+                        <!-- Line Items -->
+                        <div class="card p-4 lg:p-5">
                             <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
                                 <label class="form-label mb-0">Line Items</label>
-                                <div class="flex flex-wrap gap-2">
-                                    <select id="package-selector" class="input-field text-sm py-1.5 w-auto"><option value="">Add package…</option>${packages.map(p=>`<option value="${p.id}" data-price="${p.price}" data-name="${p.name}">${p.name} — ${sym}${p.price}</option>`).join('')}</select>
-                                    <button id="add-package-btn" class="btn-secondary py-1.5 text-sm">Add</button>
-                                    <button id="add-item-btn" class="btn-primary py-1.5 text-sm flex items-center gap-1"><i data-lucide="plus" class="w-3 h-3"></i> Custom</button>
+                                <div class="flex flex-wrap gap-2 w-full">
+                                    <select id="package-selector" class="input-field text-sm py-2 w-auto flex-1 lg:flex-none min-w-[140px]">
+                                        <option value="">Add package…</option>
+                                        ${packages.map(p=>`<option value="${p.id}" data-price="${p.price}" data-name="${p.name}">${p.name} — ${sym}${p.price}</option>`).join('')}
+                                    </select>
+                                    <button id="add-package-btn" class="btn-secondary py-2 text-sm">Add</button>
+                                    <button id="add-item-btn" class="btn-primary py-2 text-sm flex items-center gap-1"><i data-lucide="plus" class="w-3 h-3"></i> Custom</button>
                                 </div>
                             </div>
                             <div id="items-container" class="space-y-2"></div>
                         </div>
 
-                        <div class="card p-4 sm:p-5">
-                            <h4 class="font-semibold mb-3 text-sm" style="color:var(--text)">Adjustments</h4>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div><label class="form-label">Discount (${sym})</label><input type="number" id="form-discount" class="input-field" value="${doc.discount||0}" min="0" step="100"></div>
-                                <div><label class="form-label">Advance (${sym})</label><input type="number" id="form-advance" class="input-field" value="${doc.advance||0}" min="0" step="100"></div>
+                        <!-- Financial Adjustments -->
+                        <div class="card p-4 lg:p-5">
+                            <h4 class="font-semibold mb-3 text-sm" style="color:var(--text)">Financial Adjustments</h4>
+                            <div class="grid grid-cols-2 gap-3 lg:gap-4">
+                                <div>
+                                    <label class="form-label">Discount (${sym})</label>
+                                    <input type="number" id="form-discount" class="input-field" value="${doc.discount||0}" min="0" step="100">
+                                </div>
+                                <div>
+                                    <label class="form-label">Advance Paid (${sym})</label>
+                                    <input type="number" id="form-advance" class="input-field" value="${doc.advance||0}" min="0" step="100">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Totals -->
+                        <div class="card p-4 lg:p-5">
+                            <div class="flex justify-end">
+                                <div class="w-full lg:w-64 space-y-2">
+                                    <div class="flex justify-between text-sm"><span style="color:var(--text-muted)">Subtotal</span><span class="mono font-medium" style="color:var(--text)" id="preview-subtotal">0.00</span></div>
+                                    <div class="flex justify-between text-sm"><span style="color:var(--text-muted)">Discount</span><span class="mono font-medium" style="color:var(--text)" id="preview-discount">0.00</span></div>
+                                    <div class="flex justify-between text-sm"><span style="color:var(--text-muted)">Advance</span><span class="mono font-medium" style="color:var(--text)" id="preview-advance">0.00</span></div>
+                                    <div class="flex justify-between font-bold text-base border-t pt-3" style="border-color:var(--border)">
+                                        <span style="color:var(--text)">Total Due</span>
+                                        <span class="mono" style="color:var(--purple-text)" id="preview-total">0.00</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         ${isInvoice ? `
-                        <!-- PROFIT SPLIT - Internal only, NOT shown on PDF -->
-                        <div class="card p-4 sm:p-5">
+                        <!-- Profit Ratio -->
+                        <div class="card p-4 lg:p-5">
                             <div class="flex items-center justify-between mb-3">
-                                <h4 class="font-semibold text-sm" style="color:var(--text)">Profit Split (Internal Only)</h4>
-                                <span class="text-xs px-2 py-1 rounded-full" style="background:var(--purple-soft);color:var(--purple-text)">Not shown on invoice</span>
+                                <h4 class="font-semibold text-sm" style="color:var(--text)">Profit Ratio</h4>
+                                <span class="text-xs px-2 py-1 rounded-full" style="background:var(--purple-soft);color:var(--purple-text)">Revenue Sharing</span>
                             </div>
-                            <p class="text-xs mb-4" style="color:var(--text-muted)">This is for your records only. The larger percentage is always your share.</p>
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <button class="profit-ratio-btn ${currentRatio==='65/35'?'selected':''}" data-ratio="65/35">65/35 (You/Partner)</button>
-                                <button class="profit-ratio-btn ${currentRatio==='60/40'?'selected':''}" data-ratio="60/40">60/40 (You/Partner)</button>
+                                ${['65/35','60/40'].map(r=>`
+                                <button class="profit-ratio-btn ${currentRatio===r?'selected':''}" data-ratio="${r}">${r}</button>`).join('')}
                             </div>
-                            <div class="grid grid-cols-2 gap-4 p-4 rounded-xl" style="background:var(--surface-2)">
+                            <div class="grid grid-cols-2 gap-3 lg:gap-4 p-3 lg:p-4 rounded-xl" style="background:var(--surface-2)">
                                 <div>
-                                    <div class="text-xs font-medium mb-1" style="color:var(--text-muted)">${defaultProfit.partnerALabel||'You'} (${currentProfitShare.you}%)</div>
+                                    <div class="text-xs font-medium mb-1" style="color:var(--text-muted)">${defaultProfit.partnerALabel||'You'}</div>
                                     <div class="text-lg font-bold mono" style="color:#10b981" id="profit-you">—</div>
                                 </div>
                                 <div>
-                                    <div class="text-xs font-medium mb-1" style="color:var(--text-muted)">${defaultProfit.partnerBLabel||'Partner'} (${currentProfitShare.partner}%)</div>
+                                    <div class="text-xs font-medium mb-1" style="color:var(--text-muted)">${defaultProfit.partnerBLabel||'Partner'}</div>
                                     <div class="text-lg font-bold mono" style="color:var(--purple-text)" id="profit-partner">—</div>
                                 </div>
                             </div>
                         </div>` : ''}
 
-                        <div class="card p-4 sm:p-5">
+                        <!-- Notes -->
+                        <div class="card p-4 lg:p-5">
                             <label class="form-label">Notes</label>
-                            <textarea id="form-notes" class="input-field" rows="2" placeholder="Additional notes…">${doc.notes||''}</textarea>
+                            <textarea id="form-notes" class="input-field" rows="3" placeholder="Additional notes…">${doc.notes||''}</textarea>
                         </div>
 
+                        <!-- Actions -->
                         <div class="flex flex-wrap gap-2 justify-end pb-8">
-                            <button onclick="UI.navigate('${type}')" class="btn-secondary py-2.5 text-sm">Cancel</button>
-                            <button onclick="saveAndGeneratePDF('${type}','${doc.id}')" class="btn-secondary py-2.5 text-sm" style="color:var(--purple-text);border-color:var(--purple-mid)">Save & PDF</button>
-                            <button id="save-doc-btn" class="btn-primary py-2.5 px-6 text-sm">Save</button>
+                            <button onclick="UI.navigate('${type}')" class="btn-secondary py-2.5">Cancel</button>
+                            <button onclick="saveAndGeneratePDF('${type}','${doc.id}')" class="btn-secondary py-2.5" style="color:var(--purple-text);border-color:var(--purple-mid)">Save &amp; PDF</button>
+                            <button id="save-doc-btn" class="btn-primary py-2.5 px-6">Save to Firebase</button>
                         </div>
                     </div>
 
+                    <!-- Right Preview -->
                     <div class="lg:col-span-5">
-                        <div class="preview-pane p-6 sm:p-8 mb-6 lg:mb-0">
-                            <div class="flex justify-between items-start mb-6 sm:mb-10">
-                                <div><div class="text-lg sm:text-xl font-bold" style="color:var(--text)">${settings.company?.name||'Hexo Creative'}</div></div>
-                                <div class="text-right"><div class="font-bold mono text-sm" style="color:var(--text)">#${doc.number}</div></div>
+                        <div class="preview-pane p-4 lg:p-8">
+                            <div class="flex justify-between items-start mb-6 lg:mb-10">
+                                <div>
+                                    <div class="text-lg lg:text-xl font-bold" style="color:var(--text)">${settings.company?.name||'Hexo Creative'}</div>
+                                    <div class="text-xs mt-1" style="color:var(--text-muted)">${settings.company?.address||''}</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-xs" style="color:var(--text-muted)">Number</div>
+                                    <div class="font-bold mono text-sm" style="color:var(--text)">#${doc.number}</div>
+                                </div>
                             </div>
-                            <div class="mb-6 sm:mb-8"><div class="text-lg sm:text-xl font-bold" style="color:var(--text)" id="preview-client">${doc.clientName||'—'}</div></div>
-                            <table class="w-full mb-6 sm:mb-8">
-                                <thead style="border-bottom:2px solid var(--border)"><tr class="text-left text-xs uppercase font-bold" style="color:var(--text-muted)"><th class="py-3">Item</th><th class="py-3 text-right">Total</th></tr></thead>
+                            <div class="mb-6 lg:mb-8">
+                                <div class="text-xs font-bold uppercase tracking-wider mb-1" style="color:var(--purple-text)">Billed To</div>
+                                <div class="text-lg lg:text-xl font-bold" style="color:var(--text)" id="preview-client">${doc.clientName||'—'}</div>
+                            </div>
+                            <table class="w-full mb-6 lg:mb-8">
+                                <thead style="border-bottom:2px solid var(--border)">
+                                    <tr class="text-left text-xs uppercase font-bold" style="color:var(--text-muted)">
+                                        <th class="py-3">Item</th><th class="py-3 text-right">Total</th>
+                                    </tr>
+                                </thead>
                                 <tbody id="preview-items"></tbody>
                             </table>
-                            <div class="flex justify-end pt-5 border-t" style="border-color:var(--border)"><div class="text-right"><div class="text-3xl sm:text-4xl font-black mono" style="color:var(--purple-text)" id="preview-total-large">0.00</div></div></div>
+                            <div class="flex justify-end pt-5 border-t" style="border-color:var(--border)">
+                                <div class="text-right">
+                                    <div class="text-xs mb-1" style="color:var(--text-muted)">Amount Due</div>
+                                    <div class="text-3xl lg:text-4xl font-black mono" style="color:var(--purple-text)" id="preview-total-large">0.00</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>`;
 
+                // Add form-label styling
                 document.querySelectorAll('.form-label').forEach(el => {
                     el.style.cssText = 'display:block;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:5px';
                 });
 
+                // Item management
                 let items = doc.items?.map(it=>({...it,id:it.id||crypto.randomUUID()})) || [];
-                
+                let selectedRatio = currentProfitShare;
+
                 function renderItems() {
                     const c = document.getElementById('items-container');
-                    if (!c) return;
                     c.innerHTML = items.map(it => `
-                    <div class="flex gap-2 items-center" data-id="${it.id}">
+                    <div class="flex gap-2 items-center group" data-id="${it.id}">
                         <div class="flex-1"><input type="text" placeholder="Description" class="input-field item-desc text-sm" value="${it.description||''}"></div>
-                        <div class="w-14 sm:w-16"><input type="number" placeholder="Qty" class="input-field item-qty text-sm text-center" value="${it.qty||1}" min="1"></div>
-                        <div class="w-24 sm:w-28"><input type="number" placeholder="Price" class="input-field item-price text-sm" value="${it.price||0}" min="0" step="100"></div>
+                        <div class="w-16"><input type="number" placeholder="Qty" class="input-field item-qty text-sm text-center" value="${it.qty||1}" min="1"></div>
+                        <div class="w-28"><input type="number" placeholder="Price" class="input-field item-price text-sm" value="${it.price||0}" min="0" step="100"></div>
                         <button class="action-btn remove-item shrink-0"><i data-lucide="x" class="w-4 h-4"></i></button>
                     </div>`).join('');
                     lucide.createIcons();
+                    attachItemEvents();
+                    updatePreview();
+                }
+
+                function attachItemEvents() {
                     document.querySelectorAll('.item-desc,.item-qty,.item-price').forEach(el => el.addEventListener('input', updatePreview));
                     document.querySelectorAll('.remove-item').forEach(btn => btn.addEventListener('click', function() {
-                        items = items.filter(i => i.id !== this.closest('[data-id]').dataset.id);
+                        const id = this.closest('[data-id]').dataset.id;
+                        items = items.filter(i => i.id !== id);
                         renderItems();
                     }));
-                    updatePreview();
                 }
 
                 function updatePreview() {
@@ -1256,11 +1345,16 @@
 
                     const subtotal = items.reduce((s,i) => s+(i.qty*i.price), 0);
                     const discount = Math.min(parseFloat(document.getElementById('form-discount')?.value)||0, subtotal);
-                    const advance = Math.min(parseFloat(document.getElementById('form-advance')?.value)||0, subtotal-discount);
-                    const total = Math.max(0, subtotal - discount - advance);
-                    const fmt = n => sym + ' ' + new Intl.NumberFormat('en-US',{minimumFractionDigits:2}).format(n);
+                    const advance  = Math.min(parseFloat(document.getElementById('form-advance')?.value)||0, subtotal-discount);
+                    const total    = Math.max(0, subtotal - discount - advance);
 
+                    const fmt = n => sym + ' ' + new Intl.NumberFormat('en-US',{minimumFractionDigits:2}).format(n);
+                    document.getElementById('preview-subtotal').textContent = fmt(subtotal);
+                    document.getElementById('preview-discount').textContent = fmt(discount);
+                    document.getElementById('preview-advance').textContent  = fmt(advance);
+                    document.getElementById('preview-total').textContent    = fmt(total);
                     document.getElementById('preview-total-large').textContent = fmt(total);
+
                     document.getElementById('preview-items').innerHTML = items.map(i => `
                     <tr style="border-top:1px solid var(--border)">
                         <td style="padding:10px 0;color:var(--text-mid);font-size:0.85rem">${i.description||'…'} ×${i.qty}</td>
@@ -1268,23 +1362,34 @@
                     </tr>`).join('');
 
                     const sel = document.getElementById('form-client');
-                    document.getElementById('preview-client').textContent = sel?.selectedOptions[0]?.dataset?.name || '—';
+                    const opt = sel?.selectedOptions[0];
+                    document.getElementById('preview-client').textContent = opt?.dataset?.name || '—';
 
-                    // Update profit preview (internal only)
+                    // Profit preview
                     if (isInvoice) {
                         const netP = subtotal - discount;
-                        document.getElementById('profit-you').textContent = fmt(netP * (currentProfitShare.you/100));
-                        document.getElementById('profit-partner').textContent = fmt(netP * (currentProfitShare.partner/100));
+                        const pYou     = document.getElementById('profit-you');
+                        const pPartner = document.getElementById('profit-partner');
+                        if (pYou && pPartner) {
+                            pYou.textContent     = fmt(netP * (selectedRatio.you/100));
+                            pPartner.textContent = fmt(netP * (selectedRatio.partner/100));
+                        }
+                    }
+
+                    // Auto status: mark as Paid if total = 0 and subtotal > 0
+                    if (isInvoice && total === 0 && subtotal > 0) {
+                        const statusSel = document.getElementById('form-status');
+                        if (statusSel && statusSel.value !== 'Paid') statusSel.value = 'Paid';
                     }
                 }
 
-                // Profit ratio button handlers
+                // Profit ratio buttons
                 if (isInvoice) {
                     document.querySelectorAll('.profit-ratio-btn').forEach(btn => {
                         btn.addEventListener('click', () => {
                             document.querySelectorAll('.profit-ratio-btn').forEach(b => b.classList.remove('selected'));
                             btn.classList.add('selected');
-                            currentProfitShare = parseProfitRatio(btn.dataset.ratio);
+                            selectedRatio = parseProfitRatio(btn.dataset.ratio);
                             updatePreview();
                         });
                     });
@@ -1307,17 +1412,26 @@
                 document.getElementById('form-discount')?.addEventListener('input', updatePreview);
                 document.getElementById('form-advance')?.addEventListener('input', updatePreview);
 
+                // Save
                 document.getElementById('save-doc-btn')?.addEventListener('click', async () => {
                     if (!State.user) { showToast('Not signed in','error'); return; }
                     const clientSel = document.getElementById('form-client');
-                    const clientId = clientSel?.value;
+                    const clientId   = clientSel?.value;
                     if (!clientId) { showToast('Please select a client','error'); return; }
 
                     const subtotal = items.reduce((s,i) => s+(i.qty*i.price), 0);
                     const discount = Math.min(parseFloat(document.getElementById('form-discount')?.value)||0, subtotal);
-                    const advance = Math.min(parseFloat(document.getElementById('form-advance')?.value)||0, subtotal-discount);
-                    const total = Math.max(0, subtotal - discount - advance);
+                    const advance  = Math.min(parseFloat(document.getElementById('form-advance')?.value)||0, subtotal-discount);
+                    const total    = Math.max(0, subtotal - discount - advance);
 
+                    const netP = subtotal - discount;
+                    const calcProfit = isInvoice ? {
+                        netProfit: netP,
+                        yourShare: netP*(selectedRatio.you/100),
+                        partnerShare: netP*(selectedRatio.partner/100)
+                    } : null;
+
+                    // Auto overdue check
                     let status = document.getElementById('form-status')?.value || 'Draft';
                     if (isInvoice && status !== 'Paid' && status !== 'Draft') {
                         const due = new Date(document.getElementById('form-due-date')?.value);
@@ -1332,58 +1446,335 @@
                         dueDate: document.getElementById('form-due-date')?.value || '',
                         discount, advance, notes: document.getElementById('form-notes')?.value || '',
                         total, createdAt: doc.createdAt || new Date().toISOString(), updatedAt: new Date().toISOString(),
-                        profitShare: isInvoice ? currentProfitShare : null
+                        ...(isInvoice ? { profitShare: selectedRatio, calculatedProfit: calcProfit } : {})
                     };
 
                     const ok = await FirebaseSync.saveDocument(State.user.uid, type, docToSave);
-                    if (ok) UI.navigate(type);
+                    if (ok) {
+                        await logActivity(`${type.slice(0,-1)} ${id?'updated':'created'}`, `#${doc.number} — ${clientSel.selectedOptions[0]?.dataset?.name||''}`);
+                        UI.navigate(type);
+                    }
                 });
 
                 renderItems();
-                setTimeout(() => lucide.createIcons(), 100);
             }
 
-            // ── OTHER ROUTES ───────────────────────────────────────────
+            // ── CLIENTS ────────────────────────────────────────────────
             function renderClients() {
                 const clients = State.clients || [];
                 container.innerHTML = `
-                <div class="flex justify-between items-center mb-6"><h1 class="text-xl sm:text-2xl font-bold" style="color:var(--text)">Clients</h1><button class="btn-primary flex items-center gap-2 py-2.5 text-sm" onclick="showClientModal()"><i data-lucide="plus" class="w-4 h-4"></i> New</button></div>
-                ${!clients.length ? `<div class="empty-state flex flex-col items-center justify-center py-16 sm:py-24 text-center"><div class="w-16 h-16 rounded-full flex items-center justify-center mb-4" style="background:var(--hover-bg)"><i data-lucide="users" class="w-8 h-8" style="color:var(--text-muted)"></i></div><h3 class="text-lg font-semibold mb-2" style="color:var(--text)">No clients yet</h3><button class="btn-primary py-2.5" onclick="showClientModal()">Add Client</button></div>` : `
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">${clients.map(c=>`<div class="card p-4 sm:p-5 card-lift"><div class="flex items-start gap-3 mb-4"><div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">${c.contactName?.[0]||'?'}</div><div class="flex-1 min-w-0"><h3 class="font-bold truncate" style="color:var(--text)">${c.contactName}</h3><p class="text-sm truncate" style="color:var(--text-muted)">${c.companyName||'—'}</p></div></div><div class="flex gap-2"><button onclick="editClient('${c.id}')" class="btn-secondary flex-1 py-2 text-sm">Edit</button><button onclick="deleteClient('${c.id}')" class="btn-secondary flex-1 py-2 text-sm" style="color:#dc2626;border-color:#fecaca">Delete</button></div></div>`).join('')}</div>`}`;
-                setTimeout(() => lucide.createIcons(), 100);
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold" style="color:var(--text)">Clients</h1>
+                    <button class="btn-primary flex items-center gap-2 py-2.5" onclick="showClientModal()"><i data-lucide="plus" class="w-4 h-4"></i> New Client</button>
+                </div>
+                ${!clients.length ? `
+                <div class="empty-state flex flex-col items-center justify-center py-24 text-center">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4" style="background:var(--hover-bg)"><i data-lucide="users" class="w-8 h-8" style="color:var(--text-muted)"></i></div>
+                    <h3 class="text-lg font-semibold mb-2" style="color:var(--text)">No clients yet</h3>
+                    <p class="text-sm mb-6" style="color:var(--text-muted)">Add your first client to start billing.</p>
+                    <button class="btn-primary py-2.5" onclick="showClientModal()">Add Client</button>
+                </div>` : `
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    ${clients.map(c => {
+                        const clientInvoices = (State.invoices||[]).filter(i=>i.clientId===c.id);
+                        const totalBilled = clientInvoices.reduce((s,i)=>s+(i.total||0),0);
+                        return `
+                        <div class="card p-5 card-lift">
+                            <div class="flex items-start gap-3 mb-4">
+                                <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">${c.contactName?.[0]||'?'}</div>
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="font-bold truncate" style="color:var(--text)">${c.contactName}</h3>
+                                    <p class="text-sm truncate" style="color:var(--text-muted)">${c.companyName||'—'}</p>
+                                </div>
+                            </div>
+                            <div class="space-y-1 mb-4">
+                                <p class="text-sm flex items-center gap-2" style="color:var(--text-mid)"><i data-lucide="mail" class="w-3 h-3" style="color:var(--purple-mid)"></i>${c.email||'—'}</p>
+                                <p class="text-sm flex items-center gap-2" style="color:var(--text-mid)"><i data-lucide="phone" class="w-3 h-3" style="color:var(--purple-mid)"></i>${c.phone||'—'}</p>
+                            </div>
+                            <div class="flex justify-between items-center p-3 rounded-xl mb-4" style="background:var(--surface-2)">
+                                <span class="text-xs" style="color:var(--text-muted)">${clientInvoices.length} invoices</span>
+                                <span class="mono text-sm font-bold" style="color:var(--text)">${fmtCurrency(totalBilled)}</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="editClient('${c.id}')" class="btn-secondary flex-1 py-2 text-sm">Edit</button>
+                                <button onclick="deleteClient('${c.id}')" class="btn-secondary flex-1 py-2 text-sm" style="color:#dc2626;border-color:#fecaca">Delete</button>
+                            </div>
+                        </div>`;
+                    }).join('')}
+                </div>`}`;
             }
 
+            // ── PACKAGES ───────────────────────────────────────────────
             function renderPackages() {
                 const packages = State.packages || [];
                 container.innerHTML = `
-                <div class="flex justify-between items-center mb-6"><h1 class="text-xl sm:text-2xl font-bold" style="color:var(--text)">Packages</h1><button class="btn-primary flex items-center gap-2 py-2.5 text-sm" onclick="showPackageModal()"><i data-lucide="plus" class="w-4 h-4"></i> New</button></div>
-                ${!packages.length ? `<div class="empty-state flex flex-col items-center justify-center py-16 sm:py-24 text-center"><div class="w-16 h-16 rounded-full flex items-center justify-center mb-4" style="background:var(--hover-bg)"><i data-lucide="package" class="w-8 h-8" style="color:var(--text-muted)"></i></div><h3 class="text-lg font-semibold mb-2" style="color:var(--text)">No packages yet</h3><button class="btn-primary py-2.5" onclick="showPackageModal()">Add Package</button></div>` : `
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">${packages.map(p=>`<div class="card p-4 sm:p-5 card-lift" style="border-left:3px solid var(--purple-mid)"><h3 class="font-bold mb-2" style="color:var(--text)">${p.name}</h3><div class="text-2xl font-bold mono mb-1" style="color:var(--purple-text)">Rs. ${(p.price||0).toFixed(2)}</div><div class="flex gap-2 mt-4"><button onclick="editPackage('${p.id}')" class="btn-secondary flex-1 py-2 text-sm">Edit</button><button onclick="deletePackage('${p.id}')" class="btn-secondary flex-1 py-2 text-sm" style="color:#dc2626;border-color:#fecaca">Delete</button></div></div>`).join('')}</div>`}`;
-                setTimeout(() => lucide.createIcons(), 100);
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold" style="color:var(--text)">Packages &amp; Services</h1>
+                    <button class="btn-primary flex items-center gap-2 py-2.5" onclick="showPackageModal()"><i data-lucide="plus" class="w-4 h-4"></i> New Package</button>
+                </div>
+                ${!packages.length ? `
+                <div class="empty-state flex flex-col items-center justify-center py-24 text-center">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4" style="background:var(--hover-bg)"><i data-lucide="package" class="w-8 h-8" style="color:var(--text-muted)"></i></div>
+                    <h3 class="text-lg font-semibold mb-2" style="color:var(--text)">No packages yet</h3>
+                    <p class="text-sm mb-6" style="color:var(--text-muted)">Create service packages for fast invoicing.</p>
+                    <button class="btn-primary py-2.5" onclick="showPackageModal()">Add Package</button>
+                </div>` : `
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    ${packages.map(p=>`
+                    <div class="card p-5 card-lift" style="border-left:3px solid var(--purple-mid)">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold" style="color:var(--text)">${p.name}</h3>
+                            <span class="badge badge-draft">${p.category||'Service'}</span>
+                        </div>
+                        <p class="text-sm mb-3" style="color:var(--text-muted)">${p.description||''}</p>
+                        <div class="text-2xl font-bold mono mb-1" style="color:var(--purple-text)">Rs. ${(p.price||0).toFixed(2)}</div>
+                        <div class="text-xs mb-4" style="color:var(--text-muted)">${p.duration||'Flexible'}</div>
+                        <div class="flex gap-2">
+                            <button onclick="editPackage('${p.id}')" class="btn-secondary flex-1 py-2 text-sm">Edit</button>
+                            <button onclick="deletePackage('${p.id}')" class="btn-secondary flex-1 py-2 text-sm" style="color:#dc2626;border-color:#fecaca">Delete</button>
+                        </div>
+                    </div>`).join('')}
+                </div>`}`;
             }
 
+            // ── SETTINGS ──────────────────────────────────────────────
             function renderSettings() {
-                const settings = State.settings || {};
-                container.innerHTML = `<h1 class="text-xl sm:text-2xl font-bold mb-6" style="color:var(--text)">Settings</h1><div class="card p-4 sm:p-5"><p style="color:var(--text-muted)">Settings loaded.</p></div>`;
+                const settings = State.settings || { company:{name:'Hexo Creative',email:'',currencySymbol:'Rs.',phone:'',address:''}, quotes:{prefix:'HX-QT'}, invoices:{prefix:'HX'}, appearance:{logo:null}, profit:{defaultRatio:'65/35',partnerALabel:'You',partnerBLabel:'Partner'} };
+                const pr = settings.profit || {};
+
+                container.innerHTML = `
+                <h1 class="text-2xl font-bold mb-6" style="color:var(--text)">Settings</h1>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-4">
+                        <div class="card p-5">
+                            <h3 class="font-semibold mb-4 flex items-center gap-2" style="color:var(--text)"><i data-lucide="building" class="w-4 h-4"></i> Company Information</h3>
+                            <div class="space-y-4">
+                                <div><label class="form-label">Company Name</label><input type="text" id="set-company-name" value="${settings.company?.name||''}" class="input-field"></div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div><label class="form-label">Email</label><input type="email" id="set-email" value="${settings.company?.email||''}" class="input-field"></div>
+                                    <div><label class="form-label">Phone</label><input type="text" id="set-phone" value="${settings.company?.phone||''}" class="input-field"></div>
+                                </div>
+                                <div><label class="form-label">Address</label><textarea id="set-address" class="input-field" rows="2">${settings.company?.address||''}</textarea></div>
+                                <div><label class="form-label">Currency Symbol</label><input type="text" id="set-currency-sym" value="${settings.company?.currencySymbol||'Rs.'}" class="input-field" style="max-width:120px"></div>
+                            </div>
+                        </div>
+                        <div class="card p-5">
+                            <h3 class="font-semibold mb-4 flex items-center gap-2" style="color:var(--text)"><i data-lucide="file-text" class="w-4 h-4"></i> Document Settings</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div><label class="form-label">Quote Prefix</label><input type="text" id="set-quote-prefix" value="${settings.quotes?.prefix||'HX-QT'}" class="input-field"></div>
+                                <div><label class="form-label">Invoice Prefix</label><input type="text" id="set-invoice-prefix" value="${settings.invoices?.prefix||'HX'}" class="input-field"></div>
+                            </div>
+                        </div>
+                        <div class="card p-5">
+                            <h3 class="font-semibold mb-4 flex items-center gap-2" style="color:var(--text)"><i data-lucide="trending-up" class="w-4 h-4"></i> Profit Settings</h3>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div><label class="form-label">Partner A Label (You)</label><input type="text" id="set-partner-a" value="${pr.partnerALabel||'You'}" class="input-field"></div>
+                                <div><label class="form-label">Partner B Label</label><input type="text" id="set-partner-b" value="${pr.partnerBLabel||'Partner'}" class="input-field"></div>
+                            </div>
+                            <div><label class="form-label">Default Profit Ratio</label>
+                                <select id="set-default-ratio" class="input-field">
+                                    ${['65/35','60/40'].map(r=>`<option ${normalizeProfitShare(parseProfitRatio(pr.defaultRatio||'65/35')).you + '/' + normalizeProfitShare(parseProfitRatio(pr.defaultRatio||'65/35')).partner===r?'selected':''}>${r}</option>`).join('')}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="card p-5">
+                            <h3 class="font-semibold mb-4" style="color:var(--text)">Branding</h3>
+                            <img id="settings-logo-preview" src="${settings.appearance?.logo||''}" alt="Logo" class="w-24 h-24 object-contain mx-auto mb-4 ${settings.appearance?.logo?'':'hidden'}">
+                            <button onclick="showLogoModal()" class="btn-primary w-full py-2.5">Set Logo</button>
+                        </div>
+                        <div class="card p-5">
+                            <h3 class="font-semibold mb-4" style="color:var(--text)">Data</h3>
+                            <div class="space-y-2">
+                                <button onclick="exportData()" class="btn-secondary w-full py-2.5 flex items-center justify-center gap-2"><i data-lucide="download" class="w-4 h-4"></i> Export Backup</button>
+                                <button onclick="document.getElementById('import-file').click()" class="btn-secondary w-full py-2.5 flex items-center justify-center gap-2"><i data-lucide="upload" class="w-4 h-4"></i> Import Data</button>
+                                <input type="file" id="import-file" class="hidden" accept=".json" onchange="importData(this)">
+                            </div>
+                        </div>
+                        <button onclick="saveSettings()" class="btn-primary w-full py-3 rounded-xl">Save All Settings</button>
+                    </div>
+                </div>`;
+
+                document.querySelectorAll('.form-label').forEach(el => {
+                    el.style.cssText='display:block;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:5px';
+                });
             }
 
+            // ── PROFIT DASHBOARD ──────────────────────────────────────
             function renderProfit() {
                 const invoices = State.invoices || [];
-                container.innerHTML = `<h1 class="text-xl sm:text-2xl font-bold mb-6" style="color:var(--text)">Profit Tracking</h1><div class="card p-4 sm:p-5"><p style="color:var(--text-muted)">${invoices.length} invoices loaded.</p></div>`;
+                const pSettings = State.settings?.profit || { partnerALabel:'You', partnerBLabel:'Partner' };
+
+                let totalRevenue=0, totalNetProfit=0, totalYou=0, totalPartner=0;
+                const profitRows = invoices.filter(i=>i.status==='Paid').map(inv => {
+                    const sub = (inv.items||[]).reduce((s,it)=>s+(it.qty||0)*(it.price||0),0);
+                    const disc = inv.discount||0;
+                    const net  = sub - disc;
+                    const ps   = normalizeProfitShare(inv.profitShare);
+                    const you  = net*(ps.you/100);
+                    const part = net*(ps.partner/100);
+                    totalRevenue   += inv.total||0;
+                    totalNetProfit += net;
+                    totalYou       += you;
+                    totalPartner   += part;
+                    return { ...inv, netProfit:net, yourShare:you, partnerShare:part, ratio:`${ps.you}/${ps.partner}` };
+                });
+
+                const allRows = invoices.map(inv => {
+                    const sub = (inv.items||[]).reduce((s,it)=>s+(it.qty||0)*(it.price||0),0);
+                    const disc = inv.discount||0;
+                    const net  = sub - disc;
+                    const ps   = normalizeProfitShare(inv.profitShare);
+                    return { ...inv, netProfit:net, yourShare:net*(ps.you/100), partnerShare:net*(ps.partner/100), ratio:`${ps.you}/${ps.partner}` };
+                });
+
+                const sym = State.settings?.company?.currencySymbol||'Rs.';
+                const fmt = n => `${sym} ${new Intl.NumberFormat('en-US',{minimumFractionDigits:2}).format(n||0)}`;
+
+                container.innerHTML = `
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold" style="color:var(--text)">Profit Tracking</h1>
+                    <div class="flex gap-2">
+                        <select id="profit-filter-status" class="input-field w-auto py-2 text-sm">
+                            <option value="">All Status</option><option>Paid</option><option>Sent</option><option>Draft</option><option>Overdue</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div class="card stat-card">
+                        <div class="text-xs font-semibold uppercase tracking-wider mb-1" style="color:var(--text-muted)">Total Revenue</div>
+                        <div class="text-xl font-bold mono" style="color:var(--text)">${fmt(totalRevenue)}</div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="text-xs font-semibold uppercase tracking-wider mb-1" style="color:var(--text-muted)">Net Profit Pool</div>
+                        <div class="text-xl font-bold mono" style="color:var(--text)">${fmt(totalNetProfit)}</div>
+                    </div>
+                    <div class="card stat-card" style="border-top:3px solid #10b981">
+                        <div class="text-xs font-semibold uppercase tracking-wider mb-1" style="color:#10b981">${pSettings.partnerALabel} Earnings</div>
+                        <div class="text-xl font-bold mono" style="color:var(--text)">${fmt(totalYou)}</div>
+                    </div>
+                    <div class="card stat-card" style="border-top:3px solid var(--purple-mid)">
+                        <div class="text-xs font-semibold uppercase tracking-wider mb-1" style="color:var(--purple-text)">${pSettings.partnerBLabel} Earnings</div>
+                        <div class="text-xl font-bold mono" style="color:var(--text)">${fmt(totalPartner)}</div>
+                    </div>
+                </div>
+
+                <!-- Profit Table -->
+                <div class="card overflow-hidden">
+                    <div class="p-5 border-b" style="border-color:var(--border)">
+                        <h3 class="font-semibold" style="color:var(--text)">Invoice Profit Breakdown</h3>
+                        <p class="text-sm mt-1" style="color:var(--text-muted)">Only paid invoices are included in profit totals.</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead style="background:var(--surface-2)">
+                            <tr>
+                                <th class="text-left">Invoice</th><th class="text-left">Client</th><th class="text-left">Status</th><th class="text-left">Ratio</th>
+                                <th class="text-right">Net Profit</th><th class="text-right">${pSettings.partnerALabel}</th><th class="text-right">${pSettings.partnerBLabel}</th>
+                            </tr>
+                        </thead>
+                        <tbody id="profit-tbody">
+                        ${allRows.map(r => `
+                        <tr data-status="${r.status}" class="profit-row">
+                            <td><span class="mono text-xs font-medium" style="color:var(--purple-text)">${r.number}</span></td>
+                            <td style="color:var(--text-mid)">${r.clientName||'—'}</td>
+                            <td>${getStatusBadge(r.status)}</td>
+                            <td><span class="badge badge-draft">${r.ratio}</span></td>
+                            <td class="text-right mono text-sm font-medium" style="color:var(--text)">${r.status==='Paid'?fmt(r.netProfit):'—'}</td>
+                            <td class="text-right mono text-sm" style="color:#10b981">${r.status==='Paid'?fmt(r.yourShare):'—'}</td>
+                            <td class="text-right mono text-sm" style="color:var(--purple-text)">${r.status==='Paid'?fmt(r.partnerShare):'—'}</td>
+                        </tr>`).join('')}
+                        ${!allRows.length ? `<tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--text-muted)">No invoices found. Create invoices with profit splits to see data here.</td></tr>` : ''}
+                        </tbody>
+                    </table>
+                    </div>
+                </div>`;
+
+                document.getElementById('profit-filter-status')?.addEventListener('change', function() {
+                    const v = this.value;
+                    document.querySelectorAll('.profit-row').forEach(r => { r.style.display = (!v || r.dataset.status===v) ? '' : 'none'; });
+                });
             }
 
+            // ── ACTIVITY LOG ───────────────────────────────────────────
             function renderActivity() {
                 const log = State.activityLog || [];
-                container.innerHTML = `<h1 class="text-xl sm:text-2xl font-bold mb-6" style="color:var(--text)">Activity Log</h1><div class="card p-4 sm:p-5"><p style="color:var(--text-muted)">${log.length} activities recorded.</p></div>`;
+                const iconMap = { create:'plus-circle', update:'edit-2', delete:'trash-2', pdf:'file-down', login:'log-in', default:'activity' };
+                const colorMap = { create:'#10b981', update:'#3b82f6', delete:'#ef4444', pdf:'var(--purple-text)', login:'#f59e0b', default:'var(--text-muted)' };
+
+                container.innerHTML = `
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold" style="color:var(--text)">Activity Log</h1>
+                    <span class="text-sm" style="color:var(--text-muted)">${log.length} entries</span>
+                </div>
+                <div class="card">
+                    ${!log.length ? `
+                    <div class="flex flex-col items-center py-20 text-center">
+                        <i data-lucide="activity" class="w-12 h-12 mb-4" style="color:var(--text-muted)"></i>
+                        <p style="color:var(--text-muted)">No activity yet. Actions will appear here.</p>
+                    </div>` : `
+                    <div class="divide-y" style="border-color:var(--border)">
+                    ${log.map(entry => {
+                        const type = entry.type || 'default';
+                        const icon = iconMap[type] || iconMap.default;
+                        const color = colorMap[type] || colorMap.default;
+                        const time = entry.timestamp ? new Date(entry.timestamp.toDate ? entry.timestamp.toDate() : entry.timestamp).toLocaleString('en-US', {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+                        return `
+                        <div class="flex items-start gap-4 p-4">
+                            <div class="activity-dot mt-2 shrink-0" style="background:${color};margin-top:8px"></div>
+                            <div class="flex-1">
+                                <div class="font-medium text-sm" style="color:var(--text)">${entry.action||'Action'}</div>
+                                <div class="text-xs mt-0.5" style="color:var(--text-muted)">${entry.details||''}</div>
+                            </div>
+                            <div class="text-xs shrink-0" style="color:var(--text-muted)">${time}</div>
+                        </div>`;
+                    }).join('')}
+                    </div>`}
+                </div>`;
             }
 
-            return { navigate };
+            return { navigate, renderDashboard, renderList, renderClients, renderPackages, renderSettings, renderProfit, renderActivity, renderForm };
         })();
         window.UI = UI;
 
         // ══════════════════════════════════════════════════════
         // UTILITIES
         // ══════════════════════════════════════════════════════
+        function parseProfitRatio(ratioStr) {
+            const parts = (ratioStr||'65/35').split('/');
+            return normalizeProfitShare({ you: parseInt(parts[0])||65, partner: parseInt(parts[1])||35 });
+        }
+
+        function normalizeProfitShare(share) {
+            let you = Number(share?.you);
+            let partner = Number(share?.partner);
+            if (!Number.isFinite(you) || !Number.isFinite(partner) || you + partner <= 0) {
+                you = 65;
+                partner = 35;
+            }
+
+            const total = you + partner;
+            you = Math.round((you / total) * 100);
+            partner = 100 - you;
+
+            if (you < partner) {
+                [you, partner] = [partner, you];
+            }
+            if (you < 60) {
+                you = 60;
+                partner = 40;
+            }
+            if (you > 65) {
+                you = 65;
+                partner = 35;
+            }
+
+            return { you, partner };
+        }
+
         function generateNumber(type) {
             const settings = State.settings || { quotes:{prefix:'HX-QT'}, invoices:{prefix:'HX'} };
             const prefix = type==='quotes' ? (settings.quotes?.prefix||'HX-QT') : (settings.invoices?.prefix||'HX');
@@ -1397,12 +1788,29 @@
         function showToast(msg, type='success') {
             const area = document.getElementById('toast-area');
             if (!area) return;
+            const colors = { success:'#059669', error:'#dc2626', info:'#2563eb', warning:'#d97706' };
+            const icons  = { success:'check-circle', error:'alert-circle', info:'info', warning:'alert-triangle' };
             const toast = document.createElement('div');
             toast.className = 'toast';
-            toast.style.cssText = `background:${type==='error'?'#dc2626':type==='info'?'#2563eb':'#059669'};pointer-events:auto`;
-            toast.textContent = msg;
+            toast.style.cssText = `background:${colors[type]||colors.success};pointer-events:auto`;
+            toast.innerHTML = `<i data-lucide="${icons[type]||icons.success}" style="width:16px;height:16px;flex-shrink:0"></i><span>${msg}</span>`;
             area.appendChild(toast);
-            setTimeout(() => { toast.style.opacity='0'; toast.style.transition='all 0.2s ease'; setTimeout(()=>toast.remove(),200); }, 3000);
+            lucide.createIcons();
+            setTimeout(() => { toast.style.opacity='0'; toast.style.transform='translateX(20px)'; toast.style.transition='all 0.2s ease'; setTimeout(()=>toast.remove(),200); }, 3000);
+        }
+
+        function showAuthLoading(show) {
+            document.getElementById('signin-form')?.classList.toggle('hidden', show);
+            document.getElementById('auth-loading')?.classList.toggle('hidden', !show);
+        }
+
+        async function logActivity(action, details='', type='default') {
+            if (!State.user) return;
+            try {
+                await db.collection('users').doc(State.user.uid).collection('activityLog').add({
+                    action, details, type, timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            } catch(e) { /* silent */ }
         }
 
         function toggleDarkMode() {
@@ -1412,12 +1820,12 @@
             localStorage.setItem('hexo-theme', isDark ? 'light' : 'dark');
             const btn = document.getElementById('theme-toggle');
             if (btn) btn.classList.toggle('on', !isDark);
-            updateLogoForTheme();
+            // Re-init charts if on dashboard
+            const active = document.querySelector('.sidebar-link.active')?.dataset?.route;
+            if (active === 'dashboard') UI.renderDashboard ? UI.navigate('dashboard') : null;
         }
 
-        // ══════════════════════════════════════════════════════
-        // GLOBAL FUNCTIONS
-        // ══════════════════════════════════════════════════════
+        // ── Global Functions ───────────────────────────────────────────
         window.generatePDF = async (type, id) => {
             const collection = type==='quotes' ? State.quotes : State.invoices;
             const doc = collection.find(d => d.id === id);
@@ -1427,37 +1835,71 @@
         window.saveAndGeneratePDF = async (type, id) => {
             const btn = document.getElementById('save-doc-btn');
             if (btn) btn.click();
-            setTimeout(async () => { await window.generatePDF(type, id); }, 1500);
+            setTimeout(async () => { await window.generatePDF(type, id); }, 1000);
         };
 
         window.deleteDocument = async (type, id) => {
-            if (!State.user || !confirm('Delete this document?')) return;
+            if (!State.user) return;
+            if (!confirm('Delete this document?')) return;
             await FirebaseSync.deleteDocument(State.user.uid, type, id);
+            await logActivity('document deleted', `${type.slice(0,-1)} #${id}`, 'delete');
             UI.navigate(type);
         };
 
         window.duplicateDocument = async (type, id) => {
-            if (!State.user) return;
+            if (!State.user) { showToast('Not signed in', 'error'); return; }
             const collection = type==='quotes' ? State.quotes : State.invoices;
             const orig = collection.find(d => d.id===id);
             if (!orig) return;
             const copy = { ...orig, id:crypto.randomUUID(), number:generateNumber(type), status:'Draft', createdAt:new Date().toISOString(), updatedAt:new Date().toISOString() };
             await FirebaseSync.saveDocument(State.user.uid, type, copy);
+            await logActivity('document duplicated', `#${orig.number} → #${copy.number}`, 'create');
+        };
+
+        window.sendDocument = (id) => {
+            const inv = State.invoices.find(i => i.id===id);
+            if (!inv) return;
+            const client = State.clients.find(c => c.id===inv.clientId);
+            const email = client?.email || '';
+            const sym = State.settings?.company?.currencySymbol || 'Rs.';
+            const subject = encodeURIComponent(`Invoice #${inv.number} from Hexo Creative`);
+            const body = encodeURIComponent(`Dear ${inv.clientName},\n\nPlease find your invoice #${inv.number} for ${sym} ${(inv.total||0).toFixed(2)} due on ${inv.dueDate}.\n\nThank you for your business!\n\nHexo Creative`);
+            window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_blank');
         };
 
         window.showClientModal = (editId=null) => {
             const client = editId ? State.clients.find(c=>c.id===editId) : null;
             const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4';
+            modal.className = 'fixed inset-0 z-50 flex items-center justify-center';
             modal.style.background = 'rgba(0,0,0,0.4)';
-            modal.innerHTML = `<div class="card p-6 w-full max-w-md"><h3 class="text-xl font-bold mb-4" style="color:var(--text)">${editId?'Edit':'New'} Client</h3><div class="space-y-4"><div><label class="text-xs font-semibold uppercase block mb-1" style="color:var(--text-muted)">Name</label><input type="text" id="cm-name" value="${client?.contactName||''}" class="input-field"></div><div><label class="text-xs font-semibold uppercase block mb-1" style="color:var(--text-muted)">Email</label><input type="email" id="cm-email" value="${client?.email||''}" class="input-field"></div></div><div class="flex gap-2 mt-5"><button class="btn-secondary flex-1 py-2.5" onclick="this.closest('.fixed').remove()">Cancel</button><button class="btn-primary flex-1 py-2.5" id="cm-save">Save</button></div></div>`;
+            modal.style.backdropFilter = 'blur(6px)';
+            modal.innerHTML = `
+            <div class="card p-6 w-full max-w-md mx-4">
+                <h3 class="text-xl font-bold mb-5" style="color:var(--text)">${editId?'Edit':'New'} Client</h3>
+                <div class="space-y-4">
+                    <div><label class="form-label">Contact Name</label><input type="text" id="client-name" value="${client?.contactName||''}" class="input-field" placeholder="John Smith"></div>
+                    <div><label class="form-label">Company</label><input type="text" id="client-company" value="${client?.companyName||''}" class="input-field" placeholder="Company Ltd."></div>
+                    <div><label class="form-label">Phone</label><input type="text" id="client-phone" value="${client?.phone||''}" class="input-field" placeholder="+94 77 000 0000"></div>
+                    <div><label class="form-label">Notes</label><textarea id="client-notes" class="input-field" rows="2" placeholder="Additional notes…">${client?.notes||''}</textarea></div>
+                </div>
+                <div class="flex gap-2 mt-5">
+                    <button class="btn-secondary flex-1 py-2.5" id="client-modal-cancel">Cancel</button>
+                    <button class="btn-primary flex-1 py-2.5" id="client-modal-save">Save Client</button>
+                </div>
+            </div>`;
+            document.querySelectorAll('.form-label').forEach(el=>{el.style.cssText='display:block;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:5px';});
             document.body.appendChild(modal);
+            lucide.createIcons();
+
+            modal.querySelector('#client-modal-cancel').addEventListener('click', ()=>modal.remove());
             modal.addEventListener('click', e=>{ if(e.target===modal)modal.remove(); });
-            modal.querySelector('#cm-save').addEventListener('click', async ()=>{
+            modal.querySelector('#client-modal-save').addEventListener('click', async ()=>{
                 if (!State.user) return;
-                const name = modal.querySelector('#cm-name').value.trim();
-                if (!name) { showToast('Name required','error'); return; }
-                await FirebaseSync.saveDocument(State.user.uid,'clients',{id:editId||crypto.randomUUID(),contactName:name,email:modal.querySelector('#cm-email').value.trim(),companyName:'',phone:'',notes:''});
+                const name = document.getElementById('client-name').value.trim();
+                if (!name) { showToast('Contact name required','error'); return; }
+                const c = { id:editId||crypto.randomUUID(), contactName:name, companyName:document.getElementById('client-company').value.trim(), email:client?.email||'', phone:document.getElementById('client-phone').value.trim(), notes:document.getElementById('client-notes').value.trim() };
+                await FirebaseSync.saveDocument(State.user.uid,'clients',c);
+                await logActivity('client '+(editId?'updated':'created'), name, 'create');
                 modal.remove();
             });
         };
@@ -1466,45 +1908,114 @@
         window.deleteClient = async (id) => {
             if (!State.user || !confirm('Delete this client?')) return;
             await FirebaseSync.deleteDocument(State.user.uid,'clients',id);
+            await logActivity('client deleted', id, 'delete');
+            UI.navigate('clients');
         };
 
         window.showPackageModal = (editId=null) => {
             const pkg = editId ? State.packages.find(p=>p.id===editId) : null;
             const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4';
+            modal.className = 'fixed inset-0 z-50 flex items-center justify-center';
             modal.style.background = 'rgba(0,0,0,0.4)';
-            modal.innerHTML = `<div class="card p-6 w-full max-w-md"><h3 class="text-xl font-bold mb-4" style="color:var(--text)">${editId?'Edit':'New'} Package</h3><div class="space-y-4"><div><label class="text-xs font-semibold uppercase block mb-1" style="color:var(--text-muted)">Name</label><input type="text" id="pm-name" value="${pkg?.name||''}" class="input-field"></div><div><label class="text-xs font-semibold uppercase block mb-1" style="color:var(--text-muted)">Price (Rs.)</label><input type="number" id="pm-price" value="${pkg?.price||0}" class="input-field" min="0" step="100"></div></div><div class="flex gap-2 mt-5"><button class="btn-secondary flex-1 py-2.5" onclick="this.closest('.fixed').remove()">Cancel</button><button class="btn-primary flex-1 py-2.5" id="pm-save">Save</button></div></div>`;
+            modal.style.backdropFilter = 'blur(6px)';
+            modal.innerHTML = `
+            <div class="card p-6 w-full max-w-md mx-4">
+                <h3 class="text-xl font-bold mb-5" style="color:var(--text)">${editId?'Edit':'New'} Package</h3>
+                <div class="space-y-4">
+                    <div><label class="form-label">Package Name</label><input type="text" id="pkg-name" value="${pkg?.name||''}" class="input-field" placeholder="Social Media Package"></div>
+                    <div><label class="form-label">Category</label><input type="text" id="pkg-cat" value="${pkg?.category||''}" class="input-field" placeholder="Service"></div>
+                    <div><label class="form-label">Price (Rs.)</label><input type="number" id="pkg-price" value="${pkg?.price||0}" class="input-field" min="0" step="100"></div>
+                    <div><label class="form-label">Duration</label><input type="text" id="pkg-dur" value="${pkg?.duration||''}" class="input-field" placeholder="1 Month"></div>
+                    <div><label class="form-label">Description</label><textarea id="pkg-desc" class="input-field" rows="2">${pkg?.description||''}</textarea></div>
+                </div>
+                <div class="flex gap-2 mt-5">
+                    <button class="btn-secondary flex-1 py-2.5" id="pkg-modal-cancel">Cancel</button>
+                    <button class="btn-primary flex-1 py-2.5" id="pkg-modal-save">Save Package</button>
+                </div>
+            </div>`;
             document.body.appendChild(modal);
-            modal.addEventListener('click', e=>{ if(e.target===modal)modal.remove(); });
-            modal.querySelector('#pm-save').addEventListener('click', async ()=>{
+            lucide.createIcons();
+            modal.querySelector('#pkg-modal-cancel').addEventListener('click',()=>modal.remove());
+            modal.addEventListener('click',e=>{if(e.target===modal)modal.remove();});
+            modal.querySelector('#pkg-modal-save').addEventListener('click', async ()=>{
                 if (!State.user) return;
-                const name = modal.querySelector('#pm-name').value.trim();
-                if (!name) { showToast('Name required','error'); return; }
-                await FirebaseSync.saveDocument(State.user.uid,'packages',{id:editId||crypto.randomUUID(),name,price:parseFloat(modal.querySelector('#pm-price').value)||0,category:'',duration:'',description:''});
+                const name = document.getElementById('pkg-name').value.trim();
+                if (!name) { showToast('Package name required','error'); return; }
+                const p = { id:editId||crypto.randomUUID(), name, category:document.getElementById('pkg-cat').value.trim(), price:parseFloat(document.getElementById('pkg-price').value)||0, duration:document.getElementById('pkg-dur').value.trim(), description:document.getElementById('pkg-desc').value.trim() };
+                await FirebaseSync.saveDocument(State.user.uid,'packages',p);
                 modal.remove();
             });
         };
 
-        window.editPackage = (id) => showPackageModal(id);
+        window.editPackage   = (id) => showPackageModal(id);
         window.deletePackage = async (id) => {
             if (!State.user || !confirm('Delete this package?')) return;
             await FirebaseSync.deleteDocument(State.user.uid,'packages',id);
+            UI.navigate('packages');
+        };
+
+        window.saveSettings = async () => {
+            if (!State.user) { showToast('Not signed in','error'); return; }
+            const updated = {
+                ...State.settings,
+                company: { ...State.settings?.company, name:document.getElementById('set-company-name')?.value||'', email:document.getElementById('set-email')?.value||'', phone:document.getElementById('set-phone')?.value||'', address:document.getElementById('set-address')?.value||'', currencySymbol:document.getElementById('set-currency-sym')?.value||'Rs.' },
+                quotes:   { prefix: document.getElementById('set-quote-prefix')?.value||'HX-QT' },
+                invoices: { prefix: document.getElementById('set-invoice-prefix')?.value||'HX' },
+                profit: { defaultRatio:document.getElementById('set-default-ratio')?.value||'65/35', partnerALabel:document.getElementById('set-partner-a')?.value||'You', partnerBLabel:document.getElementById('set-partner-b')?.value||'Partner' }
+            };
+            await db.collection('users').doc(State.user.uid).collection('settings').doc('preferences').set(updated);
+            showToast('Settings saved!','success');
+        };
+
+        window.showLogoModal = () => {
+            document.getElementById('logo-modal').style.display = 'flex';
+        };
+
+        window.exportData = () => {
+            if (!State.user) { showToast('Not signed in','error'); return; }
+            const data = { quotes:State.quotes||[], invoices:State.invoices||[], clients:State.clients||[], packages:State.packages||[], settings:State.settings, exportDate:new Date().toISOString() };
+            const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href=url; a.download=`hexo-backup-${new Date().toISOString().split('T')[0]}.json`; a.click();
+            URL.revokeObjectURL(url);
+            showToast('Data exported!','success');
+        };
+
+        window.importData = (input) => {
+            if (!State.user) { showToast('Not signed in','error'); return; }
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    let imported = 0;
+                    for (const [col, arr] of [['quotes',data.quotes],['invoices',data.invoices],['clients',data.clients],['packages',data.packages]]) {
+                        if (Array.isArray(arr)) for (const doc of arr) { await FirebaseSync.saveDocument(State.user.uid,col,doc); imported++; }
+                    }
+                    showToast(`Imported ${imported} items`,'success');
+                    input.value='';
+                } catch(e) { showToast('Invalid file: '+e.message,'error'); }
+            };
+            reader.readAsText(file);
         };
 
         // ══════════════════════════════════════════════════════
         // INIT
         // ══════════════════════════════════════════════════════
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize mobile sidebar
             MobileSidebar.init();
 
+            // Apply saved theme
             if (State.darkMode) {
                 document.documentElement.setAttribute('data-theme','dark');
                 document.getElementById('theme-toggle')?.classList.add('on');
             }
-            updateLogoForTheme();
 
             Auth.init();
 
+            // Auth buttons
             document.getElementById('signin-btn')?.addEventListener('click',()=>{
                 const email=document.getElementById('auth-email')?.value;
                 const pw=document.getElementById('auth-password')?.value;
@@ -1521,14 +2032,101 @@
             document.getElementById('signout-btn')?.addEventListener('click',()=>Auth.signOut());
             document.getElementById('forgot-pw-btn')?.addEventListener('click',()=>Auth.forgotPassword(document.getElementById('auth-email')?.value));
             document.getElementById('show-auth')?.addEventListener('click',()=>{ document.getElementById('auth-modal').style.display='flex'; });
-            document.getElementById('theme-toggle')?.addEventListener('click', toggleDarkMode);
+            document.getElementById('close-logo-modal')?.addEventListener('click',()=>{ document.getElementById('logo-modal').style.display='none'; });
+            document.getElementById('check-logo-btn')?.addEventListener('click', async ()=>{
+                try {
+                    const logoData = await PDFGenerator.getBase64FromUrl('logo.png');
+                    if (logoData) {
+                        if (State.user) {
+                            await db.collection('users').doc(State.user.uid).collection('settings').doc('preferences').update({'appearance.logo':'logo.png'});
+                        }
+                        const sl=document.getElementById('sidebar-logo'),sf=document.getElementById('sidebar-logo-fallback');
+                        if(sl&&sf){sl.src='logo.png';sl.classList.remove('hidden');sf.classList.add('hidden');}
+                        showToast('Logo found and set!','success');
+                        document.getElementById('logo-modal').style.display='none';
+                    }
+                } catch(e) { 
+                    // Try favicon.png as fallback
+                    try {
+                        const faviconData = await PDFGenerator.getBase64FromUrl('favicon.png');
+                        if (faviconData) {
+                            const sl=document.getElementById('sidebar-logo'),sf=document.getElementById('sidebar-logo-fallback');
+                            if(sl&&sf){sl.src='favicon.png';sl.classList.remove('hidden');sf.classList.add('hidden');}
+                            showToast('Favicon set as logo!','success');
+                            document.getElementById('logo-modal').style.display='none';
+                        } else {
+                            showToast('Place logo.png or favicon.png in the same folder','error');
+                        }
+                    } catch(e2) {
+                        showToast('Place logo.png or favicon.png in the same folder','error');
+                    }
+                }
+            });
             document.getElementById('auth-modal')?.addEventListener('click',e=>{ if(e.target===e.currentTarget)e.currentTarget.style.display='none'; });
+            document.getElementById('logo-modal')?.addEventListener('click',e=>{ if(e.target===e.currentTarget)e.currentTarget.style.display='none'; });
 
+            // Theme toggle
+            document.getElementById('theme-toggle')?.addEventListener('click', toggleDarkMode);
+
+            // Hamburger accessibility - update ARIA and icon
+            const hamburger = document.getElementById('hamburger');
+            const sidebar = document.getElementById('sidebar');
+            
+            if (hamburger && sidebar) {
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                            const isOpen = sidebar.classList.contains('open');
+                            hamburger.setAttribute('aria-expanded', isOpen);
+                            
+                            const icon = hamburger.querySelector('i');
+                            if (icon) {
+                                icon.setAttribute('data-lucide', isOpen ? 'x' : 'menu');
+                                lucide.createIcons();
+                            }
+                        }
+                    });
+                });
+                
+                observer.observe(sidebar, { attributes: true });
+            }
+
+            // Navigation - auto close sidebar on link click
             document.querySelectorAll('[data-route]').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
+                    MobileSidebar.close();
                     UI.navigate(link.dataset.route);
                 });
+            });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', e => {
+                if (!State.user) return;
+                if ((e.ctrlKey||e.metaKey) && e.key==='n') { e.preventDefault(); UI.navigate('form',{type:'invoices'}); }
+                if ((e.ctrlKey||e.metaKey) && e.key==='s') { e.preventDefault(); document.getElementById('save-doc-btn')?.click(); }
+            });
+
+            // State subscription for logo/settings updates and auto-refresh
+            State.subscribe(()=>{
+                if (State.user) {
+                    const sl=document.getElementById('sidebar-logo'),sf=document.getElementById('sidebar-logo-fallback');
+                    // Use favicon.png as default logo
+                    if(sl&&sf){sl.src='favicon.png';sl.classList.remove('hidden');sf.classList.add('hidden');}
+                }
+                // Auto-refresh current view when data changes
+                const activeLink = document.querySelector('.sidebar-link.active');
+                if (activeLink && State.user) {
+                    const route = activeLink.dataset.route;
+                    // Re-render the current view to show updated data
+                    if (route === 'dashboard') UI.renderDashboard();
+                    else if (route === 'quotes') UI.renderList('quotes');
+                    else if (route === 'invoices') UI.renderList('invoices');
+                    else if (route === 'clients') UI.renderClients();
+                    else if (route === 'packages') UI.renderPackages();
+                    else if (route === 'profit') UI.renderProfit();
+                    else if (route === 'activity') UI.renderActivity();
+                }
             });
         });
     })();
